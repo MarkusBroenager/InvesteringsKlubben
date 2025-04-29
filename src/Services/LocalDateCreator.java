@@ -9,6 +9,6 @@ public class LocalDateCreator {
         if(Integer.parseInt(dateSplit[2])>1900){
             return LocalDate.of(Integer.parseInt(dateSplit[2]),Integer.parseInt(dateSplit[1]),Integer.parseInt(dateSplit[0]));
         }
-        return LocalDate.of(Integer.parseInt(dateSplit[0]),Integer.parseInt(dateSplit[1]),Integer.parseInt(dateSplit[2]));
+        return LocalDate.parse(date);
     }
 }
