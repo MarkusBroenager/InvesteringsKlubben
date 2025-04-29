@@ -28,17 +28,29 @@ public class UserService {
         return users;
     }
 
+    public boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash){
+        User newUser = createNewUser(fullName,email,birthday,initialCash);
+        if(newUser!=null){
+            repo.writeLine(newUser.addToCSVFile());
+            return true;
+        }
+        return false;
+    }
+
     private LocalDate createLocalDateFromString(String date){
         String[] dateSplit = date.split("-");
+        if(Integer.parseInt(dateSplit[2])>1900){
         return LocalDate.of(Integer.parseInt(dateSplit[2]),Integer.parseInt(dateSplit[1]),Integer.parseInt(dateSplit[0]));
+        }
+        return LocalDate.of(Integer.parseInt(dateSplit[0]),Integer.parseInt(dateSplit[1]),Integer.parseInt(dateSplit[2]));
     }
 
     private User createNewUser(String fullName, String email, LocalDate birthday, double initialCash){
-
+        return(new User(getUniqueUserID(),fullName,email,birthday,initialCash,LocalDate.now(),LocalDate.now()));
     }
 
     private int getUniqueUserID(){
-
+        return 0;
     }
 
 
