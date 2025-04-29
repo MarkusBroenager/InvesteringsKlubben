@@ -9,15 +9,15 @@ import java.util.List;
 
 public class UserService {
 
-    private Repository repo;
+    private Repository userRepository;
 
-    public UserService(Repository repo){
-        this.repo = repo;
+    public UserService(Repository userRepository){
+        this.userRepository = userRepository;
     }
 
     public List<User> getUsers(){
         List<User> users = new ArrayList<>();
-        List<String> list = repo.readFile();
+        List<String> list = userRepository.readFile();
         list.remove(0);
         for(String line : list){
             String[] lineSplit = line.split(";");
@@ -31,7 +31,7 @@ public class UserService {
     public boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash){
         User newUser = createNewUser(fullName,email,birthday,initialCash);
         if(newUser!=null){
-            repo.writeLine(newUser.addToCSVFile());
+            userRepository.writeLine(newUser.addToCSVFile());
             return true;
         }
         return false;
