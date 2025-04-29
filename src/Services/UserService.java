@@ -22,8 +22,8 @@ public class UserService {
         for(String line : list){
             String[] lineSplit = line.split(";");
             users.add(new User(Integer.parseInt(lineSplit[0]),lineSplit[1],lineSplit[2],
-                    createLocalDateFromString(lineSplit[3]),Double.parseDouble(lineSplit[4]),
-                    createLocalDateFromString(lineSplit[5]),createLocalDateFromString(lineSplit[6])));
+                    LocalDateCreator.create(lineSplit[3]),Double.parseDouble(lineSplit[4]),
+                    LocalDateCreator.create(lineSplit[5]), LocalDateCreator.create(lineSplit[6])));
         }
         return users;
     }
@@ -35,14 +35,6 @@ public class UserService {
             return true;
         }
         return false;
-    }
-
-    private LocalDate createLocalDateFromString(String date){
-        String[] dateSplit = date.split("-");
-        if(Integer.parseInt(dateSplit[2])>1900){
-        return LocalDate.of(Integer.parseInt(dateSplit[2]),Integer.parseInt(dateSplit[1]),Integer.parseInt(dateSplit[0]));
-        }
-        return LocalDate.of(Integer.parseInt(dateSplit[0]),Integer.parseInt(dateSplit[1]),Integer.parseInt(dateSplit[2]));
     }
 
     private User createNewUser(String fullName, String email, LocalDate birthday, double initialCash){
