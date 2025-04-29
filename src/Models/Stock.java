@@ -28,6 +28,14 @@ public class Stock {
         this.lastUpdated = lastUpdated;
     }
 
+    public String getTicker() {
+        return ticker;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
     @Override
     public String toString() {
         return name + " (" + ticker + ") Sector: " + sector + " Price: " + price + " " +
