@@ -27,9 +27,10 @@ public class User {
                 ";" + initialCash + ";" + createdAt + ";" + lastUpdated;
     }
 
+    @Override
     public String toString() {
         return "Name: " + fullName + " userID: " + userID + " Born: " + birthday + " email: " + email +
-                " Started investing: " + createdAt + " Initial investment in dkk: " + initialCash +" Last trade:" + lastUpdated;
+                " Started investing: " + createdAt + " Initial investment : " + String.format("%.2f",initialCash) +" DKK Last updated:" + lastUpdated;
     }
 
 }
