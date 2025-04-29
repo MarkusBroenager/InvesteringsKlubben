@@ -1,6 +1,5 @@
 package Repository;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -10,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Repository {
+public class Repository extends ReadOnlyRepository {
 
     private String file;
-    private Path path;
 
     public Repository(String file) {
+        super(file);
         this.file = file;
-        this.path = Paths.get(file);
     }
 
     public void writeLine(String line) {
@@ -28,19 +26,6 @@ public class Repository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public List<String> readFile() {
-        List<String> getFileAsListOfStrings = new ArrayList<>();
-        try(Scanner reader = new Scanner(path)){
-            while(reader.hasNextLine()){
-                String line = reader.nextLine();
-                getFileAsListOfStrings.add(line);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return getFileAsListOfStrings;
     }
 
 }
