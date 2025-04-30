@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class usersReader {
 
-    public static void readUsers() {
+    public void readUsers() {
 
         try {
         File usersFile = new File("Resources/users.csv");
