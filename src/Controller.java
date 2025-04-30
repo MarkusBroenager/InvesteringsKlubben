@@ -24,6 +24,7 @@ public class Controller {
         System.out.println("Showings transactions for " + userService.getUser(userID));
         for (Transaction t : transactions) {
             System.out.println(t);
+            System.out.println(stockMarketService.getStock(t.getTicker()));
         }
     }
 

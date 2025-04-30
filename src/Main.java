@@ -2,8 +2,6 @@ import Repository.Interfaces.*;
 import Repository.RepositoriesCSV.*;
 import Services.*;
 
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
         UserRepository userRepository = new UserRepositoryCSV("users.csv");
@@ -15,10 +13,7 @@ public class Main {
         TransactionService transactionService = new TransactionService(transactionRepository);
         UserService userService = new UserService(userRepository);
 
-
         Controller controller = new Controller(stockMarketService, transactionService, userService);
         controller.start();
-
-
     }
 }
