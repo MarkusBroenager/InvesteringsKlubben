@@ -1,6 +1,7 @@
 package Services;
 
 import Models.User;
+import Repository.Interfaces.UserRepository;
 import Repository.Repository;
 
 import java.time.LocalDate;
@@ -9,29 +10,24 @@ import java.util.List;
 
 public class UserService {
 
-    private Repository userRepository;
+    private UserRepository userRepository;
 
-    public UserService(Repository userRepository){
+    public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 
     public List<User> getUsers(){
-        List<User> users = new ArrayList<>();
-        List<String> list = userRepository.readFile();
-        list.remove(0);
-        for(String line : list){
-            String[] lineSplit = line.split(";");
-            users.add(new User(Integer.parseInt(lineSplit[0]),lineSplit[1],lineSplit[2],
-                    LocalDateCreator.create(lineSplit[3]),Double.parseDouble(lineSplit[4]),
-                    LocalDateCreator.create(lineSplit[5]), LocalDateCreator.create(lineSplit[6])));
-        }
-        return users;
+        return userRepository.getUsers();
+    }
+
+    public User getUser(int userID){
+        return userRepository.getUserFromUserID(userID);
     }
 
     public boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash){
         User newUser = createNewUser(fullName,email,birthday,initialCash);
         if(newUser!=null){
-            userRepository.writeLine(newUser.addToCSVFile());
+            userRepository.addUser(newUser);
             return true;
         }
         return false;

@@ -8,14 +8,14 @@ public class Stock {
     private String name;
     private String sector;
     private double price;
-    private Currency currency;
+    private String currency;
     private String rating;
     private double dividend;
     private String market;
     private LocalDate lastUpdated;
 
 
-    public Stock(String ticker, String name, String sector,double price,Currency currency,
+    public Stock(String ticker, String name, String sector,double price,String currency,
                  String rating,double dividend,String market,LocalDate lastUpdated) {
         this.name = name;
         this.ticker = ticker;
@@ -32,14 +32,14 @@ public class Stock {
         return ticker;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
     @Override
     public String toString() {
         return name + " (" + ticker + ") Sector: " + sector + " Price: " + price + " " +
-                currency.getBaseCurrency() + " Dividend: " + dividend +"% Exchange: " + market +
+                currency + " Dividend: " + dividend +"% Exchange: " + market +
                 " Rating: " + rating + " Last update: " + lastUpdated;
     }
 }

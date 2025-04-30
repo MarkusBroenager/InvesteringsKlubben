@@ -4,28 +4,30 @@ import java.time.LocalDate;
 
 public class Transaction {
 
-    private Stock stock;
+    private String ticker;
     private double price;
     private int quantity;
     private LocalDate dateOfTransaction;
     private String orderType;
     private int transactionID;
     private int userID;
+    private String currency;
 
 
-    public Transaction(Stock stock, double price, int quantity, LocalDate dateOfTransaction,
-                       String orderType, int transactionID, int userID) {
-        this.stock = stock;
+    public Transaction(int transactionID, int userID, LocalDate dateOfTransaction, String ticker,
+                       double price, String currency, String orderType, int quantity) {
+        this.ticker = ticker;
         this.price = price;
         this.quantity = quantity;
         this.dateOfTransaction = dateOfTransaction;
         this.orderType = orderType;
         this.transactionID = transactionID;
         this.userID = userID;
+        this.currency = currency;
     }
 
-    public Stock getStock() {
-        return stock;
+    public String getTicker() {
+        return ticker;
     }
 
     public int getUserID() {
@@ -50,8 +52,13 @@ public class Transaction {
     }
 
     public String addTransactionToCSVFile() {
-        return transactionID + ";"+userID+";"+dateOfTransaction+";"+stock.getTicker()+";"+price+
-                ";"+stock.getCurrency().getBaseCurrency()+";"+orderType+";"+ quantity;
+        return transactionID + ";" + userID + ";" + dateOfTransaction + ";" + ticker + ";" + price +
+                ";" + currency + ";" + orderType + ";" + quantity;
+    }
+
+    public String toString() {
+        return orderType + " " + quantity + " " + ticker + " For " + getTotalTransactionPrice() +
+                " " + currency + " date: " + dateOfTransaction;
     }
 
 }

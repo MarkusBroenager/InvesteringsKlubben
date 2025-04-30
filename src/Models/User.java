@@ -12,7 +12,8 @@ public class User {
     private LocalDate createdAt;
     private LocalDate lastUpdated;
 
-    public User(int userID, String fullName, String email, LocalDate birthday, double initialCash, LocalDate createdAt, LocalDate lastUpdated) {
+    public User(int userID, String fullName, String email, LocalDate birthday, double initialCash,
+                LocalDate createdAt, LocalDate lastUpdated) {
         this.userID = userID;
         this.fullName = fullName;
         this.email = email;
@@ -20,6 +21,10 @@ public class User {
         this.birthday = birthday;
         this.createdAt = createdAt;
         this.lastUpdated = lastUpdated;
+    }
+
+    public int getUserID() {
+        return userID;
     }
 
     public String addToCSVFile() {
