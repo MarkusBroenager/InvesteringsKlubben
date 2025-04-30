@@ -1,15 +1,42 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        File file = new File("src//users.csv");
+        Path path = Paths.get("src//users.csv");
+        ArrayList<String> users = new ArrayList<>();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+
+        try {
+            BufferedReader reader = Files.newBufferedReader(path);
+            String string = null;
+
+            while ((string = reader.readLine()) != null) {
+                string = string.split(";")[0];
+                System.out.println(string);
+
+                String userID = string.split(";")[0];
+                //String fullName = string.split(";")[1];
+
+                users.add(userID);
+                //users.add(fullName);
+                System.out.println(users);
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+
+
+
+
+
     }
 }
