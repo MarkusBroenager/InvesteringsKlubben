@@ -44,6 +44,6 @@ public class TransactionRepositoryCSV extends Repository implements TransactionR
 
     @Override
     public void addTransaction(Transaction transaction) {
-        super.writeLine(transaction.addTransactionToCSVFile());
+        super.appendLine(transaction.addTransactionToCSVFile());
     }
 }

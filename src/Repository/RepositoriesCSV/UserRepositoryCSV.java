@@ -40,6 +40,6 @@ public class UserRepositoryCSV extends Repository implements UserRepository {
 
     @Override
     public void addUser(User user) {
-        super.writeLine(user.addToCSVFile());
+        super.appendLine(user.addToCSVFile());
     }
 }

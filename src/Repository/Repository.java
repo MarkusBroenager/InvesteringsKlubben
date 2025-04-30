@@ -3,11 +3,6 @@ package Repository;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 public class Repository extends ReadOnlyRepository {
 
@@ -18,7 +13,7 @@ public class Repository extends ReadOnlyRepository {
         this.file = file;
     }
 
-    public void writeLine(String line) {
+    public void appendLine(String line) {
         try (FileOutputStream out = new FileOutputStream(file, true)) {
             try (PrintStream writer = new PrintStream(out)) {
                 writer.append(line+"\n");
