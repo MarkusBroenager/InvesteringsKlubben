@@ -1,27 +1,25 @@
-import Models.User;
-import Repository.Repository;
-import Services.UserService;
+import Models.*;
+import Repository.Interfaces.*;
+import Repository.RepositoriesCSV.*;
+import Services.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Repository repo = new Repository("users.csv");
-        UserService userService = new UserService(repo);
+        UserRepository userRepository = new UserRepositoryCSV("users.csv");
+        StockMarketRepository stockMarketRepository = new StockMarketRepositoryCSV("stockMarket.csv");
+        CurrencyRepository currencyRepository = new CurrencyRepositoryCSV("currency.csv");
+        TransactionRepository transactionRepository = new TransactionRepositoryCSV("transactions.csv");
 
-        printUsers(userService);
-        System.out.println("");
-        userService.addNewUser("Bob Bobby", "bobbobby00@email.com", LocalDate.of(2000, 12, 25), 100000);
-        printUsers(userService);
-    }
+        StockMarketService stockMarketService = new StockMarketService(stockMarketRepository, currencyRepository);
+        TransactionService transactionService = new TransactionService(transactionRepository);
+        UserService userService = new UserService(userRepository);
 
-    public static void printUsers(UserService userService) {
-        List<User> users = userService.getUsers();
 
-        for (User user : users) {
-            System.out.println(user);
-        }
+        Controller controller = new Controller(stockMarketService, transactionService, userService);
+        controller.start();
+
+
     }
 }
