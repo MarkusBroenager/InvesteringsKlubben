@@ -25,32 +25,53 @@ public class Users {
 
     }
 
-    ArrayList<Users> users = new ArrayList<>();
-
     public void transferToArrayList() {
+
+        ArrayList<Users> users = new ArrayList<>();
 
         try {
             File usersFile = new File("Resources/users.csv");
             Scanner scanner = new Scanner(usersFile);
+
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                Scanner lineScanner = new Scanner(line);
-                lineScanner.useDelimiter(";");
+                if (line.contains("user_id")) {
+                    System.out.println();
+                } else {
+                    Scanner lineScanner = new Scanner(line);
+                    lineScanner.useDelimiter(";");
 
-                int userID = Integer.parseInt(lineScanner.next());
-                String fullName = lineScanner.next();
-                String email = lineScanner.next();
-                String birthDate = lineScanner.next();
-                double initialCashDKK = Double.parseDouble(lineScanner.next());
-                String createdAt = lineScanner.next();
-                String lastUpdated = lineScanner.next();
-                users.add(new Users(userID, fullName, email, birthDate, initialCashDKK, createdAt, lastUpdated));
-                lineScanner.close();
+                    int userID = Integer.parseInt(lineScanner.next());
+                    String fullName = lineScanner.next();
+                    String email = lineScanner.next();
+                    String birthDate = lineScanner.next();
+                    double initialCashDKK = Double.parseDouble(lineScanner.next());
+                    String createdAt = lineScanner.next();
+                    String lastUpdated = lineScanner.next();
+                    users.add(new Users(userID, fullName, email, birthDate, initialCashDKK, createdAt, lastUpdated));
+                    lineScanner.close();
+                }
+
             }
+
             scanner.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("Reading of file failed. File could not be found.");
         }
     }
+
+    public String toString() {
+        return userID + "  " + fullName + "  " + email + "  " + birthDate + "  " + initialCashDKK + "  " +
+                createdAt + "  " + lastUpdated;
+    }
+
+    /*int i;
+
+        for (i = 0; i < users.size(); i++) {
+            System.out.println(users.get(i).toString());
+        }
+*/
+
+
 }
