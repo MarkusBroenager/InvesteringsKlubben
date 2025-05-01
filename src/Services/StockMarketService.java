@@ -4,9 +4,7 @@ import Models.Currency;
 import Models.Stock;
 import Repository.Interfaces.CurrencyRepository;
 import Repository.Interfaces.StockMarketRepository;
-import Repository.ReadOnlyRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StockMarketService {

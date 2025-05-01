@@ -2,10 +2,8 @@ package Services;
 
 import Models.User;
 import Repository.Interfaces.UserRepository;
-import Repository.Repository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
