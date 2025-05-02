@@ -12,6 +12,7 @@ public class Users {
     private double initialCashDKK;
     private String createdAt;
     private String lastUpdated;
+    private ArrayList<Users> arrayList;
 
     public Users(int userID, String fullName, String email, String birthDate, double initialCashDKK,
                  String createdAt, String lastUpdated) {
@@ -25,9 +26,12 @@ public class Users {
 
     }
 
-    public void transferToArrayList() {
+    public Users() {
+        arrayList = new ArrayList<>();
+    }
 
-        ArrayList<Users> users = new ArrayList<>();
+    public static void loadUsersData(ArrayList<Users> list) {
+
 
         try {
             File usersFile = new File("Resources/users.csv");
@@ -48,7 +52,7 @@ public class Users {
                     double initialCashDKK = Double.parseDouble(lineScanner.next());
                     String createdAt = lineScanner.next();
                     String lastUpdated = lineScanner.next();
-                    users.add(new Users(userID, fullName, email, birthDate, initialCashDKK, createdAt, lastUpdated));
+                    list.add(new Users(userID, fullName, email, birthDate, initialCashDKK, createdAt, lastUpdated));
                     lineScanner.close();
                 }
 
@@ -61,11 +65,6 @@ public class Users {
         }
     }
 
-    public String toString() {
-        return userID + "  " + fullName + "  " + email + "  " + birthDate + "  " + initialCashDKK + "  " +
-                createdAt + "  " + lastUpdated;
-    }
-
     /*int i;
 
         for (i = 0; i < users.size(); i++) {
@@ -73,5 +72,44 @@ public class Users {
         }
 */
 
+    public String toString() {
+        return userID + "  " + fullName + "  " + email + "  " + birthDate + "  " + initialCashDKK + "  " +
+                createdAt + "  " + lastUpdated;
+    }
 
+    public static void createUser(ArrayList<Users> list) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Indtast userid (helt tal) :");
+        int userID = scanner.nextInt();
+        System.out.println("Indtast fullname:");
+        scanner.nextLine();
+        String fullName = scanner.nextLine();
+        System.out.println("Indtast email");
+        String email = scanner.nextLine();
+        System.out.println("Indtast fødselsdag:");
+        String birthDate = scanner.nextLine();
+        System.out.println("Indtast startbeløb:");
+        double initialCashDKK = scanner.nextDouble();
+        System.out.println("Indtast dato for oprettelse:");
+        scanner.nextLine();
+        String createdAt = scanner.nextLine();
+        System.out.println("Indtast dato for sidste opdatering:");
+        String lastUpdated = scanner.nextLine();
+
+        Users bruger = new Users(userID, fullName, email, birthDate, initialCashDKK, createdAt, lastUpdated);
+        list.add(bruger);
+    }
+
+    public static void showListOfUsers(ArrayList<Users> list) {
+
+        int i;
+
+        for (i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).toString());
+        }
+
+
+    }
 }
