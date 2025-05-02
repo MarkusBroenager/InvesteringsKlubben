@@ -1,8 +1,10 @@
-package Models;
+package Models.Model;
+
+import Models.Interfaces.Users;
 
 import java.time.LocalDate;
 
-public class User {
+public class User implements Users {
 
     private int userID;
     private String fullName;

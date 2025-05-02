@@ -1,7 +1,7 @@
 package Services.Interfaces;
 
-import Models.Currency;
-import Models.Stock;
+import Models.Model.Currency;
+import Models.Model.Stock;
 
 import java.util.List;
 

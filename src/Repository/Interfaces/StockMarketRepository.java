@@ -1,6 +1,6 @@
 package Repository.Interfaces;
 
-import Models.Stock;
+import Models.Model.Stock;
 
 import java.util.List;
 

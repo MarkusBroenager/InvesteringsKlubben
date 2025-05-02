@@ -1,6 +1,6 @@
 package Repository.Interfaces;
 
-import Models.Transaction;
+import Models.Model.Transaction;
 
 import java.util.List;
 

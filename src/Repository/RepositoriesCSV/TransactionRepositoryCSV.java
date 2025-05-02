@@ -1,6 +1,6 @@
 package Repository.RepositoriesCSV;
 
-import Models.Transaction;
+import Models.Model.Transaction;
 import Repository.Interfaces.TransactionRepository;
 import Services.ServicesCSV.DataServices;
 

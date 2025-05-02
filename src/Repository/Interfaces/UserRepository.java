@@ -1,6 +1,6 @@
 package Repository.Interfaces;
 
-import Models.User;
+import Models.Model.User;
 
 import java.util.List;
 

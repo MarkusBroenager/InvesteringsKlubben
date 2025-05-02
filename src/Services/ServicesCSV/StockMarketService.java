@@ -1,7 +1,7 @@
 package Services.ServicesCSV;
 
-import Models.Currency;
-import Models.Stock;
+import Models.Model.Currency;
+import Models.Model.Stock;
 import Repository.Interfaces.CurrencyRepository;
 import Repository.Interfaces.StockMarketRepository;
 import Services.Interfaces.StockMarketServices;

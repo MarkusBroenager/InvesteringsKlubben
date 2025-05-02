@@ -1,8 +1,10 @@
-package Models;
+package Models.Model;
+
+import Models.Interfaces.Currencies;
 
 import java.time.LocalDate;
 
-public class Currency {
+public class Currency implements Currencies {
 
     private String baseCurrency;
     private String quoteCurrency;
@@ -18,6 +20,10 @@ public class Currency {
 
     public String getBaseCurrency() {
         return baseCurrency;
+    }
+
+    public String getQuoteCurrency() {
+        return quoteCurrency;
     }
 
     public double getRate() {

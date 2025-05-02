@@ -1,6 +1,6 @@
 package Services.Interfaces;
 
-import Models.Transaction;
+import Models.Model.Transaction;
 
 import java.time.LocalDate;
 import java.util.List;

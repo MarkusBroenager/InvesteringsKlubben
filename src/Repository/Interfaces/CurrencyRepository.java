@@ -1,6 +1,6 @@
 package Repository.Interfaces;
 
-import Models.Currency;
+import Models.Model.Currency;
 
 import java.util.List;
 

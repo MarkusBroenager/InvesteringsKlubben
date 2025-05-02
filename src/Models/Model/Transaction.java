@@ -1,8 +1,10 @@
-package Models;
+package Models.Model;
+
+import Models.Interfaces.Transactions;
 
 import java.time.LocalDate;
 
-public class Transaction {
+public class Transaction implements Transactions {
 
     private String ticker;
     private double price;

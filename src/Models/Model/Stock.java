@@ -1,8 +1,10 @@
-package Models;
+package Models.Model;
+
+import Models.Interfaces.Stocks;
 
 import java.time.LocalDate;
 
-public class Stock {
+public class Stock implements Stocks {
 
     private String ticker;
     private String name;

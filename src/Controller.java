@@ -1,4 +1,4 @@
-import Models.Transaction;
+import Models.Model.Transaction;
 import Services.ServicesCSV.*;
 
 import java.util.List;

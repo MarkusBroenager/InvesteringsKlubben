@@ -1,6 +1,6 @@
 package Services.Interfaces;
 
-import Models.User;
+import Models.Model.User;
 
 import java.time.LocalDate;
 import java.util.List;
