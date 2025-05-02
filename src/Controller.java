@@ -23,7 +23,7 @@ public class Controller {
     }
 
     public void start() {
-        List<String> portfolio = portfolioService.getPortfolio(5).getPortfolioInformation();
+        List<String> portfolio = portfolioService.getPortfolio(1).getPortfolioInformation();
         List<String> portfolio2 = portfolioService.getCombinedUserPortfolio().getPortfolioInformation();
 
         for(String s : portfolio){

@@ -48,7 +48,9 @@ public class Portfolio implements Portfolios {
                 "\nCurrent liquid cash: " + liquidCash + " " + holdings.get(0).getCurrency().getBaseCurrency() +
                 "\nCurrent portfolio value: " + getPortfolioValueInDKK() + holdings.get(0).getCurrency().getBaseCurrency());
         for (Holding holding : holdings) {
-            portfolio.add(holding.toString());
+            if (holding.getQuantity() != 0) {
+                portfolio.add(holding.toString());
+            }
         }
         return portfolio;
     }
