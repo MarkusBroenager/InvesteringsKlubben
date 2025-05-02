@@ -16,6 +16,10 @@ public interface Transactions {
 
     public int getTransactionID();
 
+    public int getQuantity();
+
+    public String getCurrency();
+
     public String addTransactionToCSVFile();
 
     public String toString();

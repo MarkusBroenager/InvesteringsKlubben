@@ -12,6 +12,8 @@ public interface Stocks {
 
     public String getCurrency();
 
+    public double getPrice();
+
     @Override
     public String toString();
 

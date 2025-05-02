@@ -30,24 +30,34 @@ public class Stock implements Stocks {
         this.lastUpdated = lastUpdated;
     }
 
+    @Override
     public String getTicker() {
         return ticker;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getSector() {
         return sector;
     }
 
+    @Override
     public String getMarket() {
         return market;
     }
 
+    @Override
     public String getCurrency() {
         return currency;
+    }
+
+    @Override
+    public double getPrice() {
+        return price;
     }
 
     @Override

@@ -53,6 +53,14 @@ public class Transaction implements Transactions {
         return transactionID;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getCurrency(){
+        return currency;
+    }
+
     public String addTransactionToCSVFile() {
         return transactionID + ";" + userID + ";" + dateOfTransaction + ";" + ticker + ";" + price +
                 ";" + currency + ";" + orderType + ";" + quantity;
