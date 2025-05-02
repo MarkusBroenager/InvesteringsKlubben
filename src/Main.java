@@ -1,5 +1,9 @@
 import Repository.Interfaces.*;
 import Repository.RepositoriesCSV.*;
+import Services.Interfaces.PortfolioServices;
+import Services.Interfaces.StockMarketServices;
+import Services.Interfaces.TransactionServices;
+import Services.Interfaces.UserServices;
 import Services.ServicesCSV.*;
 
 public class Main {
@@ -9,11 +13,13 @@ public class Main {
         CurrencyRepository currencyRepository = new CurrencyRepositoryCSV("currency.csv");
         TransactionRepository transactionRepository = new TransactionRepositoryCSV("transactions.csv");
 
-        StockMarketService stockMarketService = new StockMarketService(stockMarketRepository, currencyRepository);
-        TransactionService transactionService = new TransactionService(transactionRepository);
-        UserService userService = new UserService(userRepository);
+        StockMarketServices stockMarketService = new StockMarketService(stockMarketRepository, currencyRepository);
+        TransactionServices transactionService = new TransactionService(transactionRepository);
+        UserServices userService = new UserService(userRepository);
+        PortfolioServices portfolioServices = new PortfolioService(currencyRepository, stockMarketRepository,
+                transactionRepository,userRepository);
 
-        Controller controller = new Controller(stockMarketService, transactionService, userService);
+        Controller controller = new Controller(stockMarketService, transactionService, userService,portfolioServices);
         controller.start();
     }
 }
