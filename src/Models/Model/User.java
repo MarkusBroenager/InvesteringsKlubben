@@ -32,7 +32,7 @@ public class User implements Users {
 
     @Override
     public double getInitialCash() {
-        return 0;
+        return initialCash;
     }
 
     @Override
