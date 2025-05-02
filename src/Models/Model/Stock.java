@@ -34,6 +34,18 @@ public class Stock implements Stocks {
         return ticker;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getSector() {
+        return sector;
+    }
+
+    public String getMarket() {
+        return market;
+    }
+
     public String getCurrency() {
         return currency;
     }

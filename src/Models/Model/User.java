@@ -25,10 +25,17 @@ public class User implements Users {
         this.lastUpdated = lastUpdated;
     }
 
+    @Override
     public int getUserID() {
         return userID;
     }
 
+    @Override
+    public double getInitialCash() {
+        return 0;
+    }
+
+    @Override
     public String addToCSVFile() {
         return userID + ";" + fullName + ";" + email + ";" + birthday +
                 ";" + initialCash + ";" + createdAt + ";" + lastUpdated;
