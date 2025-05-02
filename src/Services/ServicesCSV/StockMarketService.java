@@ -1,13 +1,14 @@
-package Services;
+package Services.ServicesCSV;
 
 import Models.Currency;
 import Models.Stock;
 import Repository.Interfaces.CurrencyRepository;
 import Repository.Interfaces.StockMarketRepository;
+import Services.Interfaces.StockMarketServices;
 
 import java.util.List;
 
-public class StockMarketService {
+public class StockMarketService implements StockMarketServices {
 
     private StockMarketRepository stockMarketRepository;
     private CurrencyRepository currencyRepository;
@@ -21,10 +22,6 @@ public class StockMarketService {
         return stockMarketRepository.getStockList();
     }
 
-    public Currency getCurrency(String currency) {
-        return currencyRepository.getCurrencyFromBaseCurrency(currency);
-    }
-
     public Stock getStock(String ticker){
         return stockMarketRepository.getStockFromTicker(ticker);
     }
@@ -32,6 +29,12 @@ public class StockMarketService {
     public List<Currency> getCurrencyList() {
         return currencyRepository.getListOfCurrencies();
     }
+
+    public Currency getCurrency(String currency) {
+        return currencyRepository.getCurrencyFromBaseCurrency(currency);
+    }
+
+
 
 
 }

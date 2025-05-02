@@ -1,12 +1,13 @@
-package Services;
+package Services.ServicesCSV;
 
 import Models.User;
 import Repository.Interfaces.UserRepository;
+import Services.Interfaces.UserServices;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class UserService {
+public class UserService implements UserServices {
 
     private UserRepository userRepository;
 

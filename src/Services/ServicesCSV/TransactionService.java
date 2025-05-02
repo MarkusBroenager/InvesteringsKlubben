@@ -1,14 +1,13 @@
-package Services;
+package Services.ServicesCSV;
 
 import Models.Transaction;
-import Repository.*;
-import Repository.Interfaces.StockMarketRepository;
 import Repository.Interfaces.TransactionRepository;
+import Services.Interfaces.TransactionServices;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class TransactionService {
+public class TransactionService implements TransactionServices {
 
     private TransactionRepository transactionRepository;
 
@@ -18,7 +17,8 @@ public class TransactionService {
 
     public boolean addNewTransaction(int userID, LocalDate dateOfTransaction, String ticker,
                                      double price, String currency, String orderType, int quantity) {
-        Transaction newTransaction = createNewTransaction(userID,dateOfTransaction,ticker,price,currency,orderType,quantity);
+        Transaction newTransaction = createNewTransaction(userID,dateOfTransaction,ticker,
+                price,currency,orderType,quantity);
         if (newTransaction != null) {
             transactionRepository.addTransaction(newTransaction);
             return true;
