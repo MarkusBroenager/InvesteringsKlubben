@@ -1,3 +1,5 @@
+package ServiceLayer;
+
 public class Controller {
 
     UserService userService;
@@ -5,7 +7,7 @@ public class Controller {
         this.userService = u;
     }
 
-    public void showFrontPage(){
-        userService.showFrontPage();
+    public void startUserProgram(){
+        userService.startProgram();
     }
 }

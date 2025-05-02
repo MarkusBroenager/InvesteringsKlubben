@@ -1,9 +1,11 @@
+package PersistenceLayer;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Users {
+public class User {
 
     private int userID;
     private String fullName;
@@ -13,7 +15,7 @@ public class Users {
     private String createdAt;
     private String lastUpdated;
 
-    public Users(int userID, String fullName, String email, String birthDate, double initialCashDKK,
+    public User(int userID, String fullName, String email, String birthDate, double initialCashDKK,
                  String createdAt, String lastUpdated) {
         this.userID = userID;
         this.fullName = fullName;
@@ -25,7 +27,21 @@ public class Users {
 
     }
 
-    ArrayList<Users> users = new ArrayList<>();
+    ArrayList<User> users = new ArrayList<>();
+
+    public User(String[] tokens) {
+        try{
+            this.userID = Integer.parseInt(tokens[0]);
+            this.fullName = tokens[1];
+            this.email = tokens[2];
+            this.birthDate = tokens[3];
+            this.initialCashDKK = Double.parseDouble(tokens[4]);
+            this.createdAt = tokens[5];
+            this.lastUpdated = tokens[6];
+        }catch (NumberFormatException e){
+            System.out.println("Could not parse number in users.csv");
+        }
+    }
 
     public void transferToArrayList() {
 
@@ -44,7 +60,7 @@ public class Users {
                 double initialCashDKK = Double.parseDouble(lineScanner.next());
                 String createdAt = lineScanner.next();
                 String lastUpdated = lineScanner.next();
-                users.add(new Users(userID, fullName, email, birthDate, initialCashDKK, createdAt, lastUpdated));
+                users.add(new User(userID, fullName, email, birthDate, initialCashDKK, createdAt, lastUpdated));
                 lineScanner.close();
             }
             scanner.close();

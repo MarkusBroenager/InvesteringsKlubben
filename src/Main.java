@@ -1,11 +1,16 @@
+import PersistenceLayer.*;
+import PresentationLayer.*;
+import ServiceLayer.*;
+
 public class Main {
 
     public static void main(String[] args) {
         //repository layer
-        usersReader usersReader = new usersReader();
+        Repository repository = new Repository();
+        usersReader usersReader = new usersReader(repository);
         //Buisness and logic layer
         UserService userService = new UserService(usersReader);
-        //TransactionService transactionService = new TransactionService(transactionsReader);
+        //ServiceLayer.TransactionService transactionService = new ServiceLayer.TransactionService(PersistenceLayer.transactionsReader);
 
         //COntroller layer
         Controller controller = new Controller(userService);
