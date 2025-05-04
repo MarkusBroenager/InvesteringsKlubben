@@ -1,5 +1,9 @@
+package Service;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -43,7 +47,7 @@ public class Users {
                     System.out.println();
                 } else {
                     Scanner lineScanner = new Scanner(line);
-                    lineScanner.useDelimiter(";");
+                    lineScanner.useDelimiter("  ");
 
                     int userID = Integer.parseInt(lineScanner.next());
                     String fullName = lineScanner.next();
@@ -110,6 +114,41 @@ public class Users {
             System.out.println(list.get(i).toString());
         }
 
-
     }
-}
+
+    public static void saveUsersData(ArrayList<Users> list) {
+
+        /*int i;
+
+        for (i = 0; i < list.size(); i++) {
+            String convertion = String.valueOf(list.get(i));*/
+
+        String firstLine = "user_id full_name email birth_date initial_cash_DKK created_at last_updated";
+
+                try {
+                    PrintStream delete = new PrintStream("Resources/users.csv");
+                    delete.println(firstLine);
+                    delete.close();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+
+        int i;
+
+        for (i = 0; i < list.size(); i++) {
+            String convertion = String.valueOf(list.get(i));
+            convertion.replaceAll(" ", ";");
+
+        try {
+            PrintStream save = new PrintStream(new FileOutputStream("Resources/users.csv",
+                    true));
+            save.println(convertion);
+            save.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        }
+
+        }
+    }
+
