@@ -4,24 +4,24 @@ import java.time.LocalDate;
 
 public interface Transactions {
 
-    public String getTicker();
+    String getTicker();
 
-    public int getUserID();
+    int getUserID();
 
-    public String getOrderType();
+    String getOrderType();
 
-    public double getTotalTransactionPrice();
+    double getTotalTransactionPrice();
 
-    public LocalDate getDateOfTransaction();
+    LocalDate getDateOfTransaction();
 
-    public int getTransactionID();
+    int getTransactionID();
 
-    public int getQuantity();
+    int getQuantity();
 
-    public String getCurrency();
+    String getCurrency();
 
-    public String addTransactionToCSVFile();
+    String addTransactionToCSVFile();
 
-    public String toString();
+    String toString();
 
 }

@@ -2,19 +2,19 @@ package Models.Interfaces;
 
 public interface Stocks {
 
-    public String getTicker();
+    String getTicker();
 
-    public String getName();
+    String getName();
 
-    public String getSector();
+    String getSector();
 
-    public String getMarket();
+    String getMarket();
 
-    public String getCurrency();
+    String getCurrency();
 
-    public double getPrice();
+    double getPrice();
 
     @Override
-    public String toString();
+    String toString();
 
 }

@@ -2,11 +2,11 @@ package Models.Interfaces;
 
 public interface Currencies {
 
-    public String getBaseCurrency();
+    String getBaseCurrency();
 
-    public String getQuoteCurrency();
+    String getQuoteCurrency();
 
-    public double getRate();
+    double getRate();
 
-    public String toString();
+    String toString();
 }

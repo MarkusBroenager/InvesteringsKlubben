@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface UserRepository {
 
-    public List<User> getUsers();
-    public User getUserFromUserID(int userID);
-    public void addUser(User user);
+    List<User> getUsers();
+
+    User getUserFromUserID(int userID);
+
+    void addUser(User user);
 }

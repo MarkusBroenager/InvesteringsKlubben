@@ -1,20 +1,18 @@
 package Models.Interfaces;
 
-import Models.Model.Holding;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public interface Portfolios {
 
-    public double getLiquidCash();
+    double getLiquidCash();
 
-    public double getPortfolioValueInDKK();
+    double getPortfolioValueInDKK();
 
-    public double getProfitOrLossInDKK();
+    double getProfitOrLossInDKK();
 
-    public double getProfitOrLossInPercentage();
+    double getProfitOrLossInPercentage();
 
-    public List<String> getPortfolioInformation();
+    List<String> getPortfolioInformation();
+
+    double getPercentageOfSector(String sector);
 }

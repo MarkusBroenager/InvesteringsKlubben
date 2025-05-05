@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface UserServices {
 
-    public List<User> getUsers();
+    List<User> getUsers();
 
-    public User getUser(int userID);
+    User getUser(int userID);
 
-    public boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash);
+    boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash);
 
 }

@@ -6,11 +6,11 @@ import Models.Model.Stock;
 import java.util.List;
 
 public interface StockMarketServices {
-    public List<Stock> getStocks();
+    List<Stock> getStocks();
 
-    public Stock getStock(String ticker);
+    Stock getStock(String ticker);
 
-    public List<Currency> getCurrencyList();
+    List<Currency> getCurrencyList();
 
-    public Currency getCurrency(String currency);
+    Currency getCurrency(String currency);
 }

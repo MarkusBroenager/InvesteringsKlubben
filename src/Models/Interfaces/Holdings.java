@@ -4,13 +4,13 @@ import Models.Model.Currency;
 
 public interface Holdings {
 
-    public double getValueOfHoldingInDKK();
+    double getValueOfHoldingInQuoteCurrency();
 
-    public String getTicker();
+    String getTicker();
 
-    public int getQuantity();
+    int getQuantity();
 
-    public double getAmountSpent();
+    String getSector();
 
-    public Currency getCurrency();
+    Currency getCurrency();
 }

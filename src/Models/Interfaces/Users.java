@@ -1,12 +1,12 @@
 package Models.Interfaces;
 
 public interface Users {
-    public int getUserID();
+    int getUserID();
 
-    public double getInitialCash();
+    double getInitialCash();
 
-    public String addToCSVFile();
+    String addToCSVFile();
 
     @Override
-    public String toString();
+    String toString();
 }
