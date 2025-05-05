@@ -39,20 +39,40 @@ public class Portfolio implements Portfolios {
 
     @Override
     public double getProfitOrLossInPercentage() {
-        return (liquidCash - initialValue) / (initialValue) * 100;
+        return (getPortfolioValueInDKK() - initialValue) / (initialValue) * 100;
     }
 
+    @Override
+    public double getPercentageOfSector(String sector) {
+        double sectorInvestment = 0;
+        for (Holding holding : holdings) {
+            if (holding.getSector().equalsIgnoreCase(sector)) {
+                sectorInvestment += holding.getValueOfHoldingInDKK();
+            }
+        }
+        return getPercentageOfPortfolio(sectorInvestment);
+    }
+
+    @Override
     public List<String> getPortfolioInformation() {
         List<String> portfolio = new ArrayList<>();
-        portfolio.add("Started with: " + initialValue + holdings.get(0).getCurrency().getBaseCurrency() +
-                "\nCurrent liquid cash: " + liquidCash + " " + holdings.get(0).getCurrency().getBaseCurrency() +
-                "\nCurrent portfolio value: " + getPortfolioValueInDKK() + holdings.get(0).getCurrency().getBaseCurrency());
+        portfolio.add("Started with: " + String.format("%.2f", initialValue) + " DKK" +
+                "\nCurrent liquid cash: " + String.format("%.2f", liquidCash) + " DKK" +
+                "\nCurrent portfolio value: " + String.format("%.2f", getPortfolioValueInDKK()) + " DKK" +
+                "\nP&L in DKK: " + String.format("%.2f", getProfitOrLossInDKK()) + " P&L in percentage: " +
+                String.format("%.2f", getProfitOrLossInPercentage()) + "%");
         for (Holding holding : holdings) {
             if (holding.getQuantity() != 0) {
-                portfolio.add(holding.toString());
+                portfolio.add(holding + " " +
+                        String.format("%.2f", getPercentageOfPortfolio(holding.getValueOfHoldingInDKK())) +
+                        "% of total portfolio value");
             }
         }
         return portfolio;
+    }
+
+    private double getPercentageOfPortfolio(double value) {
+        return ((value - getPortfolioValueInDKK()) / (getPortfolioValueInDKK()) * 100) + 100;
     }
 
 }
