@@ -1,6 +1,7 @@
 import Comparators.*;
 import Models.Interfaces.*;
 import Models.Model.*;
+import Models.Model.PortfolioDKK;
 import Services.Interfaces.*;
 import Services.ServicesCSV.DataServices;
 
@@ -95,7 +96,8 @@ public class Controller {
     private void leaderUI() {
         boolean isRunning = true;
         while (isRunning) {
-            System.out.println("0 - Exit, 1 - View combined portfolio, 2 - View P&L for all portfolios");
+            System.out.println("0 - Exit, 1 - View combined portfolio, 2 - View P&L for all portfolios," +
+                    " 3 - View sector distribution");
             int userChoice = getUserChoice(4);
             switch (userChoice) {
                 case 1:
@@ -111,6 +113,7 @@ public class Controller {
                     }
                     break;
                 case 3:
+                    viewSectorDistribution();
                     break;
                 case 4:
                     System.out.println("e");
@@ -153,7 +156,7 @@ public class Controller {
     }
 
     private void viewPortfolio(int memberID) {
-        Portfolio portfolio = portfolioService.getPortfolio(memberID);
+        PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
         printPortfolio(portfolio);
     }
 
@@ -169,7 +172,7 @@ public class Controller {
     }
 
     private void viewCombinedPortfolio() {
-        Portfolio portfolio = portfolioService.getCombinedUserPortfolio();
+        PortfolioDKK portfolio = portfolioService.getCombinedUserPortfolio();
         printPortfolio(portfolio);
     }
 
@@ -180,13 +183,19 @@ public class Controller {
     }
 
     private void viewProfitAndLossSortedPortfolios(Comparator comparator) {
-        List<Portfolio> portfolios = portfolioService.getAllPortfolios();
+        List<PortfolioDKK> portfolios = portfolioService.getAllPortfolios();
         Collections.sort(portfolios, comparator);
         for (Portfolios p : portfolios) {
             for (String s : p.getPortfolioInformation()) {
                 System.out.println(s);
             }
             System.out.println();
+        }
+    }
+
+    private void viewSectorDistribution(){
+        for(String s : portfolioService.getCombinedInvestmentPerSector(portfolioService.getCombinedUserPortfolio())){
+            System.out.println(s);
         }
     }
 

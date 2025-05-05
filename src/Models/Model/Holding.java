@@ -20,6 +20,11 @@ public class Holding implements Holdings {
     }
 
     @Override
+    public double getStockInDKK() {
+        return stock.getPrice() * currency.getRate();
+    }
+
+    @Override
     public String getTicker() {
         return stock.getTicker();
     }
@@ -41,8 +46,8 @@ public class Holding implements Holdings {
 
 
     public String toString() {
-        return stock.getTicker() + " " + stock.getName() + " " + String.format("%.2f", stock.getPrice()) + " " +
-                currency.getBaseCurrency() + " Amount: " + quantity + " Total value: " +
-                String.format("%.2f", getValueOfHoldingInDKK()) + " " + currency.getBaseCurrency();
+        return stock.getTicker() + " " + stock.getName() + " " + String.format("%.2f", getStockInDKK()) +
+                " DKK Amount: " + quantity + " Total value: " +
+                String.format("%.2f", getValueOfHoldingInDKK()) + " DKK";
     }
 }

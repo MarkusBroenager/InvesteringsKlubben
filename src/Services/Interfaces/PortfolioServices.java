@@ -1,18 +1,18 @@
 package Services.Interfaces;
 
-import Models.Model.Portfolio;
+import Models.Model.PortfolioDKK;
 
 import java.util.List;
 
 public interface PortfolioServices {
 
-    Portfolio getPortfolio(int userID);
+    PortfolioDKK getPortfolio(int userID);
 
-    Portfolio getCombinedUserPortfolio();
+    PortfolioDKK getCombinedUserPortfolio();
 
-    List<String> getCombinedInvestmentPerSector();
+    List<String> getCombinedInvestmentPerSector(PortfolioDKK portfolio);
 
     List<String> getCombinedInvestmentPerStock();
 
-    List<Portfolio> getAllPortfolios();
+    List<PortfolioDKK> getAllPortfolios();
 }

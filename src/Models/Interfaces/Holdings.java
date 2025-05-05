@@ -6,6 +6,8 @@ public interface Holdings {
 
     double getValueOfHoldingInDKK();
 
+    double getStockInDKK();
+
     String getTicker();
 
     int getQuantity();

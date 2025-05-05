@@ -1,6 +1,8 @@
 package Services.ServicesCSV;
 
+import Comparators.SectorComparator;
 import Models.Model.*;
+import Models.Model.PortfolioDKK;
 import Repository.Interfaces.CurrencyRepository;
 import Repository.Interfaces.StockMarketRepository;
 import Repository.Interfaces.TransactionRepository;
@@ -17,6 +19,7 @@ public class PortfolioService implements PortfolioServices {
     private StockMarketRepository stockMarketRepository;
     private TransactionRepository transactionRepository;
     private UserRepository userRepository;
+    private SectorComparator sectorComparator = new SectorComparator();
 
     public PortfolioService(CurrencyRepository currencyRepository, StockMarketRepository stockMarketRepository,
                             TransactionRepository transactionRepository, UserRepository userRepository) {
@@ -27,13 +30,13 @@ public class PortfolioService implements PortfolioServices {
     }
 
     @Override
-    public Portfolio getPortfolio(int userID) {
+    public PortfolioDKK getPortfolio(int userID) {
         double initialCash = userRepository.getUserFromUserID(userID).getInitialCash();
         return createPortfolio(initialCash, transactionRepository.getAllTransactionsFromUserID(userID));
     }
 
     @Override
-    public Portfolio getCombinedUserPortfolio() {
+    public PortfolioDKK getCombinedUserPortfolio() {
         List<User> users = userRepository.getUsers();
         double combinedCash = 0;
         for (User u : users) {
@@ -43,8 +46,8 @@ public class PortfolioService implements PortfolioServices {
     }
 
     @Override
-    public List<String> getCombinedInvestmentPerSector() {
-        return List.of();
+    public List<String> getCombinedInvestmentPerSector(PortfolioDKK portfolio) {
+        return portfolio.getSectorDistribution();
     }
 
     @Override
@@ -53,15 +56,15 @@ public class PortfolioService implements PortfolioServices {
     }
 
     @Override
-    public List<Portfolio> getAllPortfolios() {
-        List<Portfolio> allPortfolios = new ArrayList<>();
+    public List<PortfolioDKK> getAllPortfolios() {
+        List<PortfolioDKK> allPortfolios = new ArrayList<>();
         for (User user : userRepository.getUsers()) {
             allPortfolios.add(getPortfolio(user.getUserID()));
         }
         return allPortfolios;
     }
 
-    private Portfolio createPortfolio(double initialCash, List<Transaction> transactions) {
+    private PortfolioDKK createPortfolio(double initialCash, List<Transaction> transactions) {
         List<String> tickerAndQuantity = getTickerAndQuantity(transactions);
         List<Holding> holdings = new ArrayList<>();
         for (String line : tickerAndQuantity) {
@@ -70,7 +73,8 @@ public class PortfolioService implements PortfolioServices {
             Currency currency = currencyRepository.getCurrencyFromBaseCurrency(stock.getCurrency());
             holdings.add(new Holding(stock, currency, Integer.parseInt(lineSplit[1])));
         }
-        return new Portfolio(holdings, initialCash, getLiquidCash(transactions, initialCash));
+        holdings.sort(sectorComparator);
+        return new PortfolioDKK(holdings, initialCash, getLiquidCash(transactions, initialCash));
     }
 
     private List<String> getTickerAndQuantity(List<Transaction> transactions) {
