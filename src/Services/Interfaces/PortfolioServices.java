@@ -14,6 +14,5 @@ public interface PortfolioServices {
 
     List<String> getCombinedInvestmentPerStock();
 
-    List<Models.Model.Portfolio> getAllPortfolios();
-
+    List<Portfolio> getAllPortfolios();
 }
