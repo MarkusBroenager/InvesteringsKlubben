@@ -14,12 +14,12 @@ public class Main {
         TransactionRepository transactionRepository = new TransactionRepositoryCSV("transactions.csv");
 
         StockMarketServices stockMarketService = new StockMarketService(stockMarketRepository, currencyRepository);
-        TransactionServices transactionService = new TransactionService(transactionRepository);
+        TransactionServices transactionService = new TransactionService(transactionRepository, currencyRepository);
         UserServices userService = new UserService(userRepository);
         PortfolioServices portfolioServices = new PortfolioService(currencyRepository, stockMarketRepository,
-                transactionRepository,userRepository);
+                transactionRepository, userRepository);
 
-        Controller controller = new Controller(stockMarketService, transactionService, userService,portfolioServices);
+        Controller controller = new Controller(stockMarketService, transactionService, userService, portfolioServices);
         controller.start();
     }
 }
