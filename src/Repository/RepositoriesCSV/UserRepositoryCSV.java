@@ -1,5 +1,6 @@
 package Repository.RepositoriesCSV;
 
+import Models.Interfaces.Users;
 import Models.Model.User;
 import Repository.Interfaces.UserRepository;
 import Services.ServicesCSV.DataServices;
@@ -16,7 +17,7 @@ public class UserRepositoryCSV extends Repository implements UserRepository {
     public List<User> getUsers() {
         List<String> dateCSV = super.readFile();
         List<User> users = new ArrayList<>();
-        dateCSV.remove(0);
+        dateCSV.removeFirst();
         for (String line : dateCSV) {
             String[] lineSplit = line.split(";");
             users.add(new User(Integer.parseInt(lineSplit[0]), lineSplit[1], lineSplit[2],
@@ -38,7 +39,7 @@ public class UserRepositoryCSV extends Repository implements UserRepository {
     }
 
     @Override
-    public void addUser(User user) {
+    public void addUser(Users user) {
         super.appendLine(user.addToCSVFile());
     }
 }

@@ -16,7 +16,7 @@ public class Repository extends ReadOnlyRepository {
     public void appendLine(String line) {
         try (FileOutputStream out = new FileOutputStream(file, true)) {
             try (PrintStream writer = new PrintStream(out)) {
-                writer.append(line+"\n");
+                writer.append(line).append("\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
