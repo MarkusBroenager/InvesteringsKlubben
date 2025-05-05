@@ -4,7 +4,7 @@ import Models.Model.Currency;
 
 public interface Holdings {
 
-    double getValueOfHoldingInQuoteCurrency();
+    double getValueOfHoldingInDKK();
 
     String getTicker();
 
