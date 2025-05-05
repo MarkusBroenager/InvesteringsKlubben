@@ -1,5 +1,6 @@
 package Services.ServicesCSV;
 
+import Models.Interfaces.Users;
 import Models.Model.User;
 import Repository.Interfaces.UserRepository;
 import Services.Interfaces.UserServices;
@@ -24,8 +25,8 @@ public class UserService implements UserServices {
     }
 
     public boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash){
-        User newUser = createNewUser(fullName,email,birthday,initialCash);
-        if(newUser!=null){
+        Users newUser = createNewUser(fullName,email,birthday,initialCash);
+        if(newUser.getInitialCash()>=10000){
             userRepository.addUser(newUser);
             return true;
         }

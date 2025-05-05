@@ -1,14 +1,11 @@
 package Services.ServicesCSV;
 
-import Models.Interfaces.Portfolios;
-import Models.Model.Holding;
 import Models.Model.*;
 import Repository.Interfaces.CurrencyRepository;
 import Repository.Interfaces.StockMarketRepository;
 import Repository.Interfaces.TransactionRepository;
 import Repository.Interfaces.UserRepository;
 import Services.Interfaces.PortfolioServices;
-import Services.Interfaces.TransactionServices;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,19 +27,38 @@ public class PortfolioService implements PortfolioServices {
     }
 
     @Override
-    public Portfolios getPortfolio(int userID) {
+    public Portfolio getPortfolio(int userID) {
         double initialCash = userRepository.getUserFromUserID(userID).getInitialCash();
         return createPortfolio(initialCash, transactionRepository.getAllTransactionsFromUserID(userID));
     }
 
     @Override
-    public Portfolios getCombinedUserPortfolio() {
+    public Portfolio getCombinedUserPortfolio() {
         List<User> users = userRepository.getUsers();
         double combinedCash = 0;
         for (User u : users) {
             combinedCash += u.getInitialCash();
         }
         return createPortfolio(combinedCash, transactionRepository.getAllTransactions());
+    }
+
+    @Override
+    public List<String> getCombinedInvestmentPerSector() {
+        return List.of();
+    }
+
+    @Override
+    public List<String> getCombinedInvestmentPerStock() {
+        return List.of();
+    }
+
+    @Override
+    public List<Portfolio> getAllPortfolios() {
+        List<Portfolio> allPortfolios = new ArrayList<>();
+        for (User user : userRepository.getUsers()) {
+            allPortfolios.add(getPortfolio(user.getUserID()));
+        }
+        return allPortfolios;
     }
 
     private Portfolio createPortfolio(double initialCash, List<Transaction> transactions) {
@@ -54,8 +70,7 @@ public class PortfolioService implements PortfolioServices {
             Currency currency = currencyRepository.getCurrencyFromBaseCurrency(stock.getCurrency());
             holdings.add(new Holding(stock, currency, Integer.parseInt(lineSplit[1])));
         }
-        Portfolio portfolio = new Portfolio(holdings, initialCash, getLiquidCash(transactions,initialCash));
-        return portfolio;
+        return new Portfolio(holdings, initialCash, getLiquidCash(transactions, initialCash));
     }
 
     private List<String> getTickerAndQuantity(List<Transaction> transactions) {
@@ -79,7 +94,7 @@ public class PortfolioService implements PortfolioServices {
         return listOfTickerAndQuantity;
     }
 
-    private double getLiquidCash(List<Transaction> transactions,double initialCash) {
+    private double getLiquidCash(List<Transaction> transactions, double initialCash) {
         double liquidCash = initialCash;
         for (Transaction t : transactions) {
             if (t.getOrderType().equalsIgnoreCase("buy")) {
