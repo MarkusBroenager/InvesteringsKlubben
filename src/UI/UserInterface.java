@@ -1,32 +1,17 @@
-import Comparators.*;
-import Models.Interfaces.*;
-import Models.Model.*;
-import Models.Model.PortfolioDKK;
-import Services.Interfaces.*;
+package UI;
+
+import Controller.Controller;
 import Services.ServicesCSV.DataServices;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Scanner;
 
-public class Controller {
-
-    private StockMarketServices stockMarketService;
-    private TransactionServices transactionService;
-    private UserServices userService;
-    private PortfolioServices portfolioService;
-    private profitAndLossInPercentageComparator percentageComparator = new profitAndLossInPercentageComparator();
-    private profitAndLossInDKKComparator dkkComparator = new profitAndLossInDKKComparator();
+public class UserInterface {
+    private Controller controller;
     private Scanner scanner = new Scanner(System.in);
 
-    public Controller(StockMarketServices stockMarketService, TransactionServices transactionService,
-                      UserServices userService, PortfolioServices portfolioService) {
-        this.stockMarketService = stockMarketService;
-        this.transactionService = transactionService;
-        this.userService = userService;
-        this.portfolioService = portfolioService;
+    public UserInterface(Controller controller) {
+        this.controller = controller;
     }
 
     public void start() {
@@ -66,7 +51,7 @@ public class Controller {
                     viewStockMarket();
                     break;
                 case 2:
-                    viewForexMarket();
+                    controller.viewForexMarket();
                     break;
                 case 3:
                     if (addNewTransaction(memberID)) {
@@ -76,15 +61,16 @@ public class Controller {
                     }
                     break;
                 case 4:
-                    viewPortfolio(memberID);
+                    controller.viewPortfolio(memberID);
                     break;
                 case 5:
-                    viewTransactions(memberID);
+                    controller.viewTransactions(memberID);
                     break;
                 case 6:
+                    System.out.println("Nope");
                     break;
                 case 7:
-                    viewPersonalInformation(memberID);
+                    controller.viewPersonalInformation(memberID);
                     break;
                 default:
                     isRunning = false;
@@ -97,26 +83,42 @@ public class Controller {
         boolean isRunning = true;
         while (isRunning) {
             System.out.println("0 - Exit, 1 - View combined portfolio, 2 - View P&L for all portfolios," +
-                    " 3 - View sector distribution");
+                    " 3 - View sector distribution, 4 - Add new member, 5 - View all members");
             int userChoice = getUserChoice(4);
             switch (userChoice) {
                 case 1:
-                    viewCombinedPortfolio();
+                    controller.viewCombinedPortfolio();
                     break;
                 case 2:
                     System.out.println("0 - Exit, 1 - Sort by percentage, 2 - Sort by DKK");
                     int sortChoice = getUserChoice(2);
                     if (sortChoice == 1) {
-                        viewProfitAndLossSortedPortfolios(percentageComparator);
+                        controller.viewPortfoliosSortedByPercentage();
                     } else if (sortChoice == 2) {
-                        viewProfitAndLossSortedPortfolios(dkkComparator);
+                        controller.viewPortfoliosSortedByDKK();
                     }
                     break;
                 case 3:
-                    viewSectorDistribution();
+                    controller.viewSectorDistribution();
                     break;
                 case 4:
-                    System.out.println("e");
+                    System.out.println("Enter full name: ");
+                    String fullName = getNonEmptyString();
+                    System.out.println("Enter email: ");
+                    String email = getNonEmptyString();
+                    System.out.println("Enter birthday: ");
+                    LocalDate birthday = DataServices.getLocalDate(getNonEmptyString());
+                    System.out.println("Enter initial cash: ");
+                    double initialCash = getUserInputAsDouble();
+                    if (controller.addNewUser(fullName, email, birthday, initialCash)) {
+                        System.out.println("Member added");
+
+                    } else {
+                        System.out.println("Could not add member");
+                    }
+                    break;
+                case 5:
+                    controller.viewAllUSers();
                     break;
                 default:
                     isRunning = false;
@@ -126,14 +128,21 @@ public class Controller {
     }
 
     private void viewStockMarket() {
-        for (Stocks stock : stockMarketService.getStocks()) {
-            System.out.println(stock);
-        }
-    }
-
-    private void viewForexMarket() {
-        for (Currencies currency : stockMarketService.getCurrencyList()) {
-            System.out.println(currency);
+        boolean isRunning = true;
+        while (isRunning) {
+            System.out.println("0 - Exit, 1 - View all prices in DKK, 2 - View in native currency");
+            int userChoice = getUserChoice(3);
+            switch (userChoice) {
+                case 1:
+                    controller.viewStocksInDKK();
+                    break;
+                case 2:
+                    controller.viewStocks();
+                    break;
+                default:
+                    isRunning = false;
+                    break;
+            }
         }
     }
 
@@ -141,7 +150,7 @@ public class Controller {
         //TO_DO methods for only getting acceptable inputs (Enums?)
         System.out.println("Enter date of transaction");
         LocalDate dateOfTransaction = getLocalDate();
-        System.out.println("Enter ordertype (buy/sell)");
+        System.out.println("Enter order type (buy/sell)");
         String orderType = getNonEmptyString();
         System.out.println("Enter ticker");
         String ticker = getNonEmptyString();
@@ -151,52 +160,8 @@ public class Controller {
         double price = getUserInputAsDouble();
         System.out.println("Enter quantity");
         int quantity = getUserChoice(1000000000);
-        return transactionService.addNewTransaction(memberID, dateOfTransaction, ticker, price, currency,
-                orderType, quantity);
-    }
-
-    private void viewPortfolio(int memberID) {
-        PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
-        printPortfolio(portfolio);
-    }
-
-    private void viewTransactions(int memberID) {
-        List<Transaction> transactions = transactionService.getTransactionsForUser(memberID);
-        for (Transaction t : transactions) {
-            System.out.println(t);
-        }
-    }
-
-    private void viewPersonalInformation(int memberID) {
-        System.out.println(userService.getUser(memberID));
-    }
-
-    private void viewCombinedPortfolio() {
-        PortfolioDKK portfolio = portfolioService.getCombinedUserPortfolio();
-        printPortfolio(portfolio);
-    }
-
-    private void printPortfolio(Portfolios portfolio) {
-        for (String s : portfolio.getPortfolioInformation()) {
-            System.out.println(s);
-        }
-    }
-
-    private void viewProfitAndLossSortedPortfolios(Comparator comparator) {
-        List<PortfolioDKK> portfolios = portfolioService.getAllPortfolios();
-        Collections.sort(portfolios, comparator);
-        for (Portfolios p : portfolios) {
-            for (String s : p.getPortfolioInformation()) {
-                System.out.println(s);
-            }
-            System.out.println();
-        }
-    }
-
-    private void viewSectorDistribution(){
-        for(String s : portfolioService.getCombinedInvestmentPerSector(portfolioService.getCombinedUserPortfolio())){
-            System.out.println(s);
-        }
+        return (controller.addNewTransaction(memberID, dateOfTransaction, ticker, price, currency,
+                orderType, quantity));
     }
 
     private int getUserChoice(int choiceUpperBoundary) {
