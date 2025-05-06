@@ -1,3 +1,4 @@
+import Controller.Controller;
 import Repository.Interfaces.*;
 import Repository.RepositoriesCSV.*;
 import Services.Interfaces.PortfolioServices;
@@ -5,6 +6,7 @@ import Services.Interfaces.StockMarketServices;
 import Services.Interfaces.TransactionServices;
 import Services.Interfaces.UserServices;
 import Services.ServicesCSV.*;
+import UI.UserInterface;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,6 +22,7 @@ public class Main {
                 transactionRepository, userRepository);
 
         Controller controller = new Controller(stockMarketService, transactionService, userService, portfolioServices);
-        controller.start();
+        UserInterface ui = new UserInterface(controller);
+        ui.start();
     }
 }
