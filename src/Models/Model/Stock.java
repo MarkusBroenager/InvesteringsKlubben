@@ -17,8 +17,8 @@ public class Stock implements Stocks {
     private LocalDate lastUpdated;
 
 
-    public Stock(String ticker, String name, String sector,double price,String currency,
-                 String rating,double dividend,String market,LocalDate lastUpdated) {
+    public Stock(String ticker, String name, String sector, double price, String currency,
+                 String rating, double dividend, String market, LocalDate lastUpdated) {
         this.name = name;
         this.ticker = ticker;
         this.sector = sector;
@@ -61,9 +61,17 @@ public class Stock implements Stocks {
     }
 
     @Override
+    public void setCurrency(Currency currency) {
+        if (currency.getBaseCurrency().equalsIgnoreCase(this.currency)) {
+            this.price = price * currency.getRate();
+            this.currency = currency.getQuoteCurrency();
+        }
+    }
+
+    @Override
     public String toString() {
-        return name + " (" + ticker + ") Sector: " + sector + " Price: " + price + " " +
-                currency + " Dividend: " + dividend +"% Exchange: " + market +
+        return name + " (" + ticker + ") Sector: " + sector + " Price: " + String.format("%.2f", price) + " " +
+                currency + " Dividend: " + String.format("%.2f", dividend) + "% Exchange: " + market +
                 " Rating: " + rating + " Last update: " + lastUpdated;
     }
 }

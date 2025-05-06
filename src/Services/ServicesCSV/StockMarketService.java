@@ -22,6 +22,15 @@ public class StockMarketService implements StockMarketServices {
         return stockMarketRepository.getStockList();
     }
 
+    @Override
+    public List<Stock> getStocksInDKK() {
+        List<Stock> stocks = getStocks();
+        for(Stock s : stocks){
+            s.setCurrency(getCurrency(s.getCurrency()));
+        }
+        return stocks;
+    }
+
     public Stock getStock(String ticker){
         return stockMarketRepository.getStockFromTicker(ticker);
     }

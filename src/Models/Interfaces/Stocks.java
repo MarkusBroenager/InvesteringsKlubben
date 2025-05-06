@@ -1,5 +1,7 @@
 package Models.Interfaces;
 
+import Models.Model.Currency;
+
 public interface Stocks {
 
     String getTicker();
@@ -13,6 +15,8 @@ public interface Stocks {
     String getCurrency();
 
     double getPrice();
+
+    void setCurrency(Currency currency);
 
     @Override
     String toString();
