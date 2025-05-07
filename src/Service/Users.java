@@ -145,5 +145,23 @@ public class Users {
         }
 
         }
+
+        public static void removeUser(ArrayList<Users> list) {
+
+            System.out.println("Indtast positionen på brugeren -1:");
+
+            Scanner scanner = new Scanner(System.in);
+            int index = scanner.nextInt();
+
+        int i;
+
+            for (i = 0; i < list.size(); i++) {
+                if (index == i) {
+                    list.remove(i);
+                }
+            }
+
+        }
     }
+
 
