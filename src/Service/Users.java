@@ -34,6 +34,14 @@ public class Users {
         arrayList = new ArrayList<>();
     }
 
+    public double getInitialCashDKK() {
+        return this.initialCashDKK;
+    }
+
+    public void setInitialCashDKK(double initialCashDKK) {
+        this.initialCashDKK = initialCashDKK;
+    }
+
     public static void loadUsersData(ArrayList<Users> list) {
 
 
@@ -69,12 +77,15 @@ public class Users {
         }
     }
 
-    /*int i;
+    public static void showListOfUsers(ArrayList<Users> list) {
 
-        for (i = 0; i < users.size(); i++) {
-            System.out.println(users.get(i).toString());
+        int i;
+
+        for (i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).toString());
         }
-*/
+
+    }
 
     public String toString() {
         return userID + "  " + fullName + "  " + email + "  " + birthDate + "  " + initialCashDKK + "  " +
@@ -106,22 +117,7 @@ public class Users {
         list.add(bruger);
     }
 
-    public static void showListOfUsers(ArrayList<Users> list) {
-
-        int i;
-
-        for (i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i).toString());
-        }
-
-    }
-
     public static void saveUsersData(ArrayList<Users> list) {
-
-        /*int i;
-
-        for (i = 0; i < list.size(); i++) {
-            String convertion = String.valueOf(list.get(i));*/
 
         String firstLine = "user_id full_name email birth_date initial_cash_DKK created_at last_updated";
 
@@ -137,9 +133,8 @@ public class Users {
 
         for (i = 0; i < list.size(); i++) {
             String convertion = String.valueOf(list.get(i));
-            convertion.replaceAll(" ", ";");
 
-        try {
+            try {
             PrintStream save = new PrintStream(new FileOutputStream("Resources/users.csv",
                     true));
             save.println(convertion);

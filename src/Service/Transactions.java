@@ -1,0 +1,94 @@
+package Service;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Transactions {
+
+    private int ID;
+    private int userID;
+    private String date;
+    private String ticker;
+    private double price;
+    private String currency;
+    private String orderType;
+    private int quantity;
+    private ArrayList<Transactions> arraylist;
+
+    public Transactions(int ID, int userID, String date, String ticker, double price, String currency,
+                        String orderType, int quantity) {
+        this.ID = ID;
+        this.userID = userID;
+        this.date = date;
+        this.ticker = ticker;
+        this.price = price;
+        this.currency = currency;
+        this.orderType = orderType;
+        this.quantity = quantity;
+    }
+
+    public Transactions() {
+        this.arraylist = new ArrayList<>();
+    }
+
+    public double getPrice() {
+        return this.price;
+    }
+
+    public int getQuantity() {
+        return this.quantity;
+    }
+
+    public static void loadTransactions(ArrayList<Transactions> list) {
+
+        File transactionsFile = new File("Resources/transactions.csv");
+        try {
+            Scanner scanner = new Scanner(transactionsFile);
+
+            while (scanner.hasNextLine()) {
+
+                String line = scanner.nextLine();
+                if (line.contains("user_id")) {
+                    System.out.println();
+                } else {
+                    Scanner lineScanner = new Scanner(line);
+                    lineScanner.useDelimiter(";");
+
+                    int ID = Integer.parseInt(lineScanner.next());
+                    int user_ID = Integer.parseInt(lineScanner.next());
+                    String date = lineScanner.next();
+                    String ticker = lineScanner.next();
+                    double price = Double.parseDouble(lineScanner.next());
+                    String currency = lineScanner.next();
+                    String orderType = lineScanner.next();
+                    int quantity = lineScanner.nextInt();
+
+                    list.add(new Transactions(ID, user_ID, date, ticker, price, currency, orderType,
+                            quantity));
+
+
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public static void showTransactions(ArrayList<Transactions> list) {
+
+        int i;
+
+        for (i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).toString());
+        }
+
+    }
+
+    public String toString() {
+        return ID + "  " + userID + "  " + date + "  " + ticker + "  " + price + "  " + currency + "  " +
+                orderType + "  " + quantity;
+    }
+
+}
