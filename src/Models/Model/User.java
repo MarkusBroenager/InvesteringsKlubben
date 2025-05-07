@@ -4,7 +4,7 @@ import Models.Interfaces.Users;
 
 import java.time.LocalDate;
 
-public class User implements Users {
+public class User implements Users, Comparable<User> {
 
     private int userID;
     private String fullName;
@@ -45,7 +45,11 @@ public class User implements Users {
     public String toString() {
         return "Name: " + fullName + " userID: " + userID + " Born: " + birthday + " email: " +
                 email + " Started investing: " + createdAt + " Initial investment : " +
-                String.format("%.2f",initialCash) +" DKK Last update:" + lastUpdated;
+                String.format("%.2f", initialCash) + " DKK Last update:" + lastUpdated;
     }
 
+    @Override
+    public int compareTo(User o) {
+        return this.userID - o.getUserID();
+    }
 }

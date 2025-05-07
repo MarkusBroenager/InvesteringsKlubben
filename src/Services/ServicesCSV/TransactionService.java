@@ -7,6 +7,7 @@ import Repository.Interfaces.TransactionRepository;
 import Services.Interfaces.TransactionServices;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 public class TransactionService implements TransactionServices {
@@ -38,7 +39,7 @@ public class TransactionService implements TransactionServices {
     }
 
     private Transaction createNewTransaction(int userID, LocalDate dateOfTransaction, String ticker,
-                                              double price, String currency, String orderType, int quantity) {
+                                             double price, String currency, String orderType, int quantity) {
         return new Transaction(getUniqueID(), userID, dateOfTransaction, ticker, price, currency, orderType, quantity);
     }
 
@@ -48,6 +49,8 @@ public class TransactionService implements TransactionServices {
     }
 
     private int getUniqueID() {
-        return 0;
+        List<Transaction> transactions = transactionRepository.getAllTransactions();
+        Collections.sort(transactions);
+        return transactions.getLast().getTransactionID() + 1;
     }
 }

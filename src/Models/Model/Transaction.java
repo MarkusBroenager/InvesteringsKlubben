@@ -3,8 +3,9 @@ package Models.Model;
 import Models.Interfaces.Transactions;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
-public class Transaction implements Transactions {
+public class Transaction implements Transactions, Comparable<Transaction> {
 
     private String ticker;
     private double price;
@@ -71,4 +72,8 @@ public class Transaction implements Transactions {
                 " " + currency + " date: " + dateOfTransaction;
     }
 
+    @Override
+    public int compareTo(Transaction o) {
+        return this.transactionID-o.getTransactionID();
+    }
 }
