@@ -19,7 +19,9 @@ public class CurrencyRepositoryCSV extends ReadOnlyRepository implements Currenc
         list.removeFirst();
         for (String line : list) {
             String[] lineSplit = line.split(";");
-            currencyList.add(new Currency(lineSplit[0], lineSplit[1], DataServices.stringToDouble(lineSplit[2]),
+            currencyList.add(new Currency(lineSplit[0],
+                    lineSplit[1],
+                    DataServices.stringToDouble(lineSplit[2]),
                     DataServices.getLocalDate(lineSplit[3])));
         }
         return currencyList;

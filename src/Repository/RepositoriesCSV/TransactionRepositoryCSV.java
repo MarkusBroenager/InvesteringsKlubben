@@ -18,11 +18,16 @@ public class TransactionRepositoryCSV extends Repository implements TransactionR
         List<Transaction> transactions = new ArrayList<>();
         List<String> list = super.readFile();
         list.removeFirst();
-        for(String line : list){
+        for (String line : list) {
             String[] lineSplit = line.split(";");
-            transactions.add(new Transaction(Integer.parseInt(lineSplit[0]), Integer.parseInt(lineSplit[1]),
-                    DataServices.getLocalDate(lineSplit[2]),lineSplit[3],DataServices.stringToDouble(lineSplit[4]),
-                    lineSplit[5],lineSplit[6],Integer.parseInt(lineSplit[7])));
+            transactions.add(new Transaction(Integer.parseInt(lineSplit[0]),
+                    Integer.parseInt(lineSplit[1]),
+                    DataServices.getLocalDate(lineSplit[2]),
+                    lineSplit[3],
+                    DataServices.stringToDouble(lineSplit[4]),
+                    lineSplit[5],
+                    lineSplit[6],
+                    Integer.parseInt(lineSplit[7])));
         }
 
         return transactions;
@@ -30,11 +35,11 @@ public class TransactionRepositoryCSV extends Repository implements TransactionR
 
     @Override
     public List<Transaction> getAllTransactionsFromUserID(int userID) {
-        List<Transaction> transactions  = getAllTransactions();
+        List<Transaction> transactions = getAllTransactions();
         List<Transaction> userTransactions = new ArrayList<>();
 
-        for(Transaction t : transactions){
-            if(t.getUserID()==userID){
+        for (Transaction t : transactions) {
+            if (t.getUserID() == userID) {
                 userTransactions.add(t);
             }
         }

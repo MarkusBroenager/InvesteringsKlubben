@@ -20,9 +20,13 @@ public class UserRepositoryCSV extends Repository implements UserRepository {
         dateCSV.removeFirst();
         for (String line : dateCSV) {
             String[] lineSplit = line.split(";");
-            users.add(new User(Integer.parseInt(lineSplit[0]), lineSplit[1], lineSplit[2],
-                    DataServices.getLocalDate(lineSplit[3]), DataServices.stringToDouble(lineSplit[4]),
-                    DataServices.getLocalDate(lineSplit[5]), DataServices.getLocalDate(lineSplit[6])));
+            users.add(new User(Integer.parseInt(lineSplit[0]),
+                    lineSplit[1],
+                    lineSplit[2],
+                    DataServices.getLocalDate(lineSplit[3]),
+                    DataServices.stringToDouble(lineSplit[4]),
+                    DataServices.getLocalDate(lineSplit[5]),
+                    DataServices.getLocalDate(lineSplit[6])));
         }
         return users;
     }

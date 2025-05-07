@@ -84,7 +84,7 @@ public class UserInterface {
         while (isRunning) {
             System.out.println("0 - Exit, 1 - View combined portfolio, 2 - View P&L for all portfolios," +
                     " 3 - View sector distribution, 4 - Add new member, 5 - View all members");
-            int userChoice = getUserChoice(4);
+            int userChoice = getUserChoice(5);
             switch (userChoice) {
                 case 1:
                     controller.viewCombinedPortfolio();
@@ -118,7 +118,7 @@ public class UserInterface {
                     }
                     break;
                 case 5:
-                    controller.viewAllUSers();
+                    controller.viewAllUsers();
                     break;
                 default:
                     isRunning = false;
@@ -205,7 +205,7 @@ public class UserInterface {
         String input;
         while (true) {
             input = scanner.nextLine();
-            if (input.isEmpty() || input.contains(":") || input.contains("/")) {
+            if (input.isEmpty() || input.contains(";")) {
                 continue;
             }
             break;

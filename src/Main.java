@@ -1,10 +1,7 @@
 import Controller.Controller;
 import Repository.Interfaces.*;
 import Repository.RepositoriesCSV.*;
-import Services.Interfaces.PortfolioServices;
-import Services.Interfaces.StockMarketServices;
-import Services.Interfaces.TransactionServices;
-import Services.Interfaces.UserServices;
+import Services.Interfaces.*;
 import Services.ServicesCSV.*;
 import UI.UserInterface;
 

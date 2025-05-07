@@ -105,7 +105,7 @@ public void viewStocks(){
         }
     }
 
-    public void viewAllUSers(){
+    public void viewAllUsers(){
         for(User u : userService.getUsers()){
             System.out.println(u);
         }

@@ -19,9 +19,15 @@ public class StockMarketRepositoryCSV extends ReadOnlyRepository implements Stoc
         list.removeFirst();
         for (String line : list) {
             String[] lineSplit = line.split(";");
-            stocks.add(new Stock(lineSplit[0],lineSplit[1],lineSplit[2],DataServices.stringToDouble(lineSplit[3]),
-                    lineSplit[4],lineSplit[5],DataServices.stringToDouble(lineSplit[6]),
-                    lineSplit[7], DataServices.getLocalDate(lineSplit[8])));
+            stocks.add(new Stock(lineSplit[0],
+                    lineSplit[1],
+                    lineSplit[2],
+                    DataServices.stringToDouble(lineSplit[3]),
+                    lineSplit[4],
+                    lineSplit[5],
+                    DataServices.stringToDouble(lineSplit[6]),
+                    lineSplit[7],
+                    DataServices.getLocalDate(lineSplit[8])));
         }
         return stocks;
     }
@@ -29,8 +35,8 @@ public class StockMarketRepositoryCSV extends ReadOnlyRepository implements Stoc
     @Override
     public Stock getStockFromTicker(String ticker) {
         List<Stock> stocks = getStockList();
-        for(Stock s : stocks){
-            if(s.getTicker().equalsIgnoreCase(ticker)){
+        for (Stock s : stocks) {
+            if (s.getTicker().equalsIgnoreCase(ticker)) {
                 return s;
             }
         }
