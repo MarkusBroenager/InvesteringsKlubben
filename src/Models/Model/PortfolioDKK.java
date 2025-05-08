@@ -73,7 +73,7 @@ public class PortfolioDKK implements Portfolios {
         List<String> sectorList = new ArrayList<>();
         String sector = holdings.getFirst().getSector();
         double sectorInvestment = 0;
-        sectorList.add("Total cash: " + String.format("%.2f", getLiquidCash()) + " Percentage of portfolio: " +
+        sectorList.add("Total cash: " + String.format("%.2f", getLiquidCash()) + " DKK Percentage of portfolio: " +
                 String.format("%.2f", getPercentageOfPortfolio(getLiquidCash())) + "%");
         for (Holding holding : holdings) {
             if (sector.equalsIgnoreCase(holding.getSector())) {

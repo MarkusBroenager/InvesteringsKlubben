@@ -1,7 +1,6 @@
 package Controller;
 
-import Comparators.profitAndLossInDKKComparator;
-import Comparators.profitAndLossInPercentageComparator;
+import Comparators.*;
 import Models.Interfaces.*;
 import Models.Model.*;
 import Models.Model.PortfolioDKK;
@@ -17,8 +16,8 @@ public class Controller {
     private TransactionServices transactionService;
     private UserServices userService;
     private PortfolioServices portfolioService;
-    private profitAndLossInPercentageComparator percentageComparator = new profitAndLossInPercentageComparator();
-    private profitAndLossInDKKComparator dkkComparator = new profitAndLossInDKKComparator();
+    private ProfitAndLossInPercentageComparator percentageComparator = new ProfitAndLossInPercentageComparator();
+    private ProfitAndLossInDKKComparator dkkComparator = new ProfitAndLossInDKKComparator();
 
     public Controller(StockMarketServices stockMarketService, TransactionServices transactionService,
                       UserServices userService, PortfolioServices portfolioService) {
