@@ -4,7 +4,7 @@ import Models.Model.PortfolioDKK;
 
 import java.util.Comparator;
 
-public class profitAndLossInPercentageComparator implements Comparator<PortfolioDKK> {
+public class ProfitAndLossInPercentageComparator implements Comparator<PortfolioDKK> {
 
 
     @Override
