@@ -81,5 +81,11 @@ public class controller {
                 }
             }
         }
+
+        if (input1 == 2) {
+            while (programmeIsRunning) {
+                System.out.println("Tast:");
+            }
+        }
     }
 }
