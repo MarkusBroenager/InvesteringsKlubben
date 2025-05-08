@@ -1,18 +1,31 @@
+
+import Controller.Controller;
+import Repository.Interfaces.*;
+import Repository.RepositoriesCSV.*;
+import Services.Interfaces.*;
+import Services.ServicesCSV.*;
+import UI.UserInterface;
+
 public class Main {
 
     public static void main(String[] args) {
-        //repository layer
-        usersReader usersReader = new usersReader();
-        //Buisness and logic layer
-        UserService userService = new UserService(usersReader);
-        //TransactionService transactionService = new TransactionService(transactionsReader);
 
-        //COntroller layer
-        Controller controller = new Controller(userService);
-        //UI layer
-        UserInterfaceHandler UIHandler = new UserInterfaceHandler(controller);
+        UserRepository userRepository = new UserRepositoryCSV("users.csv");
+        StockMarketRepository stockMarketRepository = new StockMarketRepositoryCSV("stockMarket.csv");
+        CurrencyRepository currencyRepository = new CurrencyRepositoryCSV("currency.csv");
+        TransactionRepository transactionRepository = new TransactionRepositoryCSV("transactions.csv");
 
-        UIHandler.startProgram();
+        StockMarketServices stockMarketService = new StockMarketService(stockMarketRepository, currencyRepository);
+        TransactionServices transactionService = new TransactionService(transactionRepository, currencyRepository);
+        UserServices userService = new UserService(userRepository);
+        PortfolioServices portfolioServices = new PortfolioService(currencyRepository, stockMarketRepository,
+                transactionRepository, userRepository);
+
+        Controller controller = new Controller(stockMarketService, transactionService, userService, portfolioServices);
+        UserInterface ui = new UserInterface(controller);
+        ui.start();
+
+
 
 
     }
