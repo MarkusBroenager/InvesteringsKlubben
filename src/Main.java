@@ -1,3 +1,4 @@
+
 import Controller.Controller;
 import Repository.Interfaces.*;
 import Repository.RepositoriesCSV.*;
@@ -6,7 +7,9 @@ import Services.ServicesCSV.*;
 import UI.UserInterface;
 
 public class Main {
+
     public static void main(String[] args) {
+
         UserRepository userRepository = new UserRepositoryCSV("users.csv");
         StockMarketRepository stockMarketRepository = new StockMarketRepositoryCSV("stockMarket.csv");
         CurrencyRepository currencyRepository = new CurrencyRepositoryCSV("currency.csv");
@@ -21,5 +24,9 @@ public class Main {
         Controller controller = new Controller(stockMarketService, transactionService, userService, portfolioServices);
         UserInterface ui = new UserInterface(controller);
         ui.start();
+
+
+
+
     }
 }
