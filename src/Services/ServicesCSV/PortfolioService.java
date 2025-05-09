@@ -77,6 +77,7 @@ public class PortfolioService implements PortfolioServices {
         return new PortfolioDKK(holdings, initialCash, getLiquidCash(transactions, initialCash));
     }
 
+    //Kan getTickerAndQuantity() gøres effektivt.
     private List<String> getTickerAndQuantity(List<Transaction> transactions) {
         List<String> listOfTickerAndQuantity = new ArrayList<>();
         HashMap<String, Integer> tickerAndQuantity = new HashMap<>();
