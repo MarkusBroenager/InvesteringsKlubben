@@ -4,7 +4,6 @@ import Repository.Interfaces.*;
 import Repository.RepositoriesCSV.*;
 import Services.Interfaces.*;
 import Services.ServicesCSV.*;
-import UI.UserInterface;
 
 public class Main {
 
@@ -22,7 +21,6 @@ public class Main {
                 transactionRepository, userRepository);
 
         Controller controller = new Controller(stockMarketService, transactionService, userService, portfolioServices);
-        UserInterface ui = new UserInterface(controller);
-        ui.start();
+        controller.start();
     }
 }
