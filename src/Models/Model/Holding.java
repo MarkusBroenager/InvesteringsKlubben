@@ -2,7 +2,7 @@ package Models.Model;
 
 import Models.Interfaces.Holdings;
 
-public class Holding implements Holdings {
+public class Holding implements Holdings,Comparable<Holding> {
 
     private Stock stock;
     private Currency currency;
@@ -49,5 +49,13 @@ public class Holding implements Holdings {
         return stock.getTicker() + " " + stock.getName() + " " + String.format("%.2f", getStockInDKK()) +
                 " DKK Amount: " + quantity + " Total value: " +
                 String.format("%.2f", getValueOfHoldingInDKK()) + " DKK";
+    }
+
+    @Override
+    public int compareTo(Holding o) {
+        if (this.getSector().compareTo(o.getSector()) == 0) {
+            return this.getTicker().compareTo(o.getTicker());
+        }
+        return this.getSector().compareTo(o.getSector());
     }
 }

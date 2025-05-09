@@ -106,7 +106,7 @@ public class UserInterface {
                     String fullName = getNonEmptyString();
                     System.out.println("Enter email: ");
                     String email = getNonEmptyString();
-                    System.out.println("Enter birthday: ");
+                    System.out.println("Enter birthday(year-month-day): ");
                     LocalDate birthday = DataServices.getLocalDate(getNonEmptyString());
                     System.out.println("Enter initial cash: ");
                     double initialCash = getUserInputAsDouble();
@@ -148,7 +148,7 @@ public class UserInterface {
 
     private boolean addNewTransaction(int memberID) {
         //TO_DO methods for only getting acceptable inputs (Enums?)
-        System.out.println("Enter date of transaction");
+        System.out.println("Enter date of transaction(Year-Month-Day)");
         LocalDate dateOfTransaction = getLocalDate();
         System.out.println("Enter order type (buy/sell)");
         String orderType = getNonEmptyString();
@@ -156,7 +156,7 @@ public class UserInterface {
         String ticker = getNonEmptyString();
         System.out.println("Enter currency");
         String currency = getNonEmptyString();
-        System.out.println("Enter price (for 1 stock)");
+        System.out.println("Enter price (for 1 share)");
         double price = getUserInputAsDouble();
         System.out.println("Enter quantity");
         int quantity = getUserChoice(1000000000);

@@ -1,6 +1,5 @@
 package Services.ServicesCSV;
 
-import Comparators.SectorComparator;
 import Models.Model.*;
 import Models.Model.PortfolioDKK;
 import Repository.Interfaces.CurrencyRepository;
@@ -10,6 +9,7 @@ import Repository.Interfaces.UserRepository;
 import Services.Interfaces.PortfolioServices;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,7 +19,6 @@ public class PortfolioService implements PortfolioServices {
     private StockMarketRepository stockMarketRepository;
     private TransactionRepository transactionRepository;
     private UserRepository userRepository;
-    private SectorComparator sectorComparator = new SectorComparator();
 
     public PortfolioService(CurrencyRepository currencyRepository, StockMarketRepository stockMarketRepository,
                             TransactionRepository transactionRepository, UserRepository userRepository) {
@@ -37,9 +36,8 @@ public class PortfolioService implements PortfolioServices {
 
     @Override
     public PortfolioDKK getCombinedUserPortfolio() {
-        List<User> users = userRepository.getUsers();
         double combinedCash = 0;
-        for (User u : users) {
+        for (User u : userRepository.getUsers()) {
             combinedCash += u.getInitialCash();
         }
         return createPortfolio(combinedCash, transactionRepository.getAllTransactions());
@@ -73,7 +71,7 @@ public class PortfolioService implements PortfolioServices {
             Currency currency = currencyRepository.getCurrencyFromBaseCurrency(stock.getCurrency());
             holdings.add(new Holding(stock, currency, Integer.parseInt(lineSplit[1])));
         }
-        holdings.sort(sectorComparator);
+        Collections.sort(holdings);
         return new PortfolioDKK(holdings, initialCash, getLiquidCash(transactions, initialCash));
     }
 
@@ -88,13 +86,12 @@ public class PortfolioService implements PortfolioServices {
                 tickerAndQuantity.replace(t.getTicker(), tickerAndQuantity.get(t.getTicker()) - t.getQuantity());
             }
         }
-        List<Stock> stocks = stockMarketRepository.getStockList();
-        for (Stock s : stocks) {
-            if (tickerAndQuantity.get(s.getTicker()) != null) {
-                listOfTickerAndQuantity.add(s.getTicker() + ";" +
-                        tickerAndQuantity.get(s.getTicker()));
+        tickerAndQuantity.forEach((k, v) -> {
+            if (tickerAndQuantity.get(k) > 0) {
+                listOfTickerAndQuantity.add(k + ";" + v);
             }
-        }
+        });
+
         return listOfTickerAndQuantity;
     }
 

@@ -24,9 +24,5 @@ public class Main {
         Controller controller = new Controller(stockMarketService, transactionService, userService, portfolioServices);
         UserInterface ui = new UserInterface(controller);
         ui.start();
-
-
-
-
     }
 }
