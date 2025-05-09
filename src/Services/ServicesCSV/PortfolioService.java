@@ -1,5 +1,6 @@
 package Services.ServicesCSV;
 
+import Models.Interfaces.Portfolios;
 import Models.Model.*;
 import Models.Model.PortfolioDKK;
 import Repository.Interfaces.CurrencyRepository;
@@ -43,9 +44,32 @@ public class PortfolioService implements PortfolioServices {
         return createPortfolio(combinedCash, transactionRepository.getAllTransactions());
     }
 
+    //TODO Method is pointless
     @Override
-    public List<String> getCombinedInvestmentPerSector(PortfolioDKK portfolio) {
-        return portfolio.getSectorDistribution();
+    public List<String> getCombinedInvestmentPerSector() {
+        List<String> sectorList = new ArrayList<>();
+        PortfolioDKK portfolio = getCombinedUserPortfolio();
+        List<Holding> holdings = portfolio.getHoldings();
+        double liquidCash = portfolio.getLiquidCash();
+        String sector = holdings.get(0).getSector();
+        double sectorInvestment = 0;
+        sectorList.add("Total cash: " + String.format("%.2f", liquidCash) + " DKK Percentage of portfolio: " +
+                String.format("%.2f", portfolio.getPercentageOfPortfolio(liquidCash)) + "%");
+        for (Holding holding : holdings) {
+            if (sector.equalsIgnoreCase(holding.getSector())) {
+                sectorInvestment += holding.getValueOfHoldingInDKK();
+            } else if (!sector.equalsIgnoreCase(holding.getSector())) {
+                if (sectorInvestment > 0) {
+                    addToSectorList(sectorList, sector, sectorInvestment, portfolio);
+                }
+                sector = holding.getSector();
+                sectorInvestment = holding.getValueOfHoldingInDKK();
+            }
+        }
+        if (!sectorList.contains(sector)) {
+            addToSectorList(sectorList, sector, sectorInvestment, portfolio);
+        }
+        return sectorList;
     }
 
     @Override
@@ -62,21 +86,30 @@ public class PortfolioService implements PortfolioServices {
         return allPortfolios;
     }
 
+
+    //TODO
+    // - move creation on holding objects from createPortfolio() and into the PortfolioDKK model.
+    // - test TO DO function
+    // - remove empty entries in hashmap? (is currently never used)
     private PortfolioDKK createPortfolio(double initialCash, List<Transaction> transactions) {
-        List<String> tickerAndQuantity = getTickerAndQuantity(transactions);
+        HashMap<String, Integer> tickerAndQuantity = getTickerAndQuantity(transactions);
         List<Holding> holdings = new ArrayList<>();
-        for (String line : tickerAndQuantity) {
-            String[] lineSplit = line.split(";");
-            Stock stock = stockMarketRepository.getStockFromTicker(lineSplit[0]);
-            Currency currency = currencyRepository.getCurrencyFromBaseCurrency(stock.getCurrency());
-            holdings.add(new Holding(stock, currency, Integer.parseInt(lineSplit[1])));
-        }
+        tickerAndQuantity.forEach((k, v) -> {
+            if (tickerAndQuantity.get(k) > 0) {
+                Stock stock = stockMarketRepository.getStockFromTicker(k);
+                Currency currency = currencyRepository.getCurrencyFromBaseCurrency(stock.getCurrency());
+                holdings.add(new Holding(stock, currency, v));
+            }
+            /*else{
+                tickerAndQuantity.remove(k);
+            }*/
+        });
+
         Collections.sort(holdings);
         return new PortfolioDKK(holdings, initialCash, getLiquidCash(transactions, initialCash));
     }
 
-    //Kan getTickerAndQuantity() gøres effektivt.
-    private List<String> getTickerAndQuantity(List<Transaction> transactions) {
+    private HashMap<String, Integer> getTickerAndQuantity(List<Transaction> transactions) {
         List<String> listOfTickerAndQuantity = new ArrayList<>();
         HashMap<String, Integer> tickerAndQuantity = new HashMap<>();
         for (Transaction t : transactions) {
@@ -87,15 +120,12 @@ public class PortfolioService implements PortfolioServices {
                 tickerAndQuantity.replace(t.getTicker(), tickerAndQuantity.get(t.getTicker()) - t.getQuantity());
             }
         }
-        tickerAndQuantity.forEach((k, v) -> {
-            if (tickerAndQuantity.get(k) > 0) {
-                listOfTickerAndQuantity.add(k + ";" + v);
-            }
-        });
 
-        return listOfTickerAndQuantity;
+
+        return tickerAndQuantity;
     }
 
+    //TODO Kan den rykkes i PortfolioDKK klassen?
     private double getLiquidCash(List<Transaction> transactions, double initialCash) {
         double liquidCash = initialCash;
         for (Transaction t : transactions) {
@@ -106,6 +136,12 @@ public class PortfolioService implements PortfolioServices {
             }
         }
         return liquidCash;
+    }
+
+    private void addToSectorList(List<String> sectorList, String sector, double sectorInvestment, PortfolioDKK portfolio) {
+        sectorList.add("Total invested in: " + sector + " is: " + String.format("%.2f", sectorInvestment) +
+                " DKK Percentage of total investment: " +
+                String.format("%.2f", portfolio.getPercentageOfPortfolio(sectorInvestment)) + "%");
     }
 
 }

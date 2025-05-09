@@ -50,7 +50,7 @@ public class Controller {
         }
     }
 
-    private void memberUI() {
+    private void memberUI() { //
         boolean isRunning = true;
         System.out.println("Enter you memberID");
         int memberID = getUserChoice(1000);
@@ -162,36 +162,18 @@ public class Controller {
         }
     }
 
-    private boolean addNewTransaction(int memberID) {
-        //TO_DO methods for only getting acceptable inputs (Enums?)
-        System.out.println("Enter date of transaction(Year-Month-Day)");
-        LocalDate dateOfTransaction = getLocalDate();
-        System.out.println("Enter order type (buy/sell)");
-        String orderType = getNonEmptyString();
-        System.out.println("Enter ticker");
-        String ticker = getNonEmptyString();
-        System.out.println("Enter currency");
-        String currency = getNonEmptyString();
-        System.out.println("Enter price (for 1 share)");
-        double price = getUserInputAsDouble();
-        System.out.println("Enter quantity");
-        int quantity = getUserChoice(1000000000);
-        return (addNewTransaction(memberID, dateOfTransaction, ticker, price, currency,
-                orderType, quantity));
+
+    private void viewStocksInDKK() {
+        for (Stocks stock : stockMarketService.getStocksInDKK()) {
+            System.out.println(stock);
+        }
     }
 
-
-private void viewStocksInDKK(){
-    for (Stocks stock : stockMarketService.getStocksInDKK()) {
-        System.out.println(stock);
+    private void viewStocks() {
+        for (Stocks stock : stockMarketService.getStocks()) {
+            System.out.println(stock);
+        }
     }
-}
-
-private void viewStocks(){
-    for (Stocks stock : stockMarketService.getStocks()) {
-        System.out.println(stock);
-    }
-}
 
     private void viewForexMarket() {
         for (Currencies currency : stockMarketService.getCurrencyList()) {
@@ -199,11 +181,6 @@ private void viewStocks(){
         }
     }
 
-    private boolean addNewTransaction(int memberID,LocalDate dateOfTransaction,String ticker,double price,String currency,
-                                    String orderType,int quantity) {
-        return transactionService.addNewTransaction(memberID, dateOfTransaction, ticker, price, currency,
-                orderType, quantity);
-    }
 
     private void viewPortfolio(int memberID) {
         PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
@@ -254,7 +231,7 @@ private void viewStocks(){
     }
 
     private void viewSectorDistribution() {
-        for (String s : portfolioService.getCombinedInvestmentPerSector(portfolioService.getCombinedUserPortfolio())) {
+        for (String s : portfolioService.getCombinedInvestmentPerSector()) {
             System.out.println(s);
         }
     }
@@ -326,6 +303,30 @@ private void viewStocks(){
                 return DataServices.getLocalDate(input);
             }
         }
+    }
+
+    private boolean addNewTransaction(int memberID) {
+        //TO_DO methods for only getting acceptable inputs (Enums?)
+        System.out.println("Enter date of transaction(Year-Month-Day)");
+        LocalDate dateOfTransaction = getLocalDate();
+        System.out.println("Enter order type (buy/sell)");
+        String orderType = getNonEmptyString();
+        System.out.println("Enter ticker");
+        String ticker = getNonEmptyString();
+        System.out.println("Enter currency");
+        String currency = getNonEmptyString();
+        System.out.println("Enter price (for 1 share)");
+        double price = getUserInputAsDouble();
+        System.out.println("Enter quantity");
+        int quantity = getUserChoice(1000000000);
+        return (addNewTransaction(memberID, dateOfTransaction, ticker, price, currency,
+                orderType, quantity));
+    }
+
+    private boolean addNewTransaction(int memberID,LocalDate dateOfTransaction,String ticker,double price,String currency,
+                                      String orderType,int quantity) {
+        return transactionService.addNewTransaction(memberID, dateOfTransaction, ticker, price, currency,
+                orderType, quantity);
     }
 
 }
