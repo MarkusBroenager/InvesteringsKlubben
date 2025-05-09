@@ -110,7 +110,6 @@ public class PortfolioService implements PortfolioServices {
     }
 
     private HashMap<String, Integer> getTickerAndQuantity(List<Transaction> transactions) {
-        List<String> listOfTickerAndQuantity = new ArrayList<>();
         HashMap<String, Integer> tickerAndQuantity = new HashMap<>();
         for (Transaction t : transactions) {
             tickerAndQuantity.putIfAbsent(t.getTicker(), 0);
