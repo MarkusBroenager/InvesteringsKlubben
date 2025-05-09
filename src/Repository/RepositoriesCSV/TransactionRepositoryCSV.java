@@ -17,7 +17,7 @@ public class TransactionRepositoryCSV extends Repository implements TransactionR
     public List<Transaction> getAllTransactions() {
         List<Transaction> transactions = new ArrayList<>();
         List<String> list = super.readFile();
-        list.removeFirst();
+        list.remove(0);
         for (String line : list) {
             String[] lineSplit = line.split(";");
             transactions.add(new Transaction(Integer.parseInt(lineSplit[0]),

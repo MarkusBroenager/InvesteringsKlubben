@@ -41,7 +41,7 @@ public class UserService implements UserServices {
     private int getUniqueUserID() {
         List<User> users = getUsers();
         Collections.sort(users);
-        return users.getLast().getUserID() + 1;
+        return users.get(users.size()-1).getUserID() + 1;
     }
 
 

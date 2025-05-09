@@ -36,9 +36,8 @@ public class PortfolioService implements PortfolioServices {
 
     @Override
     public PortfolioDKK getCombinedUserPortfolio() {
-        List<User> users = userRepository.getUsers();
         double combinedCash = 0;
-        for (User u : users) {
+        for (User u : userRepository.getUsers()) {
             combinedCash += u.getInitialCash();
         }
         return createPortfolio(combinedCash, transactionRepository.getAllTransactions());

@@ -16,7 +16,7 @@ public class StockMarketRepositoryCSV extends ReadOnlyRepository implements Stoc
     public List<Stock> getStockList() {
         List<Stock> stocks = new ArrayList<>();
         List<String> list = super.readFile();
-        list.removeFirst();
+        list.remove(0);
         for (String line : list) {
             String[] lineSplit = line.split(";");
             stocks.add(new Stock(lineSplit[0],
