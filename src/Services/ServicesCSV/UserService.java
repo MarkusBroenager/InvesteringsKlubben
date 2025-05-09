@@ -17,14 +17,17 @@ public class UserService implements UserServices {
         this.userRepository = userRepository;
     }
 
+    @Override
     public List<User> getUsers() {
         return userRepository.getUsers();
     }
 
+    @Override
     public User getUser(int userID) {
         return userRepository.getUserFromUserID(userID);
     }
 
+    @Override
     public boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash) {
         Users newUser = createNewUser(fullName, email, birthday, initialCash);
         if (newUser.getInitialCash() >= 10000) {

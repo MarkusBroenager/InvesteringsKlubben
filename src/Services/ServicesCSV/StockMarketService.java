@@ -18,6 +18,7 @@ public class StockMarketService implements StockMarketServices {
         this.currencyRepository = currencyRepository;
     }
 
+    @Override
     public List<Stock> getStocks() {
         return stockMarketRepository.getStockList();
     }
@@ -31,14 +32,17 @@ public class StockMarketService implements StockMarketServices {
         return stocks;
     }
 
+    @Override
     public Stock getStock(String ticker){
         return stockMarketRepository.getStockFromTicker(ticker);
     }
 
+    @Override
     public List<Currency> getCurrencyList() {
         return currencyRepository.getListOfCurrencies();
     }
 
+    @Override
     public Currency getCurrency(String currency) {
         return currencyRepository.getCurrencyFromBaseCurrency(currency);
     }
