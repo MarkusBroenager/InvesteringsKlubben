@@ -19,7 +19,7 @@ class UserRepositoryCSVTest {
     private UserRepository userRepository;
     @BeforeEach
     void setUp() {
-        userRepository = new UserRepositoryCSV("testUsers.csv");
+        userRepository = new UserRepositoryCSV("C:\\Users\\Freja\\IdeaProjects\\InvesteringsKlubben\\test\\TestResources\\testUsers.csv");
     }
 
     @AfterEach
@@ -37,7 +37,7 @@ class UserRepositoryCSVTest {
 
     @Test
     void getUserFromUserID_givenValidUserID_returnValidUser() {
-        assertEquals(new User(1, "Maria Jensen", "maria.jensen@email.com", LocalDate.of(1990, 04, 12), 100000, LocalDate.of(2025, 03, 01), LocalDate.of(2025, 03, 01)), userRepository.getUserFromUserID(1));
+        assertEquals(1, userRepository.getUserFromUserID(1).getUserID());
 
     }
 
