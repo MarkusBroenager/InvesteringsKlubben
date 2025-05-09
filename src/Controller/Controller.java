@@ -74,6 +74,7 @@ public void viewStocks(){
     }
 
     public void printPortfolio(Portfolios portfolio) {
+        System.out.println(portfolio);
         for (String s : portfolio.getPortfolioInformation()) {
             System.out.println(s);
         }
@@ -91,6 +92,7 @@ public void viewStocks(){
         List<PortfolioDKK> portfolios = portfolioService.getAllPortfolios();
         portfolios.sort(comparator);
         for (Portfolios p : portfolios) {
+            System.out.println(p);
             for (String s : p.getPortfolioInformation()) {
                 System.out.println(s);
             }

@@ -48,13 +48,17 @@ public class PortfolioDKK implements Portfolios {
     }
 
     @Override
-    public List<String> getPortfolioInformation() {
-        List<String> portfolioInformation = new ArrayList<>();
-        portfolioInformation.add("Started with: " + String.format("%.2f", initialValue) + " DKK" +
+    public String toString(){
+        return "Started with: " + String.format("%.2f", initialValue) + " DKK" +
                 "\nCurrent liquid cash: " + String.format("%.2f", liquidCash) + " DKK" +
                 "\nCurrent portfolio value: " + String.format("%.2f", getPortfolioValueInDKK()) + " DKK" +
                 "\nP&L in DKK: " + String.format("%.2f", getProfitOrLossInDKK()) + " P&L in percentage: " +
-                String.format("%.2f", getProfitOrLossInPercentage()) + "%");
+                String.format("%.2f", getProfitOrLossInPercentage()) + "%";
+    }
+
+    @Override
+    public List<String> getPortfolioInformation() {
+        List<String> portfolioInformation = new ArrayList<>();
         for (Holding holding : holdings) {
             if (holding.getQuantity() != 0) {
                 portfolioInformation.add(holding + " " +
