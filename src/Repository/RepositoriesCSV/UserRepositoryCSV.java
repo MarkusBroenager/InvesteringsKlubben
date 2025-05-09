@@ -17,7 +17,7 @@ public class UserRepositoryCSV extends Repository implements UserRepository {
     public List<User> getUsers() {
         List<String> dateCSV = super.readFile();
         List<User> users = new ArrayList<>();
-        dateCSV.removeFirst();
+        dateCSV.remove(0);
         for (String line : dateCSV) {
             String[] lineSplit = line.split(";");
             users.add(new User(Integer.parseInt(lineSplit[0]),
