@@ -69,36 +69,7 @@ public class PortfolioDKK implements Portfolios {
         return portfolioInformation;
     }
 
-    public List<String> getSectorDistribution() {
-        List<String> sectorList = new ArrayList<>();
-        String sector = holdings.get(0).getSector();
-        double sectorInvestment = 0;
-        sectorList.add("Total cash: " + String.format("%.2f", getLiquidCash()) + " DKK Percentage of portfolio: " +
-                String.format("%.2f", getPercentageOfPortfolio(getLiquidCash())) + "%");
-        for (Holding holding : holdings) {
-            if (sector.equalsIgnoreCase(holding.getSector())) {
-                sectorInvestment += holding.getValueOfHoldingInDKK();
-            } else if (!sector.equalsIgnoreCase(holding.getSector())) {
-                if (sectorInvestment > 0) {
-                    addToSectorList(sectorList, sector, sectorInvestment);
-                }
-                sector = holding.getSector();
-                sectorInvestment = holding.getValueOfHoldingInDKK();
-            }
-        }
-        if (!sectorList.contains(sector)) {
-            addToSectorList(sectorList, sector, sectorInvestment);
-        }
-        return sectorList;
-    }
-
-    private void addToSectorList(List<String> sectorList, String sector, double sectorInvestment) {
-        sectorList.add("Total invested in: " + sector + " is: " + String.format("%.2f", sectorInvestment) +
-                " DKK Percentage of total investment: " +
-                String.format("%.2f", getPercentageOfPortfolio(sectorInvestment)) + "%");
-    }
-
-    private double getPercentageOfPortfolio(double value) {
+    public double getPercentageOfPortfolio(double value) {
         return ((value - getPortfolioValueInDKK()) / (getPortfolioValueInDKK()) * 100) + 100;
     }
 

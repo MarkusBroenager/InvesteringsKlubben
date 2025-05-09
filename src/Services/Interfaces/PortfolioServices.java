@@ -10,7 +10,7 @@ public interface PortfolioServices {
 
     PortfolioDKK getCombinedUserPortfolio();
 
-    List<String> getCombinedInvestmentPerSector(PortfolioDKK portfolio);
+    List<String> getCombinedInvestmentPerSector();
 
     List<String> getCombinedInvestmentPerStock();
 
