@@ -6,13 +6,12 @@ import Service.Users;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static Service.Transactions.*;
 import static Service.Users.removeUser;
 import static Service.viewCurrency.loadCurrency;
 import static Service.viewCurrency.showCurrency;
 import static Service.viewStockMarket.loadStockMarketData;
 import static Service.viewStockMarket.showStockMarket;
-import static Service.Transactions.loadTransactions;
-import static Service.Transactions.showTransactions;
 
 public class controller {
 
@@ -85,6 +84,29 @@ public class controller {
         if (input1 == 2) {
             while (programmeIsRunning) {
                 System.out.println("Tast:");
+                System.out.println("1. Se aktiemarkedet");
+                System.out.println("2. Opret transaktion");
+                System.out.println("3. Gem transaktioner");
+                System.out.println("4. Afslut programmet");
+
+                int input3 = scanner.nextInt();
+
+                if (input3 == 1) {
+                    showStockMarket(listOfStockMarket);
+
+                } if (input3 == 2) {
+
+                    createTransactions(listOfTransactions);
+
+                } if (input3 == 3) {
+
+                    saveTransactions(listOfTransactions);
+
+                } if (input3 == 4) {
+
+                    programmeIsRunning = false;
+
+                }
             }
         }
     }

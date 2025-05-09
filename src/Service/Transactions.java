@@ -2,6 +2,8 @@ package Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -50,11 +52,11 @@ public class Transactions {
             while (scanner.hasNextLine()) {
 
                 String line = scanner.nextLine();
-                if (line.contains("user_id")) {
+                if (line.contains("user_ID")) {
                     System.out.println();
                 } else {
                     Scanner lineScanner = new Scanner(line);
-                    lineScanner.useDelimiter(";");
+                    lineScanner.useDelimiter("  ");
 
                     int ID = Integer.parseInt(lineScanner.next());
                     int user_ID = Integer.parseInt(lineScanner.next());
@@ -90,5 +92,68 @@ public class Transactions {
         return ID + "  " + userID + "  " + date + "  " + ticker + "  " + price + "  " + currency + "  " +
                 orderType + "  " + quantity;
     }
+
+    public static void createTransactions(ArrayList<Transactions> list) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Indtast ID:");
+        int ID = scanner.nextInt();
+        System.out.println("Indtast userID:");
+        int userID = scanner.nextInt();
+
+        scanner.nextLine();
+
+        System.out.println("Indtast dato:");
+        String date = scanner.nextLine();
+        System.out.println("Indtast ticker:");
+        String ticker = scanner.nextLine();
+        System.out.println("Indtast pris:");
+        double price = scanner.nextDouble();
+
+        scanner.nextLine();
+
+        System.out.println("Indtast currency:");
+        String currency = scanner.nextLine();
+        System.out.println("Indtast orderType:");
+        String orderType = scanner.nextLine();
+        System.out.println("Indtast antallet af aktier");
+        int quantity = scanner.nextInt();
+
+        Transactions transaction = new Transactions(ID, userID, date, ticker, price, currency, orderType,
+                quantity);
+        list.add(transaction);
+
+    }
+
+    public static void saveTransactions(ArrayList<Transactions> list) {
+
+        String firstLine = "ID user_ID date ticker price currency order_type quantity";
+
+        try {
+            PrintStream delete = new PrintStream("Resources/transactions.csv");
+            delete.println(firstLine);
+            delete.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        int i;
+
+        for (i = 0; i < list.size(); i++) {
+            String convertion = String.valueOf(list.get(i));
+
+            try {
+                PrintStream save = new PrintStream(new FileOutputStream("Resources/transactions.csv",
+                        true));
+                save.println(convertion);
+                save.close();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
 
 }
