@@ -45,7 +45,8 @@ public class controller {
                 System.out.println("6. Se transaktioner");
                 System.out.println("7. Se valuta");
                 System.out.println("8. Se rangliste");
-                System.out.println("9. Afslut programmet");
+                System.out.println("9. Se fordelingen på aktier og sektorer");
+                System.out.println("10. Afslut programmet");
 
                 int input2 = scanner.nextInt();
 
@@ -78,9 +79,12 @@ public class controller {
                 } else if (input2 == 8) {
 
                     showRankedList(listOfUsers);
+
+                } else if (input2 == 9) {
+
                 }
 
-                else if (input2 == 9) {
+                else if (input2 == 10) {
 
                     programmeIsRunning = false;
                 }
@@ -112,7 +116,6 @@ public class controller {
                     removeTransaction(listOfTransactions);
 
                 }
-
 
                 if (input3 == 4) {
 
