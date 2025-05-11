@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import static Service.Transactions.*;
-import static Service.Users.removeUser;
+import static Service.Users.*;
 import static Service.viewCurrency.loadCurrency;
 import static Service.viewCurrency.showCurrency;
 import static Service.viewStockMarket.loadStockMarketData;
@@ -44,7 +44,8 @@ public class controller {
                 System.out.println("5. Se aktiemarkedet");
                 System.out.println("6. Se transaktioner");
                 System.out.println("7. Se valuta");
-                System.out.println("8. Afslut programmet");
+                System.out.println("8. Se rangliste");
+                System.out.println("9. Afslut programmet");
 
                 int input2 = scanner.nextInt();
 
@@ -73,9 +74,14 @@ public class controller {
                 } else if (input2 == 7) {
 
                     showCurrency(listOfCurrency);
+
+                } else if (input2 == 8) {
+
+                    showRankedList(listOfUsers);
                 }
 
-                else if (input2 == 8) {
+                else if (input2 == 9) {
+
                     programmeIsRunning = false;
                 }
             }
@@ -86,8 +92,11 @@ public class controller {
                 System.out.println("Tast:");
                 System.out.println("1. Se aktiemarkedet");
                 System.out.println("2. Opret transaktion");
-                System.out.println("3. Gem transaktioner");
-                System.out.println("4. Afslut programmet");
+                System.out.println("3. Slet transaktion");
+                System.out.println("4. Gem ændringer");
+                System.out.println("5. Se transaktionshistorik");
+                System.out.println("6. Se personlig portefølgeværdi");
+                System.out.println("7. Afslut programmet");
 
                 int input3 = scanner.nextInt();
 
@@ -100,9 +109,27 @@ public class controller {
 
                 } if (input3 == 3) {
 
+                    removeTransaction(listOfTransactions);
+
+                }
+
+
+                if (input3 == 4) {
+
                     saveTransactions(listOfTransactions);
 
-                } if (input3 == 4) {
+                } if (input3 == 5) {
+
+                    searchForTransactions(listOfTransactions);
+
+                }
+
+                if (input3 == 6) {
+
+                    showPersonalInitialCash(listOfUsers);
+                }
+
+                if (input3 == 7) {
 
                     programmeIsRunning = false;
 

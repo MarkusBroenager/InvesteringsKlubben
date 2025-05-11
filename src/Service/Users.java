@@ -5,9 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
-public class Users {
+import static java.lang.Double.compare;
+
+public class Users implements Comparable<Users> {
 
     private int userID;
     private String fullName;
@@ -36,6 +39,10 @@ public class Users {
 
     public double getInitialCashDKK() {
         return this.initialCashDKK;
+    }
+
+    public int getUserID() {
+        return this.userID;
     }
 
     public void setInitialCashDKK(double initialCashDKK) {
@@ -162,6 +169,41 @@ public class Users {
             }
 
         }
+
+
+    @Override
+    public int compareTo(Users o) {
+        return compare(this.initialCashDKK, o.getInitialCashDKK());
     }
+
+    public static void showRankedList(ArrayList<Users> list) {
+
+        Collections.sort(list);
+
+        Collections.reverse(list);
+
+        int i;
+
+        for (i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).toString());
+        }
+    }
+
+    public static void showPersonalInitialCash(ArrayList<Users> list) {
+
+        System.out.println("Indtast dit brugerID");
+
+        Scanner scanner = new Scanner(System.in);
+        int userIDInput = scanner.nextInt();
+
+        int i;
+
+        for (i = 0; i < list.size(); i++) {
+            if (userIDInput == list.get(i).getUserID()) {
+                System.out.println(list.get(i).getInitialCashDKK());
+            }
+        }
+    }
+}
 
 

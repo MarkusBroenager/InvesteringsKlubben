@@ -31,6 +31,14 @@ public class Transactions {
         this.quantity = quantity;
     }
 
+    public int getUserID() {
+        return this.userID;
+    }
+
+    public int getID() {
+        return this.ID;
+    }
+
     public Transactions() {
         this.arraylist = new ArrayList<>();
     }
@@ -126,6 +134,38 @@ public class Transactions {
 
     }
 
+    public static void removeTransaction(ArrayList<Transactions> list) {
+
+        System.out.println("Indtast dit user_ID");
+
+        Scanner scanner = new Scanner(System.in);
+
+        int inputtedUser_ID = scanner.nextInt();
+
+        int i;
+
+        for (i = 0; i < list.size(); i++) {
+            if (inputtedUser_ID == list.get(i).getUserID()) {
+
+                System.out.println(list.get(i).toString());
+
+            }
+
+            }
+
+                System.out.println("Indtast ID på den transaktion du gerne vil fjerne");
+
+                int inputtedID = scanner.nextInt();
+
+                for (i = 0; i < list.size(); i++) {
+                    if (inputtedID == list.get(i).getID()) {
+                        list.remove(i);
+                    }
+                }
+
+
+    }
+
     public static void saveTransactions(ArrayList<Transactions> list) {
 
         String firstLine = "ID user_ID date ticker price currency order_type quantity";
@@ -152,6 +192,26 @@ public class Transactions {
                 throw new RuntimeException(e);
             }
         }
+
+    }
+
+    public static void searchForTransactions(ArrayList<Transactions> list) {
+
+        System.out.println("Indtast dit user_ID");
+
+        Scanner scanner = new Scanner(System.in);
+
+        int inputtedUser_ID = scanner.nextInt();
+
+        int i ;
+
+        for (i = 0; i < list.size(); i++) {
+            if (inputtedUser_ID == list.get(i).getUserID()) {
+
+                System.out.println(list.get(i).toString());
+            }
+        }
+
 
     }
 
