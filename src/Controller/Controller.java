@@ -21,6 +21,9 @@ public class Controller {
     private ProfitAndLossInPercentageComparator percentageComparator = new ProfitAndLossInPercentageComparator();
     private ProfitAndLossInDKKComparator dkkComparator = new ProfitAndLossInDKKComparator();
     private final Scanner SCANNER = new Scanner(System.in);
+//TODO improve string names
+    private final static String blue = "\u001B[34m";
+    private final static String standard = "\u001B[0m";
 
     public Controller(StockMarketServices stockMarketService, TransactionServices transactionService,
                       UserServices userService, PortfolioServices portfolioService) {
@@ -34,7 +37,12 @@ public class Controller {
         boolean isRunning = true;
         System.out.println();
         while (isRunning) {
-            System.out.println("0 - Exit, 1 - Member, 2 - Leader");
+
+            printMenu(new String[]{"_________", "1 - Member", "2 - Leader", "0 - Exit", "_________"});
+
+
+
+
             int userChoice = getUserChoice(2);
             switch (userChoice) {
                 case 1:
@@ -50,6 +58,12 @@ public class Controller {
         }
     }
 
+    private void printMenu(String[] menuPoints){
+        for(int index = 0; index < menuPoints.length; index++) {
+            System.out.println(menuPoints[index]);
+        }
+    }
+
     private void memberUI() { //
         boolean isRunning = true;
         System.out.println("Enter you memberID");
@@ -58,9 +72,11 @@ public class Controller {
             return;
         }
         while (isRunning) {
-            System.out.println("0 - Exit, 1 - View stock market, 2 - View forex market, 3 - Enter new transaction, " +
-                    "4 - View your portfolio, 5 - View transaction history, 6 - View stats for all members," +
-                    " 7 - View personal information");
+
+            System.out.println("Hej " + userService.getUser(memberID).getFullName() + "! Velkommen tilbage");
+            printMenu(new String[]{"1 - View stock market", "2 - View forex market", "3 - Enter new transaction",
+                    "4 - View your portfolio", "5 - View transaction history", "6 - View stats for all members",
+                    "7 - View personal information", "0 - Exit"});
             int userChoice = getUserChoice(7);
             switch (userChoice) {
                 case 1:
@@ -170,8 +186,10 @@ public class Controller {
     }
 
     private void viewStocks() {
+        int test = 10;
+        System.out.printf("\n" + blue + "__________________________________________\n| %-" + test + "s | %-14s | %-8s | %-7s |\n__________________________________________\n" + standard,"Ticker", "Pris per aktie", "dividend", "rating");
         for (Stocks stock : stockMarketService.getStocks()) {
-            System.out.println(stock);
+            System.out.printf("| %-" + test + "s | %-14s | %-8.2f | %-3s | %-15s | %-10s\n", stock.getTicker(), stock.getPrice(), 1.60, "AA", "Health sector", "01-05-2025");
         }
     }
 
