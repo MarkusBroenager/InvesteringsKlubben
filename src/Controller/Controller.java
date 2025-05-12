@@ -21,7 +21,7 @@ public class Controller {
     private ProfitAndLossInPercentageComparator percentageComparator = new ProfitAndLossInPercentageComparator();
     private ProfitAndLossInDKKComparator dkkComparator = new ProfitAndLossInDKKComparator();
     private final Scanner SCANNER = new Scanner(System.in);
-
+//TODO improve string names
     private final static String blue = "\u001B[34m";
     private final static String standard = "\u001B[0m";
 
