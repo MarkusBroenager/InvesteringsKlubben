@@ -30,6 +30,10 @@ public class User implements Users, Comparable<User> {
         return userID;
     }
 
+    public String getFullName(){
+        return this.fullName;
+    }
+
     @Override
     public double getInitialCash() {
         return initialCash;
