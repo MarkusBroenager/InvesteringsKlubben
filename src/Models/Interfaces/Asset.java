@@ -1,5 +1,7 @@
 package Models.Interfaces;
 
+import java.time.LocalDate;
+
 public interface Asset {
 
     String getTicker();
@@ -7,4 +9,5 @@ public interface Asset {
     double getPrice();
     String getCurrency();
     String getSector();
+    LocalDate getLastUpdated();
 }

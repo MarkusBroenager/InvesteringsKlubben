@@ -61,6 +61,11 @@ public class Stock implements Stocks, Asset {
         return price;
     }
 
+    public LocalDate getLastUpdated(){
+        return this.lastUpdated;
+    }
+
+
     @Override
     public void setCurrency(Currency currency) {
         if (currency.getBaseCurrency().equalsIgnoreCase(this.currency)) {

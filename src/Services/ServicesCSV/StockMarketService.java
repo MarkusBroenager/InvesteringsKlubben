@@ -42,7 +42,13 @@ public class StockMarketService implements StockMarketServices {
     public Stock getStock(String ticker){
         return stockMarketRepository.getStockFromTicker(ticker);
     }
-
+    public Stock getStockInDKK(String ticker){
+        Stock stock = stockMarketRepository.getStockFromTicker(ticker);
+        if(stock != null) {
+            stock.setCurrency(getCurrency(stock.getCurrency()));
+        }
+        return stock;
+    }
     public Bond getBond(String ticker){
         return bondRepository.getBondFromTicker(ticker);
     }

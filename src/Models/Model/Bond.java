@@ -51,6 +51,12 @@ public class Bond implements Asset {
     public String getName(){
         return this.name;
     }
+
+    @Override
+    public LocalDate getLastUpdated(){
+        return this.lastUpdated;
+    }
+
     @Override
     public String toString() {
         return name + " (" + ticker + ')' + " Price: " + String.format("%.2f", price) + " " +

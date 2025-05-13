@@ -135,11 +135,11 @@ public class Controller {
                     break;
                 case 4:
                     System.out.println("Enter full name: ");
-                    String fullName = getNonEmptyString();
+                    String fullName = getValidName();
                     System.out.println("Enter email: ");
                     String email = getNonEmptyString();
                     System.out.println("Enter birthday(year-month-day): ");
-                    LocalDate birthday = DataServices.getLocalDate(getNonEmptyString());
+                    LocalDate birthday = getValidBirthday();
                     System.out.println("Enter initial cash: ");
                     double initialCash = getUserInputAsDouble();
                     if (addNewUser(fullName, email, birthday, initialCash)) {
@@ -323,28 +323,116 @@ public class Controller {
         String input;
         while (true) {
             input = SCANNER.nextLine();
-            if (DataServices.getLocalDate(input).isAfter(LocalDate.of(2025, 1, 1))) {
+            LocalDate date = DataServices.getLocalDate(input);
+            //TODO: is this an interresting check
+            if (!date.isAfter(LocalDate.now()) && date.isAfter(LocalDate.now().minusYears(120))) {
                 return DataServices.getLocalDate(input);
             }
         }
     }
 
+    private String getValidName(){
+        String input;
+        do{
+            input = getNonEmptyString();
+        }while(!input.matches("[a-zA-Z]+"));
+        return input;
+    }
+
+    private LocalDate getValidBirthday(){
+        LocalDate input;
+        do{
+            input = getLocalDate();
+        }while(input.isBefore(LocalDate.now().minusYears(18)) && input.isAfter(LocalDate.now().minusYears(120)));
+        return input;
+    }
+
     private boolean addNewTransaction(int memberID) {
-        //TO_DO methods for only getting acceptable inputs (Enums?)
+        //TODO methods for only getting acceptable inputs (Enums?)
         System.out.println("Enter date of transaction(Year-Month-Day)");
         LocalDate dateOfTransaction = getLocalDate();
         System.out.println("Enter order type (buy/sell)");
-        String orderType = getNonEmptyString();
+        String orderType = getTransactionType();
         System.out.println("Enter ticker");
-        String ticker = getNonEmptyString();
-        System.out.println("Enter currency");
-        String currency = getNonEmptyString();
-        System.out.println("Enter price (for 1 share)");
-        double price = getUserInputAsDouble();
+        String ticker = getValidTicker();
+        /*System.out.println("Enter currency");
+        String currency = getNonEmptyString();*/
+        System.out.println("Enter price (for 1 share) in DKK");
+        double price = getSharePricePaid(ticker);
+        if(price == 0){
+            return false;
+        }
         System.out.println("Enter quantity");
         int quantity = getUserChoice(1000000000);
-        return (addNewTransaction(memberID, dateOfTransaction, ticker, price, currency,
+        PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
+        Holding holding = portfolio.getHoldingFromTicker(ticker);
+        if(orderType.equalsIgnoreCase("buy") && (price * quantity > portfolio.getLiquidCash())){
+            System.out.println("You cannot afford " + quantity + " stocks for " + price + " each for a total of " +
+                    price * quantity + "\nWhen your stated liquid cash is " + portfolio.getLiquidCash());
+            return false;
+        } else if (orderType.equalsIgnoreCase("sell") &&
+                (quantity > holding.getQuantity())) {
+            System.out.println("You cannot sell " + quantity + " stocks from " + ticker +
+                    "\nWhen your stated holding is " + holding.getQuantity());
+            return false;
+        }
+        return (addNewTransaction(memberID, dateOfTransaction, ticker, price, "DKK",
                 orderType, quantity));
+    }
+
+    private double getSharePricePaid(String ticker){
+        double input;
+        boolean isInvalidated = false;
+        do {
+            input = getUserInputAsDouble();
+            Asset asset = stockMarketService.getStockInDKK(ticker);
+            double currentSharePrice;
+            if(asset == null){
+                asset = stockMarketService.getBond(ticker);
+            }
+            currentSharePrice = asset.getPrice();
+            if (input > (currentSharePrice * 1.2) || input < (currentSharePrice * 0.8)) {
+                System.out.println("Your price per share of: " + input + " devieates more than 20%, from current data " +
+                        asset.getPrice() + "last updated: " +
+                        asset.getLastUpdated() + "\nAre you sure this is the correct price?" +
+                        "\nType 1 to accept, type 2 to edit share price, type 0 to cancel registration");
+                switch (getUserChoice(2)){
+                    case 1 :{
+                        isInvalidated = false;
+                        break;
+                    }
+                    case 2 : {
+                        isInvalidated = true;
+                        break;
+                    }
+                    case 0 :{
+                        return 0.0;
+                        //TODO should we throw new CanceledOrderException();
+                    }
+                    default:{
+                        throw new RuntimeException("A fatal error in the user interface has occured");
+                    }
+                }
+            }
+
+        }while (isInvalidated);
+        return input;
+    }
+
+    private String getTransactionType() {
+        String input;
+        do{
+        input = getNonEmptyString();
+    }while(!input.equalsIgnoreCase("buy") && !input.equalsIgnoreCase("sell"));
+        return input;
+    }
+
+    private String getValidTicker(){
+        String input;
+        do{
+            input = getNonEmptyString().toUpperCase();
+        }while(stockMarketService.getStock(input) == null && stockMarketService.getBond(input) == null);
+        return input;
     }
 
     private boolean addNewTransaction(int memberID,LocalDate dateOfTransaction,String ticker,double price,String currency,
