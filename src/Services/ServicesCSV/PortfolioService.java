@@ -1,12 +1,10 @@
 package Services.ServicesCSV;
 
+import Models.Interfaces.Asset;
 import Models.Interfaces.Portfolios;
 import Models.Model.*;
 import Models.Model.PortfolioDKK;
-import Repository.Interfaces.CurrencyRepository;
-import Repository.Interfaces.StockMarketRepository;
-import Repository.Interfaces.TransactionRepository;
-import Repository.Interfaces.UserRepository;
+import Repository.Interfaces.*;
 import Services.Interfaces.PortfolioServices;
 
 import java.util.ArrayList;
@@ -18,13 +16,17 @@ public class PortfolioService implements PortfolioServices {
 
     private CurrencyRepository currencyRepository;
     private StockMarketRepository stockMarketRepository;
+    private BondRepository bondRepository;
     private TransactionRepository transactionRepository;
     private UserRepository userRepository;
+    //TODO: Skal portfolioServicen intereager med repositories eller service klaserne
 
     public PortfolioService(CurrencyRepository currencyRepository, StockMarketRepository stockMarketRepository,
-                            TransactionRepository transactionRepository, UserRepository userRepository) {
+                            BondRepository bondRepository, TransactionRepository transactionRepository,
+                            UserRepository userRepository) {
         this.currencyRepository = currencyRepository;
         this.stockMarketRepository = stockMarketRepository;
+        this.bondRepository = bondRepository;
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
     }
@@ -96,9 +98,12 @@ public class PortfolioService implements PortfolioServices {
         List<Holding> holdings = new ArrayList<>();
         tickerAndQuantity.forEach((k, v) -> {
             if (tickerAndQuantity.get(k) > 0) {
-                Stock stock = stockMarketRepository.getStockFromTicker(k);
-                Currency currency = currencyRepository.getCurrencyFromBaseCurrency(stock.getCurrency());
-                holdings.add(new Holding(stock, currency, v));
+                Asset asset = stockMarketRepository.getStockFromTicker(k);
+                if(asset == null){
+                    asset = bondRepository.getBondFromTicker(k);
+                }
+                Currency currency = currencyRepository.getCurrencyFromBaseCurrency(asset.getCurrency());
+                holdings.add(new Holding(asset, currency, v));
             }
             /*else{
                 tickerAndQuantity.remove(k);

@@ -11,13 +11,14 @@ public class Main {
 
         UserRepository userRepository = new UserRepositoryCSV("users.csv");
         StockMarketRepository stockMarketRepository = new StockMarketRepositoryCSV("stockMarket.csv");
+        BondRepository bondRepository = new BondRepositoryCSV("bondMarket.csv");
         CurrencyRepository currencyRepository = new CurrencyRepositoryCSV("currency.csv");
         TransactionRepository transactionRepository = new TransactionRepositoryCSV("transactions.csv");
 
-        StockMarketServices stockMarketService = new StockMarketService(stockMarketRepository, currencyRepository);
+        StockMarketServices stockMarketService = new StockMarketService(stockMarketRepository, bondRepository, currencyRepository);
         TransactionServices transactionService = new TransactionService(transactionRepository, currencyRepository);
         UserServices userService = new UserService(userRepository);
-        PortfolioServices portfolioServices = new PortfolioService(currencyRepository, stockMarketRepository,
+        PortfolioServices portfolioServices = new PortfolioService(currencyRepository, stockMarketRepository, bondRepository,
                 transactionRepository, userRepository);
 
         Controller controller = new Controller(stockMarketService, transactionService, userService, portfolioServices);

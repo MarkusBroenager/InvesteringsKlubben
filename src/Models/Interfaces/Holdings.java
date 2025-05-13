@@ -6,7 +6,7 @@ public interface Holdings {
 
     double getValueOfHoldingInDKK();
 
-    double getStockInDKK();
+    double getPriceInQuoteCurrency();
 
     String getTicker();
 

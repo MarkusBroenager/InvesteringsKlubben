@@ -75,7 +75,7 @@ public class Controller {
 
             System.out.println("Hej " + userService.getUser(memberID).getFullName() + "! Velkommen tilbage");
             printMenu(new String[]{"1 - View stock market", "2 - View forex market", "3 - Enter new transaction",
-                    "4 - View your portfolio", "5 - View transaction history", "6 - View stats for all members",
+                    "4 - View your portfolio", "5 - View transaction history", "6 - View bond market",
                     "7 - View personal information", "0 - Exit"});
             int userChoice = getUserChoice(7);
             switch (userChoice) {
@@ -99,7 +99,7 @@ public class Controller {
                     viewTransactions(memberID);
                     break;
                 case 6:
-                    System.out.println("Nope");
+                    viewBondMarket();
                     break;
                 case 7:
                     viewPersonalInformation(memberID);
@@ -182,6 +182,12 @@ public class Controller {
     private void viewStocksInDKK() {
         for (Stocks stock : stockMarketService.getStocksInDKK()) {
             System.out.println(stock);
+        }
+    }
+
+    private void viewBondMarket() {
+        for (Bond bond : stockMarketService.getBonds()) {
+            System.out.println(bond);
         }
     }
 
