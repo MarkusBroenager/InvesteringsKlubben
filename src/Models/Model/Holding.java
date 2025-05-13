@@ -1,32 +1,33 @@
 package Models.Model;
 
+import Models.Interfaces.Asset;
 import Models.Interfaces.Holdings;
 
 public class Holding implements Holdings,Comparable<Holding> {
 
-    private Stock stock;
+    private Asset asset;
     private Currency currency;
     private int quantity;
 
-    public Holding(Stock stock, Currency currency, int quantity) {
-        this.stock = stock;
+    public Holding(Asset asset, Currency currency, int quantity) {
+        this.asset = asset;
         this.currency = currency;
         this.quantity = quantity;
     }
 
     @Override
     public double getValueOfHoldingInDKK() {
-        return stock.getPrice() * currency.getRate() * quantity;
+        return asset.getPrice() * currency.getRate() * quantity;
     }
 
     @Override
-    public double getStockInDKK() {
-        return stock.getPrice() * currency.getRate();
+    public double getPriceInQuoteCurrency() {
+        return asset.getPrice() * currency.getRate();
     }
 
     @Override
     public String getTicker() {
-        return stock.getTicker();
+        return asset.getTicker();
     }
 
     @Override
@@ -36,7 +37,7 @@ public class Holding implements Holdings,Comparable<Holding> {
 
     @Override
     public String getSector() {
-        return stock.getSector();
+        return asset.getSector();
     }
 
     @Override
@@ -46,7 +47,7 @@ public class Holding implements Holdings,Comparable<Holding> {
 
 
     public String toString() {
-        return stock.getTicker() + " " + stock.getName() + " " + String.format("%.2f", getStockInDKK()) +
+        return asset.getTicker() + " " + asset.getName() + " " + String.format("%.2f", this.getPriceInQuoteCurrency()) +
                 " DKK Amount: " + quantity + " Total value: " +
                 String.format("%.2f", getValueOfHoldingInDKK()) + " DKK";
     }

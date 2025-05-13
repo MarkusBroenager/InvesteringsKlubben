@@ -1,7 +1,9 @@
 package Services.ServicesCSV;
 
+import Models.Model.Bond;
 import Models.Model.Currency;
 import Models.Model.Stock;
+import Repository.Interfaces.BondRepository;
 import Repository.Interfaces.CurrencyRepository;
 import Repository.Interfaces.StockMarketRepository;
 import Services.Interfaces.StockMarketServices;
@@ -11,10 +13,12 @@ import java.util.List;
 public class StockMarketService implements StockMarketServices {
 
     private StockMarketRepository stockMarketRepository;
+    private BondRepository bondRepository;
     private CurrencyRepository currencyRepository;
 
-    public StockMarketService(StockMarketRepository stockMarketRepository, CurrencyRepository currencyRepository) {
+    public StockMarketService(StockMarketRepository stockMarketRepository, BondRepository bondRepository, CurrencyRepository currencyRepository) {
         this.stockMarketRepository = stockMarketRepository;
+        this.bondRepository = bondRepository;
         this.currencyRepository = currencyRepository;
     }
 
@@ -31,8 +35,16 @@ public class StockMarketService implements StockMarketServices {
         return stocks;
     }
 
+    public List<Bond> getBonds() {
+        return bondRepository.getBondList();
+    }
+
     public Stock getStock(String ticker){
         return stockMarketRepository.getStockFromTicker(ticker);
+    }
+
+    public Bond getBond(String ticker){
+        return bondRepository.getBondFromTicker(ticker);
     }
 
     public List<Currency> getCurrencyList() {
