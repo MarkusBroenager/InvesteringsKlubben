@@ -73,4 +73,13 @@ public class PortfolioDKK implements Portfolios {
         return ((value - getPortfolioValueInDKK()) / (getPortfolioValueInDKK()) * 100) + 100;
     }
 
+    public Holding getHoldingFromTicker(String ticker){
+        for(Holding holding : holdings){
+            if(ticker.equalsIgnoreCase(holding.getTicker())){
+                return holding;
+            }
+        }
+        return null;
+    }
+
 }

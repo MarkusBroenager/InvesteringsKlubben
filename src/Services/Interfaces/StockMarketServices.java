@@ -14,6 +14,7 @@ public interface StockMarketServices {
     List<Stock> getStocksInDKK();
 
     Stock getStock(String ticker);
+    Stock getStockInDKK(String ticker);
     Bond getBond(String ticker);
 
     List<Currency> getCurrencyList();
