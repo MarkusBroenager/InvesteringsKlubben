@@ -323,6 +323,7 @@ public class Controller {
         String input;
         while (true) {
             input = SCANNER.nextLine();
+            //TODO: hardcoded date
             if (DataServices.getLocalDate(input).isAfter(LocalDate.of(2025, 1, 1))) {
                 return DataServices.getLocalDate(input);
             }
@@ -330,21 +331,37 @@ public class Controller {
     }
 
     private boolean addNewTransaction(int memberID) {
-        //TO_DO methods for only getting acceptable inputs (Enums?)
+        //TODO methods for only getting acceptable inputs (Enums?)
         System.out.println("Enter date of transaction(Year-Month-Day)");
         LocalDate dateOfTransaction = getLocalDate();
         System.out.println("Enter order type (buy/sell)");
-        String orderType = getNonEmptyString();
+        String orderType = getTransactionType();
         System.out.println("Enter ticker");
-        String ticker = getNonEmptyString();
-        System.out.println("Enter currency");
-        String currency = getNonEmptyString();
-        System.out.println("Enter price (for 1 share)");
+        String ticker = getValidTicker();
+        /*System.out.println("Enter currency");
+        String currency = getNonEmptyString();*/
+        System.out.println("Enter price (for 1 share) in DKK");
         double price = getUserInputAsDouble();
         System.out.println("Enter quantity");
         int quantity = getUserChoice(1000000000);
-        return (addNewTransaction(memberID, dateOfTransaction, ticker, price, currency,
+        return (addNewTransaction(memberID, dateOfTransaction, ticker, price, "DKK",
                 orderType, quantity));
+    }
+
+    private String getTransactionType() {
+        String input;
+        do{
+        input = getNonEmptyString();
+    }while(!input.equalsIgnoreCase("buy") && !input.equalsIgnoreCase("sell"));
+        return input;
+    }
+
+    private String getValidTicker(){
+        String input;
+        do{
+            input = getNonEmptyString().toUpperCase();
+        }while(stockMarketService.getStock(input) == null && stockMarketService.getBond(input) == null);
+        return input;
     }
 
     private boolean addNewTransaction(int memberID,LocalDate dateOfTransaction,String ticker,double price,String currency,
