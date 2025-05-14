@@ -8,6 +8,7 @@ import Repository.Interfaces.CurrencyRepository;
 import Repository.Interfaces.StockMarketRepository;
 import Services.Interfaces.StockMarketServices;
 
+import java.util.Collections;
 import java.util.List;
 
 public class StockMarketService implements StockMarketServices {
@@ -32,6 +33,9 @@ public class StockMarketService implements StockMarketServices {
         for(Stock s : stocks){
             s.setCurrency(getCurrency(s.getCurrency()));
         }
+
+        Collections.sort(stocks);
+
         return stocks;
     }
 

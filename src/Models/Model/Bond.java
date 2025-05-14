@@ -45,7 +45,7 @@ public class Bond implements Asset {
 
     @Override
     public String getSector(){
-        return "State Bonds";
+        return "Government Bonds";
     }
     @Override
     public String getName(){
@@ -62,6 +62,11 @@ public class Bond implements Asset {
         return name + " (" + ticker + ')' + " Price: " + String.format("%.2f", price) + " " +
                 currency + " coupon rate: " + String.format("%.2f", couponRate) + "% maturity date is the " + maturityDate +  " Exchange: " + market +
                 " Rating: " + rating + " Last update: " + lastUpdated;
+    }
+
+    @Override
+    public int compareTo(Asset otherAsset) {
+        return Asset.super.compareTo(otherAsset);
     }
 
 
