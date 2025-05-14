@@ -40,7 +40,9 @@ public class StockMarketService implements StockMarketServices {
     }
 
     public List<Bond> getBonds() {
-        return bondRepository.getBondList();
+        List<Bond> bonds = bondRepository.getBondList();
+        Collections.sort(bonds);
+        return bonds;
     }
 
     public Stock getStock(String ticker){
@@ -64,8 +66,5 @@ public class StockMarketService implements StockMarketServices {
     public Currency getCurrency(String currency) {
         return currencyRepository.getCurrencyFromBaseCurrency(currency);
     }
-
-
-
 
 }
