@@ -44,8 +44,6 @@ public class Controller {
             printMenu(new String[]{"_________", "1 - Member", "2 - Leader", "0 - Exit", "_________"});
 
 
-
-
             int userChoice = getUserChoice(2);
             switch (userChoice) {
                 case 1:
@@ -61,8 +59,8 @@ public class Controller {
         }
     }
 
-    private void printMenu(String[] menuPoints){
-        for(int index = 0; index < menuPoints.length; index++) {
+    private void printMenu(String[] menuPoints) {
+        for (int index = 0; index < menuPoints.length; index++) {
             System.out.println(menuPoints[index]);
         }
     }
@@ -70,7 +68,7 @@ public class Controller {
     private void memberUI() { //
         boolean isRunning = true;
         System.out.println("Enter you memberID");
-        int memberID = getUserChoice(1000);
+        int memberID = getUserChoice(userService.getHighestUserId());
         if (memberID == 0) {
             return;
         }
@@ -196,7 +194,7 @@ public class Controller {
 
     private void viewStocks() {
         int test = 10;
-        System.out.printf("\n" + blue + "__________________________________________\n| %-" + test + "s | %-14s | %-8s | %-7s |\n__________________________________________\n" + standard,"Ticker", "Pris per aktie", "dividend", "rating");
+        System.out.printf("\n" + blue + "__________________________________________\n| %-" + test + "s | %-14s | %-8s | %-7s |\n__________________________________________\n" + standard, "Ticker", "Pris per aktie", "dividend", "rating");
         for (Stocks stock : stockMarketService.getStocks()) {
             System.out.printf("| %-" + test + "s | %-14s | %-8.2f | %-3s | %-15s | %-10s\n", stock.getTicker(), stock.getPrice(), 1.60, "AA", "Health sector", "01-05-2025");
         }
@@ -237,11 +235,11 @@ public class Controller {
         }
     }
 
-    private void viewPortfoliosSortedByPercentage(){
+    private void viewPortfoliosSortedByPercentage() {
         viewProfitAndLossSortedPortfolios(percentageComparator);
     }
 
-    private void viewPortfoliosSortedByDKK(){
+    private void viewPortfoliosSortedByDKK() {
         viewProfitAndLossSortedPortfolios(dkkComparator);
     }
 
@@ -263,14 +261,14 @@ public class Controller {
         }
     }
 
-    private void viewAllUsers(){
-        for(User u : userService.getUsers()){
+    private void viewAllUsers() {
+        for (User u : userService.getUsers()) {
             System.out.println(u);
         }
     }
 
-    private boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash){
-        return(userService.addNewUser(fullName,email,birthday,initialCash));
+    private boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash) {
+        return (userService.addNewUser(fullName, email, birthday, initialCash));
     }
 
     private int getUserChoice(int choiceUpperBoundary) {
@@ -334,19 +332,19 @@ public class Controller {
         }
     }
 
-    private String getValidName(){
+    private String getValidName() {
         String input;
-        do{
+        do {
             input = getNonEmptyString();
-        }while(!input.matches("[a-zA-Z]+"));
+        } while (!input.matches("[a-zA-Z]+"));
         return input;
     }
 
-    private LocalDate getValidBirthday(){
+    private LocalDate getValidBirthday() {
         LocalDate input;
-        do{
+        do {
             input = getLocalDate();
-        }while(input.isBefore(LocalDate.now().minusYears(18)) && input.isAfter(LocalDate.now().minusYears(120)));
+        } while (input.isBefore(LocalDate.now().minusYears(18)) && input.isAfter(LocalDate.now().minusYears(120)));
         return input;
     }
 
@@ -362,15 +360,15 @@ public class Controller {
         int quantity = getUserChoice(1000000000);
         double price;
         Asset asset = stockMarketService.getStock(ticker);
-        if(asset != null){
+        if (asset != null) {
             price = asset.getPrice();
-        }else{
+        } else {
             asset = stockMarketService.getBond(ticker);
             price = asset.getPrice();
         }
         PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
         Holding holding = portfolio.getHoldingFromTicker(ticker);
-        if(orderType.equalsIgnoreCase("buy") && (price * quantity > portfolio.getLiquidCash())){
+        if (orderType.equalsIgnoreCase("buy") && (price * quantity > portfolio.getLiquidCash())) {
             System.out.println("You cannot afford " + quantity + " stocks for " + price + " each for a total of " +
                     price * quantity + "\nWhen your stated liquid cash is " + portfolio.getLiquidCash());
             return false;
@@ -386,17 +384,17 @@ public class Controller {
 
     private String getTransactionType() {
         String input;
-        do{
-        input = getNonEmptyString();
-    }while(!input.equalsIgnoreCase("buy") && !input.equalsIgnoreCase("sell"));
+        do {
+            input = getNonEmptyString();
+        } while (!input.equalsIgnoreCase("buy") && !input.equalsIgnoreCase("sell"));
         return input;
     }
 
-    private String getValidTicker(){
+    private String getValidTicker() {
         String input;
-        do{
+        do {
             input = getNonEmptyString().toUpperCase();
-        }while(stockMarketService.getStock(input) == null && stockMarketService.getBond(input) == null);
+        } while (stockMarketService.getStock(input) == null && stockMarketService.getBond(input) == null);
         return input;
     }
 
