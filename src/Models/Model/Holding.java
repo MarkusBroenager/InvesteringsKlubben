@@ -54,9 +54,9 @@ public class Holding implements Holdings,Comparable<Holding> {
 
     @Override
     public int compareTo(Holding o) {
-        if (this.getSector().compareTo(o.getSector()) == 0) {
-            return this.getTicker().compareTo(o.getTicker());
+        if(((this.getValueOfHoldingInDKK() * 100) == (o.getValueOfHoldingInDKK() * 100))){
+            return o.getTicker().compareTo(this.getTicker());
         }
-        return this.getSector().compareTo(o.getSector());
+        return (int) ((this.getValueOfHoldingInDKK() * 100) - (o.getValueOfHoldingInDKK() * 100));
     }
 }

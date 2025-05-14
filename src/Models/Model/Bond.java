@@ -4,7 +4,7 @@ import Models.Interfaces.Asset;
 
 import java.time.LocalDate;
 
-public class Bond implements Asset {
+public class Bond implements Asset, Comparable<Asset> {
 
     private String ticker;
     private String name;
