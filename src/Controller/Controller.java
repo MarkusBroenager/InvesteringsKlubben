@@ -22,6 +22,9 @@ public class Controller {
     private ProfitAndLossInDKKComparator dkkComparator = new ProfitAndLossInDKKComparator();
     private final Scanner SCANNER = new Scanner(System.in);
 //TODO improve string names
+// - Fejlhåndtering af member Id
+// - Show profit and losses in red if negativ and green otherwise
+
     private final static String blue = "\u001B[34m";
     private final static String standard = "\u001B[0m";
 
@@ -349,21 +352,22 @@ public class Controller {
 
     private boolean addNewTransaction(int memberID) {
         //TODO methods for only getting acceptable inputs (Enums?)
-        System.out.println("Enter date of transaction(Year-Month-Day)");
-        LocalDate dateOfTransaction = getLocalDate();
         System.out.println("Enter order type (buy/sell)");
         String orderType = getTransactionType();
         System.out.println("Enter ticker");
         String ticker = getValidTicker();
         /*System.out.println("Enter currency");
         String currency = getNonEmptyString();*/
-        System.out.println("Enter price (for 1 share) in DKK");
-        double price = getSharePricePaid(ticker);
-        if(price == 0){
-            return false;
-        }
         System.out.println("Enter quantity");
         int quantity = getUserChoice(1000000000);
+        double price;
+        Asset asset = stockMarketService.getStock(ticker);
+        if(asset != null){
+            price = asset.getPrice();
+        }else{
+            asset = stockMarketService.getBond(ticker);
+            price = asset.getPrice();
+        }
         PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
         Holding holding = portfolio.getHoldingFromTicker(ticker);
         if(orderType.equalsIgnoreCase("buy") && (price * quantity > portfolio.getLiquidCash())){
@@ -376,47 +380,8 @@ public class Controller {
                     "\nWhen your stated holding is " + holding.getQuantity());
             return false;
         }
-        return (addNewTransaction(memberID, dateOfTransaction, ticker, price, "DKK",
-                orderType, quantity));
-    }
-
-    private double getSharePricePaid(String ticker){
-        double input;
-        boolean isInvalidated = false;
-        do {
-            input = getUserInputAsDouble();
-            Asset asset = stockMarketService.getStockInDKK(ticker);
-            double currentSharePrice;
-            if(asset == null){
-                asset = stockMarketService.getBond(ticker);
-            }
-            currentSharePrice = asset.getPrice();
-            if (input > (currentSharePrice * 1.2) || input < (currentSharePrice * 0.8)) {
-                System.out.println("Your price per share of: " + input + " devieates more than 20%, from current data " +
-                        asset.getPrice() + "last updated: " +
-                        asset.getLastUpdated() + "\nAre you sure this is the correct price?" +
-                        "\nType 1 to accept, type 2 to edit share price, type 0 to cancel registration");
-                switch (getUserChoice(2)){
-                    case 1 :{
-                        isInvalidated = false;
-                        break;
-                    }
-                    case 2 : {
-                        isInvalidated = true;
-                        break;
-                    }
-                    case 0 :{
-                        return 0.0;
-                        //TODO should we throw new CanceledOrderException();
-                    }
-                    default:{
-                        throw new RuntimeException("A fatal error in the user interface has occured");
-                    }
-                }
-            }
-
-        }while (isInvalidated);
-        return input;
+        return transactionService.addNewTransaction(memberID, LocalDate.now(), ticker, price, "DKK",
+                orderType, quantity);
     }
 
     private String getTransactionType() {
@@ -433,12 +398,6 @@ public class Controller {
             input = getNonEmptyString().toUpperCase();
         }while(stockMarketService.getStock(input) == null && stockMarketService.getBond(input) == null);
         return input;
-    }
-
-    private boolean addNewTransaction(int memberID,LocalDate dateOfTransaction,String ticker,double price,String currency,
-                                      String orderType,int quantity) {
-        return transactionService.addNewTransaction(memberID, dateOfTransaction, ticker, price, currency,
-                orderType, quantity);
     }
 
 }

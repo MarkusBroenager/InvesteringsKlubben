@@ -10,4 +10,12 @@ public interface Asset {
     String getCurrency();
     String getSector();
     LocalDate getLastUpdated();
+
+    default int compareTo(Asset otherAsset){
+        if(this.getSector().compareTo(otherAsset.getSector()) == 0){
+            return this.getTicker().compareTo(otherAsset.getTicker());
+        }else{
+            return this.getSector().compareTo(otherAsset.getSector());
+        }
+    }
 }

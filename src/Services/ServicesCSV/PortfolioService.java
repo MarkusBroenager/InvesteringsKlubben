@@ -46,7 +46,7 @@ public class PortfolioService implements PortfolioServices {
         return createPortfolio(combinedCash, transactionRepository.getAllTransactions());
     }
 
-    //TODO Method is pointless
+    //TODO How can we sort by sector if we use bonds and stocks as the interface asset, but bonds lack a sector
     @Override
     public List<String> getCombinedInvestmentPerSector() {
         List<String> sectorList = new ArrayList<>();
@@ -110,7 +110,7 @@ public class PortfolioService implements PortfolioServices {
             }*/
         });
 
-        Collections.sort(holdings);
+        Collections.sort(holdings.reversed());
         return new PortfolioDKK(holdings, initialCash, getLiquidCash(transactions, initialCash));
     }
 

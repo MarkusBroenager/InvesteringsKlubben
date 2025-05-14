@@ -5,7 +5,7 @@ import Models.Interfaces.Stocks;
 
 import java.time.LocalDate;
 
-public class Stock implements Stocks, Asset {
+public class Stock implements Stocks, Asset, Comparable<Asset> {
 
     private String ticker;
     private String name;
@@ -63,6 +63,11 @@ public class Stock implements Stocks, Asset {
 
     public LocalDate getLastUpdated(){
         return this.lastUpdated;
+    }
+
+    @Override
+    public int compareTo(Asset otherAsset) {
+        return Asset.super.compareTo(otherAsset);
     }
 
 
