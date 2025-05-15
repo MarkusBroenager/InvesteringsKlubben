@@ -336,7 +336,9 @@ public class Controller {
         String input;
         do {
             input = getNonEmptyString();
-        } while (!input.matches("[a-zA-Z]+"));
+
+//TODO ???????????????????????????
+        } while (!input.matches("[a-zA-Z ]+$"));
         return input;
     }
 
@@ -359,13 +361,8 @@ public class Controller {
         System.out.println("Enter quantity");
         int quantity = getUserChoice(1000000000);
         double price;
-        Asset asset = stockMarketService.getStock(ticker);
-        if (asset != null) {
-            price = asset.getPrice();
-        } else {
-            asset = stockMarketService.getBond(ticker);
-            price = asset.getPrice();
-        }
+        Asset asset = stockMarketService.getAsset(ticker);
+        price = asset.getPrice();
         PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
         Holding holding = portfolio.getHoldingFromTicker(ticker);
         if (orderType.equalsIgnoreCase("buy") && (price * quantity > portfolio.getLiquidCash())) {
@@ -394,7 +391,7 @@ public class Controller {
         String input;
         do {
             input = getNonEmptyString().toUpperCase();
-        } while (stockMarketService.getStock(input) == null && stockMarketService.getBond(input) == null);
+        } while (stockMarketService.getAsset(input) == null);
         return input;
     }
 
