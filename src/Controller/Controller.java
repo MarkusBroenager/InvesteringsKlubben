@@ -369,6 +369,10 @@ public class Controller {
                     price * quantity + "\nWhen your stated liquid cash is " + portfolio.getLiquidCash());
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
+                (holding == null)) {
+            System.out.println("you don't hold any " + ticker);
+            return false;
+        } else if (orderType.equalsIgnoreCase("sell") &&
                 (quantity > holding.getQuantity())) {
             System.out.println("You cannot sell " + quantity + " stocks from " + ticker +
                     "\nWhen your stated holding is " + holding.getQuantity());
