@@ -345,7 +345,7 @@ public class Controller {
         LocalDate input;
         do {
             input = getLocalDate();
-        } while (input.isBefore(LocalDate.now().minusYears(18)) && input.isAfter(LocalDate.now().minusYears(120)));
+        } while (input.isAfter(LocalDate.now().minusYears(18)));
         return input;
     }
 

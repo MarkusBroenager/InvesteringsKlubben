@@ -16,7 +16,7 @@ public class DataServices {
             } else if (Integer.parseInt(dateSplit[0]) > 1900) {
                 return LocalDate.parse(date);
             }
-        }catch (NumberFormatException numberFormatException){
+        }catch (RuntimeException numberFormatException){
             System.out.println("Wrong format! required format is YYYY-MM-DD");
             return LocalDate.of(0, 1, 1);
         }
