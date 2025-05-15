@@ -41,7 +41,6 @@ public class Controller {
 
             printMenu(new String[]{"_________", "1 - Member", "2 - Leader", "0 - Exit", "_________"});
 
-
             int userChoice = getUserChoice(2);
             switch (userChoice) {
                 case 1:
@@ -173,7 +172,7 @@ public class Controller {
         boolean isRunning = true;
         while (isRunning) {
             System.out.println("0 - Exit, 1 - View all prices in DKK, 2 - View in native currency");
-            int userChoice = getUserChoice(3);
+            int userChoice = getUserChoice(2);
             switch (userChoice) {
                 case 1:
                     viewStocksInDKK();
@@ -188,7 +187,7 @@ public class Controller {
         }
     }
 
-
+    //Hvad gør metoden anderledes end viewStocks?
     private void viewStocksInDKK() {
         for (Stocks stock : stockMarketService.getStocksInDKK()) {
             System.out.println(stock);

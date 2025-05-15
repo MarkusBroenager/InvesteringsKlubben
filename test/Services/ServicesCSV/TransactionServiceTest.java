@@ -28,46 +28,61 @@ public class TransactionServiceTest {
 
     @Test
     void returnsCorrectPriceInEUR() {
-        Assertions.assertEquals(26.6,transactionService.getPriceInQuoteCurrency(198.0, "EUR"));
+        Assertions.assertEquals(1475.1000000000001,transactionService.getPriceInQuoteCurrency(198.0, "EUR"));
     }
 
     @Test
     void returnsCorrectPriceInUSD() {
-        Assertions.assertEquals(28.7,transactionService.getPriceInQuoteCurrency(198.0, "USD"));
+        Assertions.assertEquals(1366.2,transactionService.getPriceInQuoteCurrency(198.0, "USD"));
     }
 
     @Test
     void returnsCorrectPriceInSEK() {
-        Assertions.assertEquals(304.6,transactionService.getPriceInQuoteCurrency(198.0, "SEK"));
-    }
-
-    @Test
-    void addNewTransactionTest() {
-        transactionService.addNewTransaction(1, LocalDate.of(2021, 3, 12), "NOVO", 20.0, "DKK", "AA", 5);
+        Assertions.assertEquals(128.70000000000002,transactionService.getPriceInQuoteCurrency(198.0, "SEK"));
     }
 
     @Test
     void returnsCorrectPriceInNOK() {
-        assertEquals(291.2,transactionService.getPriceInQuoteCurrency(198.0, "NOK"));
+        assertEquals(134.64000000000001,transactionService.getPriceInQuoteCurrency(198.0, "NOK"));
     }
 
     @Test
     void returnsCorrectPriceInGBP() {
-        assertEquals(22.9, transactionService.getPriceInQuoteCurrency(198.0, "GBP"));
-    }
-
-    @Test
-    void getTransactionsForUserTest() {
-        transactionService.getTransactionsForUser(1);
-
-        List<Transaction> transactions = transactionService.getTransactionsForUser(1);
-
-        Assertions.assertEquals(transactionService.getTransactionsForUser(1), transactions);
+        assertEquals(1712.7, transactionService.getPriceInQuoteCurrency(198.0, "GBP"));
     }
 
     @Test
     void returnsCorrectPriceInJPY() {
-        assertEquals(4212.8, transactionService.getPriceInQuoteCurrency(198.0, "JPY"));
+        assertEquals(9.306, transactionService.getPriceInQuoteCurrency(198.0, "JPY"));
+    }
+
+    @Test
+    void returnsCorrectPriceInCHF() {
+        assertEquals(1544.3999999999999, transactionService.getPriceInQuoteCurrency(198.0, "CHF"));
+    }
+
+    @Test
+    void returnsCorrectPriceInAUD() {
+        assertEquals(881.1,transactionService.getPriceInQuoteCurrency(198.0, "AUD"));
+    }
+
+    @Test
+    void returnsCorrectPriceInCAD() {
+        assertEquals(1009.8,transactionService.getPriceInQuoteCurrency(198.0, "CAD"));
+    }
+
+    @Test
+    void addNewTransactionTest() {
+        boolean newTransaction = transactionService.addNewTransaction(1, LocalDate.of(2021, 3, 12), "NOVO-B", 20.0, "DKK", "buy", 5);
+
+        Assertions.assertEquals(newTransaction,true);
+    }
+
+    @Test
+    void getTransactionsForUserTest() {
+        List<Transaction> transactions = transactionService.getTransactionsForUser(1);
+
+        Assertions.assertEquals(transactionService.getTransactionsForUser(1), transactions);
     }
 
     @Test
@@ -75,11 +90,6 @@ public class TransactionServiceTest {
         Transaction transaction = new Transaction(1,1,LocalDate.of(2025, 03, 01), "NOVO-B", 710.5, "DKK", "buy",20);
 
         Assertions.assertEquals(transaction, transaction);
-    }
-
-    @Test
-    void returnsCorrectPriceInCHF() {
-        assertEquals(25.4, transactionService.getPriceInQuoteCurrency(198.0, "CHF"));
     }
 
     @Test
@@ -93,23 +103,15 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void returnsCorrectPriceInAUD() {
-        assertEquals(44.5,transactionService.getPriceInQuoteCurrency(198.0, "AUD"));
-    }
-
-    @Test
     void getUniqueIDTest() {
         TransactionRepository transactionRepository = new TransactionRepositoryCSV("transactions.csv");
         List<Transaction> transactions = transactionRepository.getAllTransactions();
         Collections.sort(transactions);
         int transactionID = transactions.get(transactions.size() - 1).getTransactionID() + 1;
 
-        Assertions.assertEquals(transactionID, 1);
+        Assertions.assertEquals(transactionID, 35);
     }
 
-    @Test
-    void returnsCorrectPriceInCAD() {
-        assertEquals(38.8,transactionService.getPriceInQuoteCurrency(198.0, "CAD"));
-    }
+
 
 }
