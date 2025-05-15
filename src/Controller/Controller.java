@@ -8,7 +8,6 @@ import Services.Interfaces.*;
 import Services.ServicesCSV.DataServices;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -125,23 +124,9 @@ public class Controller {
                     System.out.println("0 - Exit, 1 - Sort by percentage, 2 - Sort by DKK");
                     int sortChoice = getUserChoice(2);
                     if (sortChoice == 1) {
-                        List<PortfolioDKK> portfolios = portfolioService.viewProfitAndLossSortedPortfolios(percentageComparator);
-                        for (Portfolios p : portfolios) {
-                            System.out.println(p);
-                            for (String s : p.getPortfolioInformation()) {
-                                System.out.println(s);
-                            }
-                            System.out.println();
-                        }
+                        printSortedPortfolios(portfolioService.viewProfitAndLossSortedPortfolios(percentageComparator));
                     } else if (sortChoice == 2) {
-                        List<PortfolioDKK> portfolios = portfolioService.viewProfitAndLossSortedPortfolios(dkkComparator);
-                        for (Portfolios p : portfolios) {
-                            System.out.println(p);
-                            for (String s : p.getPortfolioInformation()) {
-                                System.out.println(s);
-                            }
-                            System.out.println();
-                        }
+                        printSortedPortfolios(portfolioService.viewProfitAndLossSortedPortfolios(dkkComparator));
                     }
                     break;
                 case 3:
@@ -170,6 +155,17 @@ public class Controller {
                     isRunning = false;
                     break;
             }
+        }
+    }
+
+    private void printSortedPortfolios(List<PortfolioDKK> portfolioDKKS) {
+        List<PortfolioDKK> portfolios = portfolioDKKS;
+        for (Portfolios p : portfolios) {
+            System.out.println(p);
+            for (String s : p.getPortfolioInformation()) {
+                System.out.println(s);
+            }
+            System.out.println();
         }
     }
 
