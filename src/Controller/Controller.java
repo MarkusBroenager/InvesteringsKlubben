@@ -22,7 +22,6 @@ public class Controller {
     private ProfitAndLossInDKKComparator dkkComparator = new ProfitAndLossInDKKComparator();
     private final Scanner SCANNER = new Scanner(System.in);
 //TODO improve string names
-// - Fejlhåndtering af member Id
 // - Show profit and losses in red if negativ and green otherwise
 
     private final static String blue = "\u001B[34m";
