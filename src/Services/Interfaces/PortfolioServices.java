@@ -2,6 +2,7 @@ package Services.Interfaces;
 
 import Models.Model.PortfolioDKK;
 
+import java.util.Comparator;
 import java.util.List;
 
 public interface PortfolioServices {
@@ -15,4 +16,6 @@ public interface PortfolioServices {
     List<String> getCombinedInvestmentPerStock();
 
     List<PortfolioDKK> getAllPortfolios();
+
+    List<PortfolioDKK> viewProfitAndLossSortedPortfolios(Comparator<PortfolioDKK> comparator);
 }

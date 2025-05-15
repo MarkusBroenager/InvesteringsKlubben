@@ -125,9 +125,23 @@ public class Controller {
                     System.out.println("0 - Exit, 1 - Sort by percentage, 2 - Sort by DKK");
                     int sortChoice = getUserChoice(2);
                     if (sortChoice == 1) {
-                        viewPortfoliosSortedByPercentage();
+                        List<PortfolioDKK> portfolios = portfolioService.viewProfitAndLossSortedPortfolios(percentageComparator);
+                        for (Portfolios p : portfolios) {
+                            System.out.println(p);
+                            for (String s : p.getPortfolioInformation()) {
+                                System.out.println(s);
+                            }
+                            System.out.println();
+                        }
                     } else if (sortChoice == 2) {
-                        viewPortfoliosSortedByDKK();
+                        List<PortfolioDKK> portfolios = portfolioService.viewProfitAndLossSortedPortfolios(dkkComparator);
+                        for (Portfolios p : portfolios) {
+                            System.out.println(p);
+                            for (String s : p.getPortfolioInformation()) {
+                                System.out.println(s);
+                            }
+                            System.out.println();
+                        }
                     }
                     break;
                 case 3:
@@ -231,26 +245,6 @@ public class Controller {
         System.out.println(portfolio);
         for (String s : portfolio.getPortfolioInformation()) {
             System.out.println(s);
-        }
-    }
-
-    private void viewPortfoliosSortedByPercentage() {
-        viewProfitAndLossSortedPortfolios(percentageComparator);
-    }
-
-    private void viewPortfoliosSortedByDKK() {
-        viewProfitAndLossSortedPortfolios(dkkComparator);
-    }
-
-    private void viewProfitAndLossSortedPortfolios(Comparator<PortfolioDKK> comparator) {
-        List<PortfolioDKK> portfolios = portfolioService.getAllPortfolios();
-        portfolios.sort(comparator);
-        for (Portfolios p : portfolios) {
-            System.out.println(p);
-            for (String s : p.getPortfolioInformation()) {
-                System.out.println(s);
-            }
-            System.out.println();
         }
     }
 
