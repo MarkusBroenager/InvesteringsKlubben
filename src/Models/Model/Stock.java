@@ -81,8 +81,8 @@ public class Stock implements Stocks, Asset, Comparable<Asset> {
 
     @Override
     public String toString() {
-        return name + " (" + ticker + ") Sector: " + sector + " Price: " + String.format("%.2f", price) + " " +
-                currency + " Dividend: " + String.format("%.2f", dividend) + "% Exchange: " + market +
-                " Rating: " + rating + " Last update: " + lastUpdated;
+        return name + " (" + ticker + ");" + sector + ';' + String.format("%.2f", price) + ' ' +
+                currency + ';' + rating + ";" + String.format("%.2f", dividend) + "%;" + market +
+                ";" + lastUpdated;
     }
 }

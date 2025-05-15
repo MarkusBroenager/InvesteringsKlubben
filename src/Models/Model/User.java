@@ -47,9 +47,9 @@ public class User implements Users, Comparable<User> {
 
     @Override
     public String toString() {
-        return "Name: " + fullName + " userID: " + userID + " Born: " + birthday + " email: " +
-                email + " Started investing: " + createdAt + " Initial investment : " +
-                String.format("%.2f", initialCash) + " DKK Last update:" + lastUpdated;
+        return fullName + ";" + userID + ";" + birthday + ";" +
+                email + ";" + createdAt + ";" +
+                String.format("%.2f", initialCash) + " DKK;" + lastUpdated;
     }
 
     @Override
