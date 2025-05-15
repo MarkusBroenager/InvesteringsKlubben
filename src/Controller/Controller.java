@@ -8,6 +8,8 @@ import Services.Interfaces.*;
 import Services.ServicesCSV.DataServices;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,6 +42,7 @@ public class Controller {
         while (isRunning) {
 
             printMenu(new String[]{"_________", "1 - Member", "2 - Leader", "0 - Exit", "_________"});
+
 
             int userChoice = getUserChoice(2);
             switch (userChoice) {
@@ -189,9 +192,11 @@ public class Controller {
 
     //Hvad gør metoden anderledes end viewStocks?
     private void viewStocksInDKK() {
+        List<String> stockLines = new ArrayList<>();
         for (Stocks stock : stockMarketService.getStocksInDKK()) {
-            System.out.println(stock);
+            stockLines.add(stock.toString());
         }
+        printTable(stockLines, "Name,Sector,Price,Rating,Dividend,Market,Last updated");
     }
 
     private void viewBondMarket() {
@@ -201,11 +206,11 @@ public class Controller {
     }
 
     private void viewStocks() {
-        int test = 10;
-        System.out.printf("\n" + blue + "__________________________________________\n| %-" + test + "s | %-14s | %-8s | %-7s |\n__________________________________________\n" + standard, "Ticker", "Pris per aktie", "dividend", "rating");
+        List<String> stockLines = new ArrayList<>();
         for (Stocks stock : stockMarketService.getStocks()) {
-            System.out.printf("| %-" + test + "s | %-14s | %-8.2f | %-3s | %-15s | %-10s\n", stock.getTicker(), stock.getPrice(), 1.60, "AA", "Health sector", "01-05-2025");
+            stockLines.add(stock.toString());
         }
+        printTable(stockLines, "Name,Sector,Price,Rating,Dividend,Market,Last updated");
     }
 
     private void viewForexMarket() {
@@ -250,9 +255,11 @@ public class Controller {
     }
 
     private void viewAllUsers() {
+        List<String> userLines = new ArrayList<>();
         for (User u : userService.getUsers()) {
-            System.out.println(u);
+            userLines.add(u.toString() + ";" + portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK());
         }
+        printTable(userLines, "Full name,User ID,Born in,Email,Started investing in,Initial investment,Last update,Current portfolio value");
     }
 
     private boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash) {
@@ -385,6 +392,70 @@ public class Controller {
             input = getNonEmptyString().toUpperCase();
         } while (stockMarketService.getAsset(input) == null);
         return input;
+    }
+
+    private void printTable(List<String> entries, String titles){
+        String[] splitTitles = titles.split(",");
+        int[] columLengths = new int[splitTitles.length];
+
+        for(int k = 0; k < columLengths.length; k++) {
+            //System.out.println("coulum " + k);
+            for (int i = 0; i < entries.size(); i++) {
+
+                String[] entry = entries.get(i).split(";");
+                //checking title length
+                if (splitTitles[k].length() > columLengths[k]) {
+                    columLengths[k] = splitTitles[k].length();
+                    //System.out.println("largest length " + columLengths[k] + " item " + entry[k]);
+                }
+
+                if (entry[k].length() > columLengths[k]) {
+                    columLengths[k] = entry[k].length();
+                    //System.out.println("largest length " + columLengths[k] + " item " + entry[k]);
+                }
+
+            }
+
+        }
+        int totalLength = 0;
+        for(int i = 0; i < columLengths.length; i++){
+            totalLength += columLengths[i] + 3;
+        }
+        totalLength += 1;
+
+        //Top line of table
+        for(int i = 0; i < totalLength; i++) {
+            System.out.print('_');
+        }
+        System.out.print('\n');
+
+        //Print titles
+        for (int i = 0; i < splitTitles.length; i++) {
+            System.out.printf("| %-" + columLengths[i] + "s ", splitTitles[i]);
+        }
+        System.out.print("|\n");
+        //midle line of table
+        for(int i = 0; i < totalLength; i++) {
+            System.out.print('_');
+        }
+        System.out.print('\n');
+
+        //print entries
+
+
+        for (int i = 0; i < entries.size(); i++) {
+
+            for (int k = 0; k < columLengths.length; k++) {
+
+                String[] entry = entries.get(i).split(";");
+                System.out.printf("| %-" + columLengths[k] + "s ", entry[k]);
+
+            }
+            System.out.print("|\n");
+
+        }
+
+
     }
 
 }
