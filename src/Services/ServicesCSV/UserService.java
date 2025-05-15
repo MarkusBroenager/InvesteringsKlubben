@@ -29,12 +29,17 @@ public class UserService implements UserServices {
 
     @Override
     public boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash) {
-        Users newUser = createNewUser(fullName, email, birthday, initialCash);
-        if (newUser.getInitialCash() >= 10000) {
-            userRepository.addUser(newUser);
-            return true;
+        if (initialCash < 10000) {
+            return false;
         }
-        return false;
+        for (User u : getUsers()) {
+            if (u.getEmail().equalsIgnoreCase(email)) {
+                return false;
+            }
+        }
+        Users newUser = createNewUser(fullName, email, birthday, initialCash);
+        userRepository.addUser(newUser);
+        return true;
     }
 
     public int getHighestUserId() {

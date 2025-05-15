@@ -3,14 +3,12 @@ package Services.ServicesCSV;
 import Models.Interfaces.Asset;
 import Models.Interfaces.Portfolios;
 import Models.Model.*;
+import Models.Model.Currency;
 import Models.Model.PortfolioDKK;
 import Repository.Interfaces.*;
 import Services.Interfaces.PortfolioServices;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class PortfolioService implements PortfolioServices {
 
@@ -88,6 +86,12 @@ public class PortfolioService implements PortfolioServices {
         return allPortfolios;
     }
 
+    public List<PortfolioDKK> viewProfitAndLossSortedPortfolios(Comparator<PortfolioDKK> comparator) {
+        List<PortfolioDKK> portfolios = getAllPortfolios();
+        portfolios.sort(comparator);
+        return portfolios;
+    }
+
 
     //TODO
     // - move creation on holding objects from createPortfolio() and into the PortfolioDKK model.
@@ -99,7 +103,7 @@ public class PortfolioService implements PortfolioServices {
         tickerAndQuantity.forEach((k, v) -> {
             if (tickerAndQuantity.get(k) > 0) {
                 Asset asset = stockMarketRepository.getStockFromTicker(k);
-                if(asset == null){
+                if (asset == null) {
                     asset = bondRepository.getBondFromTicker(k);
                 }
                 Currency currency = currencyRepository.getCurrencyFromBaseCurrency(asset.getCurrency());
