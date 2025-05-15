@@ -40,6 +40,11 @@ public class User implements Users, Comparable<User> {
     }
 
     @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
     public String addToCSVFile() {
         return userID + ";" + fullName + ";" + email + ";" + birthday +
                 ";" + initialCash + ";" + createdAt + ";" + lastUpdated;

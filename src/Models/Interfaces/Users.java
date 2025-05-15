@@ -5,6 +5,8 @@ public interface Users {
 
     double getInitialCash();
 
+    String getEmail();
+
     String addToCSVFile();
 
     @Override
