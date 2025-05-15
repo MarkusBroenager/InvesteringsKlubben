@@ -114,7 +114,7 @@ public class PortfolioService implements PortfolioServices {
             }*/
         });
 
-        Collections.sort(holdings.reversed());
+        Collections.reverse(holdings);
         return new PortfolioDKK(holdings, initialCash, getLiquidCash(transactions, initialCash));
     }
 

@@ -65,6 +65,14 @@ public class Stock implements Stocks, Asset, Comparable<Asset> {
         return this.lastUpdated;
     }
 
+    public double getDivident() {
+        return this.dividend;
+    }
+
+    public String getRating() {
+        return this.rating;
+    }
+
     @Override
     public int compareTo(Asset otherAsset) {
         return Asset.super.compareTo(otherAsset);
