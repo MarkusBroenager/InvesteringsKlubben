@@ -20,6 +20,10 @@ public class TransactionService implements TransactionServices {
         this.currencyRepository = currencyRepository;
     }
 
+    public TransactionService() {
+
+    }
+
     @Override
     public boolean addNewTransaction(int userID, LocalDate dateOfTransaction, String ticker,
                                      double price, String currency, String orderType, int quantity) {
@@ -45,7 +49,7 @@ public class TransactionService implements TransactionServices {
         return new Transaction(getUniqueID(), userID, dateOfTransaction, ticker, price, currency, orderType, quantity);
     }
 
-    private double getPriceInQuoteCurrency(double price, String currency) {
+    public double getPriceInQuoteCurrency(double price, String currency) {
         Currency quoteCurrency = currencyRepository.getCurrencyFromBaseCurrency(currency);
         return price * quoteCurrency.getRate();
     }
