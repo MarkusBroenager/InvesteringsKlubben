@@ -200,9 +200,11 @@ public class Controller {
     }
 
     private void viewBondMarket() {
+        List<String> bondList = new ArrayList<>();
         for (Bond bond : stockMarketService.getBonds()) {
-            System.out.println(bond);
+            bondList.add(bond.toString());
         }
+        printTable(bondList, "Name, Price, Coupon Rate, Maturity Date, Exchange, Rating, Last Updated ");
     }
 
     private void viewStocks() {
@@ -214,9 +216,11 @@ public class Controller {
     }
 
     private void viewForexMarket() {
+        List<String> stockMarket = new ArrayList<>();
         for (Currencies currency : stockMarketService.getCurrencyList()) {
-            System.out.println(currency);
+            stockMarket.add(currency.toString());
         }
+        printTable(stockMarket, "currency, quantity, ticker, price, last updated ");
     }
 
 
@@ -226,10 +230,12 @@ public class Controller {
     }
 
     private void viewTransactions(int memberID) {
+        List<String> transactionsList = new ArrayList<>();
         List<Transaction> transactions = transactionService.getTransactionsForUser(memberID);
         for (Transaction t : transactions) {
-            System.out.println(t);
+            transactionsList.add(t.toString());
         }
+        printTable(transactionsList, "Ordertype, quantity, ticker, currency, dateOfTransactions"  );
     }
 
     private void viewPersonalInformation(int memberID) {
@@ -424,21 +430,16 @@ public class Controller {
         totalLength += 1;
 
         //Top line of table
-        for(int i = 0; i < totalLength; i++) {
-            System.out.print('_');
-        }
-        System.out.print('\n');
+
+        printLine(totalLength);
 
         //Print titles
         for (int i = 0; i < splitTitles.length; i++) {
-            System.out.printf("| %-" + columLengths[i] + "s ", splitTitles[i]);
+            System.out.printf(blue + "|" + standard + " %-" + columLengths[i] + "s ", splitTitles[i]);
         }
-        System.out.print("|\n");
+        System.out.print(blue + "|\n" + standard);
         //midle line of table
-        for(int i = 0; i < totalLength; i++) {
-            System.out.print('_');
-        }
-        System.out.print('\n');
+       printLine(totalLength);
 
         //print entries
 
@@ -448,12 +449,24 @@ public class Controller {
             for (int k = 0; k < columLengths.length; k++) {
 
                 String[] entry = entries.get(i).split(";");
-                System.out.printf("| %-" + columLengths[k] + "s ", entry[k]);
+                System.out.printf(blue + "|" + standard + " %-" + columLengths[k] + "s ", entry[k]);
 
             }
-            System.out.print("|\n");
+            System.out.print(blue + "|\n" + standard);
 
         }
+
+        printLine(totalLength);
+        System.out.println();
+
+    }
+    private void printLine(int length) {
+        System.out.print(blue);
+        for(int i = 0; i < length; i++) {
+            System.out.print('_');
+        }
+        System.out.print(standard + "\n");
+
 
 
     }

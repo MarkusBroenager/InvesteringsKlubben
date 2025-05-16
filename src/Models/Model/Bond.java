@@ -59,9 +59,9 @@ public class Bond implements Asset, Comparable<Asset> {
 
     @Override
     public String toString() {
-        return name + " (" + ticker + ')' + " Price: " + String.format("%.2f", price) + " " +
-                currency + " coupon rate: " + String.format("%.2f", couponRate) + "% maturity date is the " + maturityDate +  " Exchange: " + market +
-                " Rating: " + rating + " Last update: " + lastUpdated;
+        return name + " (" + ticker + ')' + "; " + String.format("%.2f", price) + " " +
+                currency + "; " + String.format("%.2f", couponRate) + "% maturity date is the ;" + maturityDate +  "; " + market +
+                "; " + rating + "; " + lastUpdated;
     }
 
     @Override

@@ -33,10 +33,10 @@ public class Currency implements Currencies {
     public String toString() {
         if(String.valueOf(rate).contains("0.0")){
             return "1 " + baseCurrency + " is currently worth " + rate +
-                    " " + quoteCurrency + " Last update: " + lastUpdated;
+                    " " + quoteCurrency + ";" + lastUpdated;
         }
         return "1 " + baseCurrency + " is currently worth " + String.format("%.2f",rate) +
-                " " + quoteCurrency + " Last update: " + lastUpdated;
+                " " + quoteCurrency + ";" + lastUpdated;
     }
 
 }

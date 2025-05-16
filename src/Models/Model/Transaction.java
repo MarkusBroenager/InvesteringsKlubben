@@ -68,8 +68,8 @@ public class Transaction implements Transactions, Comparable<Transaction> {
     }
 
     public String toString() {
-        return orderType + " " + quantity + " " + ticker + " For " + getTotalTransactionPrice() +
-                " " + currency + " date: " + dateOfTransaction;
+        return orderType + "; " + quantity + "; " + ticker + "; For " + getTotalTransactionPrice() +
+                " " + currency + "; date: " + dateOfTransaction;
     }
 
     @Override
