@@ -3,13 +3,11 @@ package Controller;
 import Comparators.*;
 import Models.Interfaces.*;
 import Models.Model.*;
-import Models.Model.PortfolioDKK;
 import Services.Interfaces.*;
 import Services.ServicesCSV.DataServices;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -162,7 +160,7 @@ public class Controller {
 
     private void printSortedPortfolios(List<PortfolioDKK> portfolioDKKS) {
         List<PortfolioDKK> portfolios = portfolioDKKS;
-        for (Portfolios p : portfolios) {
+        for (PortfolioDKK p : portfolios) {
             System.out.println(p);
             for (String s : p.getPortfolioInformation()) {
                 System.out.println(s);
@@ -193,7 +191,7 @@ public class Controller {
     //Hvad gør metoden anderledes end viewStocks?
     private void viewStocksInDKK() {
         List<String> stockLines = new ArrayList<>();
-        for (Stocks stock : stockMarketService.getStocksInDKK()) {
+        for (Stock stock : stockMarketService.getStocksInDKK()) {
             stockLines.add(stock.toString());
         }
         printTable(stockLines, "Name,Sector,Price,Rating,Dividend,Market,Last updated");
@@ -207,14 +205,14 @@ public class Controller {
 
     private void viewStocks() {
         List<String> stockLines = new ArrayList<>();
-        for (Stocks stock : stockMarketService.getStocks()) {
+        for (Stock stock : stockMarketService.getStocks()) {
             stockLines.add(stock.toString());
         }
         printTable(stockLines, "Name,Sector,Price,Rating,Dividend,Market,Last updated");
     }
 
     private void viewForexMarket() {
-        for (Currencies currency : stockMarketService.getCurrencyList()) {
+        for (Currency currency : stockMarketService.getCurrencyList()) {
             System.out.println(currency);
         }
     }
@@ -241,7 +239,7 @@ public class Controller {
         printPortfolio(portfolio);
     }
 
-    private void printPortfolio(Portfolios portfolio) {
+    private void printPortfolio(PortfolioDKK portfolio) {
         System.out.println(portfolio);
         for (String s : portfolio.getPortfolioInformation()) {
             System.out.println(s);

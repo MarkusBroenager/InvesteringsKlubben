@@ -1,6 +1,5 @@
 package Repository.RepositoriesCSV;
 
-import Models.Interfaces.Users;
 import Models.Model.User;
 import Repository.Interfaces.UserRepository;
 import Services.ServicesCSV.DataServices;
@@ -43,7 +42,7 @@ public class UserRepositoryCSV extends Repository implements UserRepository {
     }
 
     @Override
-    public void addUser(Users user) {
+    public void addUser(User user) {
         super.appendLine(user.addToCSVFile());
     }
 }

@@ -1,11 +1,8 @@
 package Models.Model;
 
-import Models.Interfaces.Transactions;
-
 import java.time.LocalDate;
-import java.util.Comparator;
 
-public class Transaction implements Transactions, Comparable<Transaction> {
+public class Transaction implements Comparable<Transaction> {
 
     private String ticker;
     private double price;

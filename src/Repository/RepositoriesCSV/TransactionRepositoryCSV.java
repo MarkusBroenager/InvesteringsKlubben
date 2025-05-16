@@ -1,6 +1,5 @@
 package Repository.RepositoriesCSV;
 
-import Models.Interfaces.Transactions;
 import Models.Model.Transaction;
 import Repository.Interfaces.TransactionRepository;
 import Services.ServicesCSV.DataServices;
@@ -48,7 +47,7 @@ public class TransactionRepositoryCSV extends Repository implements TransactionR
     }
 
     @Override
-    public void addTransaction(Transactions transaction) {
+    public void addTransaction(Transaction transaction) {
         super.appendLine(transaction.addTransactionToCSVFile());
     }
 }

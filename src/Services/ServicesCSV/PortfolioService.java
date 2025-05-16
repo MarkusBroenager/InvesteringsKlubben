@@ -1,7 +1,6 @@
 package Services.ServicesCSV;
 
 import Models.Interfaces.Asset;
-import Models.Interfaces.Portfolios;
 import Models.Model.*;
 import Models.Model.Currency;
 import Models.Model.PortfolioDKK;

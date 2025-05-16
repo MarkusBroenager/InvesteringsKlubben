@@ -1,11 +1,10 @@
 package Models.Model;
 
 import Models.Interfaces.Asset;
-import Models.Interfaces.Stocks;
 
 import java.time.LocalDate;
 
-public class Stock implements Stocks, Asset, Comparable<Asset> {
+public class Stock implements  Asset, Comparable<Asset> {
 
     private String ticker;
     private String name;
@@ -46,7 +45,6 @@ public class Stock implements Stocks, Asset, Comparable<Asset> {
         return sector;
     }
 
-    @Override
     public String getMarket() {
         return market;
     }
@@ -70,8 +68,6 @@ public class Stock implements Stocks, Asset, Comparable<Asset> {
         return Asset.super.compareTo(otherAsset);
     }
 
-
-    @Override
     public void setCurrency(Currency currency) {
         if (currency.getBaseCurrency().equalsIgnoreCase(this.currency)) {
             this.price = price * currency.getRate();

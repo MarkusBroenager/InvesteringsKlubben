@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface BondRepository {
 
-    public List<Bond> getBondList();
+    List<Bond> getBondList();
 
-    public Bond getBondFromTicker(String ticker);
+    Bond getBondFromTicker(String ticker);
 
 }

@@ -1,11 +1,9 @@
 package Models.Model;
 
-import Models.Interfaces.Portfolios;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class PortfolioDKK implements Portfolios {
+public class PortfolioDKK {
 
 
     private List<Holding> holdings;
@@ -18,17 +16,14 @@ public class PortfolioDKK implements Portfolios {
         this.liquidCash = liquidCash;
     }
 
-    @Override
     public double getLiquidCash() {
         return liquidCash;
     }
 
-    @Override
     public List<Holding> getHoldings() {
         return holdings;
     }
 
-    @Override
     public double getPortfolioValueInDKK() {
         double portfolioValue = liquidCash;
         for (Holding holding : holdings) {
@@ -37,18 +32,15 @@ public class PortfolioDKK implements Portfolios {
         return portfolioValue;
     }
 
-    @Override
     public double getProfitOrLossInDKK() {
         return getPortfolioValueInDKK() - initialValue;
     }
 
-    @Override
     public double getProfitOrLossInPercentage() {
         return (getPortfolioValueInDKK() - initialValue) / (initialValue) * 100;
     }
 
-    @Override
-    public String toString(){
+    public String toString() {
         return "Started with: " + String.format("%.2f", initialValue) + " DKK" +
                 "\nCurrent liquid cash: " + String.format("%.2f", liquidCash) + " DKK" +
                 "\nCurrent portfolio value: " + String.format("%.2f", getPortfolioValueInDKK()) + " DKK" +
@@ -56,7 +48,6 @@ public class PortfolioDKK implements Portfolios {
                 String.format("%.2f", getProfitOrLossInPercentage()) + "%";
     }
 
-    @Override
     public List<String> getPortfolioInformation() {
         List<String> portfolioInformation = new ArrayList<>();
         for (Holding holding : holdings) {
@@ -73,9 +64,9 @@ public class PortfolioDKK implements Portfolios {
         return ((value - getPortfolioValueInDKK()) / (getPortfolioValueInDKK()) * 100) + 100;
     }
 
-    public Holding getHoldingFromTicker(String ticker){
-        for(Holding holding : holdings){
-            if(ticker.equalsIgnoreCase(holding.getTicker())){
+    public Holding getHoldingFromTicker(String ticker) {
+        for (Holding holding : holdings) {
+            if (ticker.equalsIgnoreCase(holding.getTicker())) {
                 return holding;
             }
         }

@@ -21,8 +21,8 @@ public class TransactionServiceTest {
     private TransactionService transactionService;
     @BeforeEach
     void setUp() {
-        TransactionRepository transactionRepository = new TransactionRepositoryCSV("transactions.csv");
-        CurrencyRepository currencyRepository = new CurrencyRepositoryCSV("currency.csv");
+        TransactionRepository transactionRepository = new TransactionRepositoryCSV("trans.csv");
+        CurrencyRepository currencyRepository = new CurrencyRepositoryCSV("Resources/currency.csv");
         transactionService = new TransactionService(transactionRepository, currencyRepository);
     }
 

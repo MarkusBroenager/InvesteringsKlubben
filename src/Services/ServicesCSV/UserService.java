@@ -1,6 +1,5 @@
 package Services.ServicesCSV;
 
-import Models.Interfaces.Users;
 import Models.Model.User;
 import Repository.Interfaces.UserRepository;
 import Services.Interfaces.UserServices;
@@ -37,7 +36,7 @@ public class UserService implements UserServices {
                 return false;
             }
         }
-        Users newUser = createNewUser(fullName, email, birthday, initialCash);
+        User newUser = createNewUser(fullName, email, birthday, initialCash);
         userRepository.addUser(newUser);
         return true;
     }
