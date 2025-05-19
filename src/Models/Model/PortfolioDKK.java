@@ -9,6 +9,8 @@ public class PortfolioDKK {
     private List<Holding> holdings;
     private double initialValue;
     private double liquidCash;
+    private final static String blue = "\u001B[34m";
+    private final static String standard = "\u001B[0m";
 
     public PortfolioDKK(List<Holding> holdings, double initialValue, double liquidCash) {
         this.holdings = holdings;
@@ -40,12 +42,13 @@ public class PortfolioDKK {
         return (getPortfolioValueInDKK() - initialValue) / (initialValue) * 100;
     }
 
-    public String toString() {
-        return "Started with: " + String.format("%.2f", initialValue) + " DKK" +
-                "\nCurrent liquid cash: " + String.format("%.2f", liquidCash) + " DKK" +
-                "\nCurrent portfolio value: " + String.format("%.2f", getPortfolioValueInDKK()) + " DKK" +
-                "\nP&L in DKK: " + String.format("%.2f", getProfitOrLossInDKK()) + " P&L in percentage: " +
-                String.format("%.2f", getProfitOrLossInPercentage()) + "%";
+
+    public String toString(){
+        return blue + "Started with: " + standard + String.format("%.2f", initialValue) + " DKK" +
+                blue + "\nCurrent liquid cash: " + standard + String.format("%.2f", liquidCash) + " DKK" +
+                blue + "\nCurrent portfolio value: " + standard + String.format("%.2f", getPortfolioValueInDKK()) + " DKK" +
+                blue + "\nP&L in DKK: " + standard + String.format("%.2f", getProfitOrLossInDKK()) + blue + " P&L in percentage: " +
+                standard + String.format("%.2f", getProfitOrLossInPercentage()) + "%";
     }
 
     public List<String> getPortfolioInformation() {

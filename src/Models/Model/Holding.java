@@ -1,12 +1,16 @@
 package Models.Model;
 
 import Models.Interfaces.Asset;
+import Models.Interfaces.Holdings;
+import org.w3c.dom.ls.LSOutput;
 
 public class Holding implements Comparable<Holding> {
 
     private Asset asset;
     private Currency currency;
     private int quantity;
+    private final static String blue = "\u001B[34m";
+    private final static String standard = "\u001B[0m";
 
     public Holding(Asset asset, Currency currency, int quantity) {
         this.asset = asset;
@@ -41,8 +45,13 @@ public class Holding implements Comparable<Holding> {
 
     public String toString() {
         return asset.getTicker() + " " + asset.getName() + " " + String.format("%.2f", this.getPriceInQuoteCurrency()) +
-                " DKK Amount: " + quantity + " Total value: " +
+                " DKK " + blue + "Amount: " + standard + quantity + blue + " Total value: " + standard +
                 String.format("%.2f", getValueOfHoldingInDKK()) + " DKK";
+    }
+
+    public String tableToString() {
+        return asset.getTicker() + " " + asset.getName() + " " + String.format("%.2f", this.getPriceInQuoteCurrency()) +
+                " DKK " + ";" + getQuantity() + ";" + String.format("%.2f", getValueOfHoldingInDKK()) + " DKK";
     }
 
     @Override

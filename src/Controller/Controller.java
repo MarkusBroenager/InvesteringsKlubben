@@ -3,11 +3,13 @@ package Controller;
 import Comparators.*;
 import Models.Interfaces.*;
 import Models.Model.*;
+import Models.Model.PortfolioDKK;
 import Services.Interfaces.*;
 import Services.ServicesCSV.DataServices;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -198,9 +200,11 @@ public class Controller {
     }
 
     private void viewBondMarket() {
+        List<String> bondList = new ArrayList<>();
         for (Bond bond : stockMarketService.getBonds()) {
-            System.out.println(bond);
+            bondList.add(bond.toString());
         }
+        printTable(bondList, "Name, Price, Coupon Rate, Maturity Date, Exchange, Rating, Last Updated ");
     }
 
     private void viewStocks() {
@@ -212,9 +216,11 @@ public class Controller {
     }
 
     private void viewForexMarket() {
+        List<String> forexMarket = new ArrayList<>();
         for (Currency currency : stockMarketService.getCurrencyList()) {
-            System.out.println(currency);
+            forexMarket.add(currency.toString());
         }
+        printTable(forexMarket, "Currency, Last updated");
     }
 
 
@@ -224,14 +230,18 @@ public class Controller {
     }
 
     private void viewTransactions(int memberID) {
+        List<String> transactionsList = new ArrayList<>();
         List<Transaction> transactions = transactionService.getTransactionsForUser(memberID);
         for (Transaction t : transactions) {
-            System.out.println(t);
+            transactionsList.add(t.toString());
         }
+        printTable(transactionsList, "Ordertype, quantity, ticker, currency, dateOfTransactions"  );
     }
 
     private void viewPersonalInformation(int memberID) {
+        System.out.println();
         System.out.println(userService.getUser(memberID));
+        System.out.println();
     }
 
     private void viewCombinedPortfolio() {
@@ -240,24 +250,29 @@ public class Controller {
     }
 
     private void printPortfolio(PortfolioDKK portfolio) {
+        System.out.println();
         System.out.println(portfolio);
+        System.out.println();
         for (String s : portfolio.getPortfolioInformation()) {
             System.out.println(s);
         }
+        System.out.println();
     }
 
     private void viewSectorDistribution() {
-        for (String s : portfolioService.getCombinedInvestmentPerSector()) {
-            System.out.println(s);
-        }
+        List<String> distributionList = new ArrayList<>();
+        System.out.println(portfolioService.getCombinedInvestmentPerSector().get(0));
+        distributionList.addAll(portfolioService.getCombinedInvestmentPerSector());
+        distributionList.remove(0);
+        printTable(distributionList, "Total invested in, percentage of total investment");
     }
 
     private void viewAllUsers() {
         List<String> userLines = new ArrayList<>();
         for (User u : userService.getUsers()) {
-            userLines.add(u.toString() + ";" + portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK());
+            userLines.add(u.otherToString() + ";" + portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK());
         }
-        printTable(userLines, "Full name,User ID,Born in,Email,Started investing in,Initial investment,Last update,Current portfolio value");
+        printTable(userLines, "Full name,User ID, Birthday, Email, Started investing in,Initial investment,Last update,Current portfolio value");
     }
 
     private boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash) {
@@ -422,21 +437,16 @@ public class Controller {
         totalLength += 1;
 
         //Top line of table
-        for(int i = 0; i < totalLength; i++) {
-            System.out.print('_');
-        }
-        System.out.print('\n');
+
+        printLine(totalLength);
 
         //Print titles
         for (int i = 0; i < splitTitles.length; i++) {
-            System.out.printf("| %-" + columLengths[i] + "s ", splitTitles[i]);
+            System.out.printf(blue + "|" + standard + " %-" + columLengths[i] + "s ", splitTitles[i]);
         }
-        System.out.print("|\n");
+        System.out.print(blue + "|\n" + standard);
         //midle line of table
-        for(int i = 0; i < totalLength; i++) {
-            System.out.print('_');
-        }
-        System.out.print('\n');
+       printLine(totalLength);
 
         //print entries
 
@@ -446,12 +456,24 @@ public class Controller {
             for (int k = 0; k < columLengths.length; k++) {
 
                 String[] entry = entries.get(i).split(";");
-                System.out.printf("| %-" + columLengths[k] + "s ", entry[k]);
+                System.out.printf(blue + "|" + standard + " %-" + columLengths[k] + "s ", entry[k]);
 
             }
-            System.out.print("|\n");
+            System.out.print(blue + "|\n" + standard);
 
         }
+
+        printLine(totalLength);
+        System.out.println();
+
+    }
+    private void printLine(int length) {
+        System.out.print(blue);
+        for(int i = 0; i < length; i++) {
+            System.out.print('_');
+        }
+        System.out.print(standard + "\n");
+
 
 
     }
