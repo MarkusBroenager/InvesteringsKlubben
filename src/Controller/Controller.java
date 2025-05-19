@@ -158,8 +158,7 @@ public class Controller {
         }
     }
 
-    private void printSortedPortfolios(List<PortfolioDKK> portfolioDKKS) {
-        List<PortfolioDKK> portfolios = portfolioDKKS;
+    private void printSortedPortfolios(List<PortfolioDKK> portfolios) {
         for (PortfolioDKK p : portfolios) {
             System.out.println(p);
             for (String s : p.getPortfolioInformation()) {
