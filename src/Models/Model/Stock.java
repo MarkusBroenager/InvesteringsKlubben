@@ -93,4 +93,5 @@ public class Stock implements Stocks, Asset, Comparable<Asset> {
                 currency + ';' + rating + ";" + String.format("%.2f", dividend) + "%;" + market +
                 ";" + lastUpdated;
     }
+
 }

@@ -13,6 +13,8 @@ public class User implements Users, Comparable<User> {
     private LocalDate birthday;
     private LocalDate createdAt;
     private LocalDate lastUpdated;
+    private final static String blue = "\u001B[34m";
+    private final static String standard = "\u001B[0m";
 
     public User(int userID, String fullName, String email, LocalDate birthday, double initialCash,
                 LocalDate createdAt, LocalDate lastUpdated) {
@@ -52,9 +54,17 @@ public class User implements Users, Comparable<User> {
 
     @Override
     public String toString() {
-        return fullName + ";" + userID + ";" + birthday + ";" +
-                email + ";" + createdAt + ";" +
-                String.format("%.2f", initialCash) + " DKK;" + lastUpdated;
+        return blue + "Full name: " + standard + fullName + ";  " +
+                blue + "User ID: " + standard + userID + ";  " + blue + "Birthday: " + standard + birthday + ";  " +
+                blue + "email: " + standard + email + ";  " + blue + "\nCreated at: " + standard + createdAt +
+                ";  " +
+                blue + "Initial cash: " + standard + String.format("%.2f", initialCash) + " DKK;  " +
+                blue + "Last updated: " + standard + lastUpdated;
+    }
+
+    public String otherToString() {
+        return fullName + ";" + userID + ";" + birthday + ";" + email + ";" + createdAt + ";" +
+                String.format("%.2f", initialCash) + ";" + lastUpdated;
     }
 
     @Override

@@ -216,11 +216,11 @@ public class Controller {
     }
 
     private void viewForexMarket() {
-        List<String> stockMarket = new ArrayList<>();
+        List<String> forexMarket = new ArrayList<>();
         for (Currencies currency : stockMarketService.getCurrencyList()) {
-            stockMarket.add(currency.toString());
+            forexMarket.add(currency.toString());
         }
-        printTable(stockMarket, "currency, quantity, ticker, price, last updated ");
+        printTable(forexMarket, "Currency, Last updated");
     }
 
 
@@ -239,7 +239,9 @@ public class Controller {
     }
 
     private void viewPersonalInformation(int memberID) {
+        System.out.println();
         System.out.println(userService.getUser(memberID));
+        System.out.println();
     }
 
     private void viewCombinedPortfolio() {
@@ -248,24 +250,29 @@ public class Controller {
     }
 
     private void printPortfolio(Portfolios portfolio) {
+        System.out.println();
         System.out.println(portfolio);
+        System.out.println();
         for (String s : portfolio.getPortfolioInformation()) {
             System.out.println(s);
         }
+        System.out.println();
     }
 
     private void viewSectorDistribution() {
-        for (String s : portfolioService.getCombinedInvestmentPerSector()) {
-            System.out.println(s);
-        }
+        List<String> distributionList = new ArrayList<>();
+        System.out.println(portfolioService.getCombinedInvestmentPerSector().get(0));
+        distributionList.addAll(portfolioService.getCombinedInvestmentPerSector());
+        distributionList.remove(0);
+        printTable(distributionList, "Total invested in, percentage of total investment");
     }
 
     private void viewAllUsers() {
         List<String> userLines = new ArrayList<>();
         for (User u : userService.getUsers()) {
-            userLines.add(u.toString() + ";" + portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK());
+            userLines.add(u.otherToString() + ";" + portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK());
         }
-        printTable(userLines, "Full name,User ID,Born in,Email,Started investing in,Initial investment,Last update,Current portfolio value");
+        printTable(userLines, "Full name,User ID, Birthday, Email, Started investing in,Initial investment,Last update,Current portfolio value");
     }
 
     private boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash) {
