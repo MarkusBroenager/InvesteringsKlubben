@@ -1,8 +1,6 @@
 package Models.Model;
 
 import Models.Interfaces.Asset;
-import Models.Interfaces.Holdings;
-import org.w3c.dom.ls.LSOutput;
 
 public class Holding implements Comparable<Holding> {
 
