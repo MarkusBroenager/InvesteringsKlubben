@@ -371,7 +371,7 @@ public class Controller {
                     "\nWhen your stated holding is " + holding.getQuantity());
             return false;
         }
-        return transactionService.addNewTransaction(memberID, LocalDate.now(), ticker, price, "DKK",
+        return transactionService.addNewTransaction(memberID, LocalDate.now(), ticker, price, asset.getCurrency(),
                 orderType, quantity);
     }
 
