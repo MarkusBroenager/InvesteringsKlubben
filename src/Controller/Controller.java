@@ -160,8 +160,7 @@ public class Controller {
         }
     }
 
-    private void printSortedPortfolios(List<PortfolioDKK> portfolioDKKS) {
-        List<PortfolioDKK> portfolios = portfolioDKKS;
+    private void printSortedPortfolios(List<PortfolioDKK> portfolios) {
         for (PortfolioDKK p : portfolios) {
             System.out.println(p);
             for (String s : p.getPortfolioInformation()) {
@@ -387,7 +386,7 @@ public class Controller {
                     "\nWhen your stated holding is " + holding.getQuantity());
             return false;
         }
-        return transactionService.addNewTransaction(memberID, LocalDate.now(), ticker, price, "DKK",
+        return transactionService.addNewTransaction(memberID, LocalDate.now(), ticker, price, asset.getCurrency(),
                 orderType, quantity);
     }
 

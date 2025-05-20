@@ -105,8 +105,13 @@ public class PortfolioService implements PortfolioServices {
                 if (asset == null) {
                     asset = bondRepository.getBondFromTicker(k);
                 }
-                Currency currency = currencyRepository.getCurrencyFromBaseCurrency(asset.getCurrency());
-                holdings.add(new Holding(asset, currency, v));
+                if (asset != null) {
+                    Currency currency = currencyRepository.getCurrencyFromBaseCurrency(asset.getCurrency());
+                    holdings.add(new Holding(asset, currency, v));
+                } else {
+                    //TODO
+                    // - add holding for asset removed from stockmarket
+                }
             }
             /*else{
                 tickerAndQuantity.remove(k);
