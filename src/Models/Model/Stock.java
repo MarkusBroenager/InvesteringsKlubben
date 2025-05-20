@@ -63,6 +63,14 @@ public class Stock implements  Asset, Comparable<Asset> {
         return this.lastUpdated;
     }
 
+    public double getDivident() {
+        return this.dividend;
+    }
+
+    public String getRating() {
+        return this.rating;
+    }
+
     @Override
     public int compareTo(Asset otherAsset) {
         return Asset.super.compareTo(otherAsset);
@@ -81,4 +89,5 @@ public class Stock implements  Asset, Comparable<Asset> {
                 currency + ';' + rating + ";" + String.format("%.2f", dividend) + "%;" + market +
                 ";" + lastUpdated;
     }
+
 }

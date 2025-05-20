@@ -16,6 +16,8 @@ public class PortfolioService implements PortfolioServices {
     private BondRepository bondRepository;
     private TransactionRepository transactionRepository;
     private UserRepository userRepository;
+    private final static String blue = "\u001B[34m";
+    private final static String standard = "\u001B[0m";
     //TODO: Skal portfolioServicen intereager med repositories eller service klaserne
 
     public PortfolioService(CurrencyRepository currencyRepository, StockMarketRepository stockMarketRepository,
@@ -52,7 +54,8 @@ public class PortfolioService implements PortfolioServices {
         double liquidCash = portfolio.getLiquidCash();
         String sector = holdings.get(0).getSector();
         double sectorInvestment = 0;
-        sectorList.add("Total cash: " + String.format("%.2f", liquidCash) + " DKK Percentage of portfolio: " +
+        sectorList.add(blue + "Total cash: " + standard + String.format("%.2f", liquidCash) +
+                blue + " DKK Percentage of portfolio: " + standard +
                 String.format("%.2f", portfolio.getPercentageOfPortfolio(liquidCash)) + "%");
         for (Holding holding : holdings) {
             if (sector.equalsIgnoreCase(holding.getSector())) {
@@ -113,7 +116,7 @@ public class PortfolioService implements PortfolioServices {
             }*/
         });
 
-        Collections.sort(holdings.reversed());
+        Collections.reverse(holdings);
         return new PortfolioDKK(holdings, initialCash, getLiquidCash(transactions, initialCash));
     }
 
@@ -146,8 +149,7 @@ public class PortfolioService implements PortfolioServices {
     }
 
     private void addToSectorList(List<String> sectorList, String sector, double sectorInvestment, PortfolioDKK portfolio) {
-        sectorList.add("Total invested in: " + sector + " is: " + String.format("%.2f", sectorInvestment) +
-                " DKK Percentage of total investment: " +
+        sectorList.add(sector + " is: " + String.format("%.2f", sectorInvestment) + ";" +
                 String.format("%.2f", portfolio.getPercentageOfPortfolio(sectorInvestment)) + "%");
     }
 
