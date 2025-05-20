@@ -1,5 +1,7 @@
 package Services.ServicesCSV;
 
+import Comparators.HoldingSortBySector;
+import Comparators.sortSectorByTotalValueOfPortfolio;
 import Models.Interfaces.Asset;
 import Models.Model.*;
 import Models.Model.Currency;
@@ -16,6 +18,8 @@ public class PortfolioService implements PortfolioServices {
     private BondRepository bondRepository;
     private TransactionRepository transactionRepository;
     private UserRepository userRepository;
+    private HoldingSortBySector holdingSortBySector = new HoldingSortBySector();
+    private sortSectorByTotalValueOfPortfolio sortSectorByTotalValueOfPortfolio = new sortSectorByTotalValueOfPortfolio();
     private final static String blue = "\u001B[34m";
     private final static String standard = "\u001B[0m";
     //TODO: Skal portfolioServicen intereager med repositories eller service klaserne
@@ -50,14 +54,14 @@ public class PortfolioService implements PortfolioServices {
     public List<String> getCombinedInvestmentPerSector() {
         List<String> sectorList = new ArrayList<>();
         PortfolioDKK portfolio = getCombinedUserPortfolio();
-        List<Holding> holdings = portfolio.getHoldings();
+        List<Holding> holdingsSortedBySector = portfolio.getHoldings();
+        holdingsSortedBySector.sort(holdingSortBySector);
         double liquidCash = portfolio.getLiquidCash();
-        String sector = holdings.get(0).getSector();
+        String sector = holdingsSortedBySector.get(0).getSector();
         double sectorInvestment = 0;
-        sectorList.add(blue + "Total cash: " + standard + String.format("%.2f", liquidCash) +
-                blue + " DKK Percentage of portfolio: " + standard +
-                String.format("%.2f", portfolio.getPercentageOfPortfolio(liquidCash)) + "%");
-        for (Holding holding : holdings) {
+        sectorList.add("Cash: " + String.format("%.2f", liquidCash)
+                + ";" + String.format("%.2f", portfolio.getPercentageOfPortfolio(liquidCash)) + "%");
+        for (Holding holding : holdingsSortedBySector) {
             if (sector.equalsIgnoreCase(holding.getSector())) {
                 sectorInvestment += holding.getValueOfHoldingInDKK();
             } else if (!sector.equalsIgnoreCase(holding.getSector())) {
@@ -71,6 +75,7 @@ public class PortfolioService implements PortfolioServices {
         if (!sectorList.contains(sector)) {
             addToSectorList(sectorList, sector, sectorInvestment, portfolio);
         }
+        sectorList.sort(sortSectorByTotalValueOfPortfolio);
         return sectorList;
     }
 

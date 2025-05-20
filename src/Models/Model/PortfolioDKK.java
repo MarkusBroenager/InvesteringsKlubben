@@ -1,6 +1,7 @@
 package Models.Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PortfolioDKK {
@@ -43,7 +44,7 @@ public class PortfolioDKK {
     }
 
 
-    public String toString(){
+    public String toString() {
         return blue + "Started with: " + standard + String.format("%.2f", initialValue) + " DKK" +
                 blue + "\nCurrent liquid cash: " + standard + String.format("%.2f", liquidCash) + " DKK" +
                 blue + "\nCurrent portfolio value: " + standard + String.format("%.2f", getPortfolioValueInDKK()) + " DKK" +
@@ -53,7 +54,10 @@ public class PortfolioDKK {
 
     public List<String> getPortfolioInformation() {
         List<String> portfolioInformation = new ArrayList<>();
-        for (Holding holding : holdings) {
+        List<Holding> allHoldings = holdings;
+        Collections.sort(allHoldings);
+        Collections.reverse(allHoldings);
+        for (Holding holding : allHoldings) {
             if (holding.getQuantity() != 0) {
                 portfolioInformation.add(holding + " " +
                         String.format("%.2f", getPercentageOfPortfolio(holding.getValueOfHoldingInDKK())) +

@@ -260,9 +260,7 @@ public class Controller {
 
     private void viewSectorDistribution() {
         List<String> distributionList = new ArrayList<>();
-        System.out.println(portfolioService.getCombinedInvestmentPerSector().get(0));
         distributionList.addAll(portfolioService.getCombinedInvestmentPerSector());
-        distributionList.remove(0);
         printTable(distributionList, "Total invested in, percentage of total investment");
     }
 
