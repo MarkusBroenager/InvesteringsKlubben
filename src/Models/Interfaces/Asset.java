@@ -9,6 +9,7 @@ public interface Asset {
     double getPrice();
     String getCurrency();
     String getSector();
+    //TODO : unused variable
     LocalDate getLastUpdated();
 
     default int compareTo(Asset otherAsset){

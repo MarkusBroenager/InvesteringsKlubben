@@ -5,7 +5,7 @@ import Models.Interfaces.Asset;
 import java.time.LocalDate;
 
 public class Stock implements  Asset, Comparable<Asset> {
-
+//TODO : Unused getters
     private String ticker;
     private String name;
     private String sector;
