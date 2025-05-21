@@ -343,14 +343,18 @@ public class Controller {
             }
         }
     }
-
+    //TODO Burde vi overhoved bruge matches metoden
     private String getValidName() {
         String input;
+        boolean isInvalidName;
         do {
             input = getNonEmptyString();
-
-//TODO Burde vi overhoved bruge matches metoden
-        } while (!input.matches("[a-zA-ZæøåÆØÅ ]+$"));
+            isInvalidName = !input.matches("[a-zA-ZæøåÆØÅ ]+$");
+            if(isInvalidName){
+                System.out.println("You may only use characters from the danish alphabet, therefore "  + input +
+                        " is not accepted\nPlease type a different name:");
+            }
+        } while (isInvalidName);
         return input;
     }
 
