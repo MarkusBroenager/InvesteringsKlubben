@@ -20,10 +20,6 @@ public class TransactionService implements TransactionServices {
         this.currencyRepository = currencyRepository;
     }
 
-    public TransactionService() {
-
-    }
-
     @Override
     public boolean addNewTransaction(int userID, LocalDate dateOfTransaction, String ticker,
                                      double price, String currency, String orderType, int quantity) {
@@ -55,10 +51,9 @@ public class TransactionService implements TransactionServices {
     }
 
     private int getUniqueID() {
+        //bedre navngivning
         List<Transaction> transactions = transactionRepository.getAllTransactions();
         Collections.sort(transactions);
         return transactions.get(transactions.size()-1).getTransactionID() + 1;
     }
-
-
 }

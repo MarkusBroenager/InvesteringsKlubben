@@ -1,15 +1,14 @@
 package Controller;
 
-import Comparators.*;
+import Comparators.ProfitAndLossInDKKComparator;
+import Comparators.ProfitAndLossInPercentageComparator;
 import Models.Interfaces.*;
 import Models.Model.*;
-import Models.Model.PortfolioDKK;
 import Services.Interfaces.*;
 import Services.ServicesCSV.DataServices;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,7 +39,7 @@ public class Controller {
         boolean isRunning = true;
         System.out.println();
         while (isRunning) {
-
+            //Clear messaging
             printMenu(new String[]{"_________", "1 - Member", "2 - Leader", "0 - Exit", "_________"});
 
 
@@ -135,6 +134,7 @@ public class Controller {
                     viewSectorDistribution();
                     break;
                 case 4:
+                    //Sin egen metode
                     System.out.println("Enter full name: ");
                     String fullName = getValidName();
                     System.out.println("Enter email: ");
@@ -224,6 +224,7 @@ public class Controller {
 
 
     private void viewPortfolio(int memberID) {
+        //Bedre UI?
         PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
         printPortfolio(portfolio);
     }
@@ -259,6 +260,7 @@ public class Controller {
     }
 
     private void viewSectorDistribution() {
+        //Bør vi visse liquid cash
         List<String> distributionList = new ArrayList<>();
         distributionList.addAll(portfolioService.getCombinedInvestmentPerSector());
         printTable(distributionList, "Total invested in, percentage of total investment");
@@ -342,8 +344,8 @@ public class Controller {
         do {
             input = getNonEmptyString();
 
-//TODO ???????????????????????????
-        } while (!input.matches("[a-zA-Z ]+$"));
+//TODO Burde vi overhoved bruge matches metoden
+        } while (!input.matches("[a-zA-ZæøåÆØÅ ]+$"));
         return input;
     }
 
@@ -361,8 +363,6 @@ public class Controller {
         String orderType = getTransactionType();
         System.out.println("Enter ticker");
         String ticker = getValidTicker();
-        /*System.out.println("Enter currency");
-        String currency = getNonEmptyString();*/
         System.out.println("Enter quantity");
         int quantity = getUserChoice(1000000000);
         double price;
@@ -470,9 +470,5 @@ public class Controller {
             System.out.print('_');
         }
         System.out.print(standard + "\n");
-
-
-
     }
-
 }

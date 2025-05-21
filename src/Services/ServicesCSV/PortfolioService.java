@@ -20,6 +20,7 @@ public class PortfolioService implements PortfolioServices {
     private UserRepository userRepository;
     private HoldingSortBySector holdingSortBySector = new HoldingSortBySector();
     private sortSectorByTotalValueOfPortfolio sortSectorByTotalValueOfPortfolio = new sortSectorByTotalValueOfPortfolio();
+    //TODO : Unused variables
     private final static String blue = "\u001B[34m";
     private final static String standard = "\u001B[0m";
     //TODO: Skal portfolioServicen intereager med repositories eller service klaserne
@@ -80,11 +81,6 @@ public class PortfolioService implements PortfolioServices {
     }
 
     @Override
-    public List<String> getCombinedInvestmentPerStock() {
-        return List.of();
-    }
-
-    @Override
     public List<PortfolioDKK> getAllPortfolios() {
         List<PortfolioDKK> allPortfolios = new ArrayList<>();
         for (User user : userRepository.getUsers()) {
@@ -121,9 +117,6 @@ public class PortfolioService implements PortfolioServices {
                     // - add holding for asset removed from stockmarket
                 }
             }
-            /*else{
-                tickerAndQuantity.remove(k);
-            }*/
         });
 
         Collections.reverse(holdings);

@@ -9,7 +9,6 @@ public interface Asset {
     double getPrice();
     String getCurrency();
     String getSector();
-    LocalDate getLastUpdated();
 
     default int compareTo(Asset otherAsset){
         if(this.getSector().compareTo(otherAsset.getSector()) == 0){

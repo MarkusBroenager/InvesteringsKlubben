@@ -59,7 +59,7 @@ public class StockMarketService implements StockMarketServices {
     public Stock getStock(String ticker) {
         return stockMarketRepository.getStockFromTicker(ticker);
     }
-
+    //TODO : Unused method
     public Stock getStockInDKK(String ticker) {
         Stock stock = stockMarketRepository.getStockFromTicker(ticker);
         if (stock != null) {

@@ -5,7 +5,7 @@ import Models.Interfaces.Asset;
 import java.time.LocalDate;
 
 public class Stock implements  Asset, Comparable<Asset> {
-
+//TODO : Unused getters
     private String ticker;
     private String name;
     private String sector;
@@ -45,10 +45,6 @@ public class Stock implements  Asset, Comparable<Asset> {
         return sector;
     }
 
-    public String getMarket() {
-        return market;
-    }
-
     @Override
     public String getCurrency() {
         return currency;
@@ -57,18 +53,6 @@ public class Stock implements  Asset, Comparable<Asset> {
     @Override
     public double getPrice() {
         return price;
-    }
-
-    public LocalDate getLastUpdated(){
-        return this.lastUpdated;
-    }
-
-    public double getDivident() {
-        return this.dividend;
-    }
-
-    public String getRating() {
-        return this.rating;
     }
 
     @Override

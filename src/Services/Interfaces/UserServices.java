@@ -11,7 +11,7 @@ public interface UserServices {
 
     User getUser(int userID);
 
-    public int getHighestUserId();
+    int getHighestUserId();
 
     boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash);
 
