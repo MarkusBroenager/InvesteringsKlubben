@@ -280,17 +280,30 @@ public class Controller {
 
     private int getUserChoice(int choiceUpperBoundary) {
         int userInput;
-
+        boolean isInvalidChoice;
+        String invalidInput;
         do {
             //While loop skips every token (non-number input) until there is a number,
             //then the loop ends and that number is saved in userInput
             while (!this.SCANNER.hasNextInt()) {
 
-                this.SCANNER.next();
+                invalidInput = this.SCANNER.nextLine();
+                //Printing error message
+                if(!invalidInput.matches("[0-" + choiceUpperBoundary + "]+$")){
+                    System.out.println("You can choose between 0 and " + choiceUpperBoundary + " Your choice of (" +
+                            invalidInput + ") is therefore not valid\nPlease type a number between 0 and " +
+                            choiceUpperBoundary + ":");
+                }
 
             }
             userInput = this.SCANNER.nextInt();
             this.SCANNER.nextLine();
+            isInvalidChoice = userInput > choiceUpperBoundary || userInput < 0;
+            if(isInvalidChoice){
+                System.out.println("You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
+                        userInput + ") is therefore not valid\nPlease type a number between 0 and " +
+                        choiceUpperBoundary + ":");
+            }
         } while (userInput > choiceUpperBoundary || userInput < 0);
 
         return userInput;
@@ -335,25 +348,37 @@ public class Controller {
             //TODO: is this an interresting check
             if (!date.isAfter(LocalDate.now()) && date.isAfter(LocalDate.now().minusYears(120))) {
                 return DataServices.getLocalDate(input);
+            }else{
+                System.out.println("This birthdate (" + input + ") is to old, in the future, or otherwise not valid\n" +
+                        "Please type a different birthDate");
             }
         }
     }
-
+    //TODO Burde vi overhoved bruge matches metoden
     private String getValidName() {
         String input;
+        boolean isInvalidName;
         do {
             input = getNonEmptyString();
-
-//TODO Burde vi overhoved bruge matches metoden
-        } while (!input.matches("[a-zA-ZæøåÆØÅ ]+$"));
+            isInvalidName = !input.matches("[a-zA-ZæøåÆØÅ ]+$");
+            if(isInvalidName){
+                System.out.println("You may only use characters from the danish alphabet, therefore ("  + input +
+                        ") is not accepted\nPlease type a different name:");
+            }
+        } while (isInvalidName);
         return input;
     }
 
     private LocalDate getValidBirthday() {
         LocalDate input;
+        boolean isInvalid;
         do {
             input = getLocalDate();
-        } while (input.isAfter(LocalDate.now().minusYears(18)));
+            isInvalid = input.isAfter(LocalDate.now().minusYears(18));
+            if(isInvalid){
+                System.out.println("This Person is not over 18\nPlease type a different birthdate");
+            }
+        } while (isInvalid);
         return input;
     }
 
@@ -390,17 +415,27 @@ public class Controller {
 
     private String getTransactionType() {
         String input;
+        boolean isInvalid;
         do {
             input = getNonEmptyString();
-        } while (!input.equalsIgnoreCase("buy") && !input.equalsIgnoreCase("sell"));
+            isInvalid = !input.equalsIgnoreCase("buy") && !input.equalsIgnoreCase("sell");
+            if(isInvalid){
+                System.out.println("The given input (" + input + ") does not equal \"buy\" or \"sell\"");
+            }
+        } while (isInvalid);
         return input;
     }
 
     private String getValidTicker() {
         String input;
+        boolean isInvalid;
         do {
             input = getNonEmptyString().toUpperCase();
-        } while (stockMarketService.getAsset(input) == null);
+            isInvalid = stockMarketService.getAsset(input) == null;
+            if(isInvalid){
+                System.out.println("The given ticker (" + input + ") could not be found\nPlease try again:");
+            }
+        } while (isInvalid);
         return input;
     }
 
