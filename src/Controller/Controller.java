@@ -261,6 +261,8 @@ public class Controller {
 
     private void viewSectorDistribution() {
         //Bør vi visse liquid cash
+        PortfolioDKK combinedPortfolio = portfolioService.getCombinedUserPortfolio();
+        System.out.println(combinedPortfolio);
         List<String> distributionList = new ArrayList<>();
         distributionList.addAll(portfolioService.getCombinedInvestmentPerSector());
         printTable(distributionList, "Total invested in, percentage of total investment");

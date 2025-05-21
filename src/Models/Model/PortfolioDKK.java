@@ -68,7 +68,7 @@ public class PortfolioDKK {
     }
 
     public double getPercentageOfPortfolio(double value) {
-        return ((value - getPortfolioValueInDKK()) / (getPortfolioValueInDKK()) * 100) + 100;
+        return ((value - (getPortfolioValueInDKK()-liquidCash)) / ((getPortfolioValueInDKK()-liquidCash)) * 100) + 100;
     }
 
     public Holding getHoldingFromTicker(String ticker) {

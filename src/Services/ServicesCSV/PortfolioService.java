@@ -60,8 +60,6 @@ public class PortfolioService implements PortfolioServices {
         double liquidCash = portfolio.getLiquidCash();
         String sector = holdingsSortedBySector.get(0).getSector();
         double sectorInvestment = 0;
-        sectorList.add("Cash: " + String.format("%.2f", liquidCash)
-                + ";" + String.format("%.2f", portfolio.getPercentageOfPortfolio(liquidCash)) + "%");
         for (Holding holding : holdingsSortedBySector) {
             if (sector.equalsIgnoreCase(holding.getSector())) {
                 sectorInvestment += holding.getValueOfHoldingInDKK();
