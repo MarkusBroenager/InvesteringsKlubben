@@ -67,7 +67,7 @@ public class Controller {
     private void memberUI() { //
         boolean isRunning = true;
         System.out.println("Enter you memberID");
-        int memberID = getUserChoice(userService.getHighestUserId());
+        int memberID = getUserChoice(userService.getHighestUserId(),true);
         if (memberID == 0) {
             return;
         }
@@ -281,20 +281,30 @@ public class Controller {
     }
 
     private int getUserChoice(int choiceUpperBoundary) {
+        return getUserChoice(choiceUpperBoundary,false);
+    }
+
+    private int getUserChoice(int choiceUpperBoundary, boolean hidden) {
         int userInput;
         boolean isInvalidChoice;
-        String invalidInput;
+        String input;
         do {
             //While loop skips every token (non-number input) until there is a number,
             //then the loop ends and that number is saved in userInput
             while (!this.SCANNER.hasNextInt()) {
 
-                invalidInput = this.SCANNER.nextLine();
+                input = this.SCANNER.nextLine();
                 //Printing error message
-                if(!invalidInput.matches("[0-" + choiceUpperBoundary + "]+$")){
-                    System.out.println("You can choose between 0 and " + choiceUpperBoundary + " Your choice of (" +
-                            invalidInput + ") is therefore not valid\nPlease type a number between 0 and " +
-                            choiceUpperBoundary + ":");
+                if(!input.matches("[0-" + choiceUpperBoundary + "]+$")){
+                    String message;
+                    if(hidden){
+                        message = "Your input of (" + input + ") cannot be accepted\nPlease type your user ID";
+                    }else {
+                        message = "You can choose between 0 and " + choiceUpperBoundary + " Your choice of (" +
+                                input + ") is therefore not valid\nPlease type a number between 0 and " +
+                                choiceUpperBoundary + ":";
+                    }
+                    System.out.println(message);
                 }
 
             }
@@ -302,9 +312,15 @@ public class Controller {
             this.SCANNER.nextLine();
             isInvalidChoice = userInput > choiceUpperBoundary || userInput < 0;
             if(isInvalidChoice){
-                System.out.println("You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
-                        userInput + ") is therefore not valid\nPlease type a number between 0 and " +
-                        choiceUpperBoundary + ":");
+                String message;
+                if(hidden){
+                    message = "Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID";
+                }else {
+                    message = "You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
+                            userInput + ") is therefore not valid\nPlease type a number between 0 and " +
+                            choiceUpperBoundary + ":";
+                }
+                System.out.println(message);
             }
         } while (userInput > choiceUpperBoundary || userInput < 0);
 
