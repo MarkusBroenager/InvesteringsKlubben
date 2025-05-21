@@ -81,11 +81,6 @@ public class PortfolioService implements PortfolioServices {
     }
 
     @Override
-    public List<String> getCombinedInvestmentPerStock() {
-        return List.of();
-    }
-
-    @Override
     public List<PortfolioDKK> getAllPortfolios() {
         List<PortfolioDKK> allPortfolios = new ArrayList<>();
         for (User user : userRepository.getUsers()) {

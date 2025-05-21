@@ -1,9 +1,9 @@
 package Controller;
 
-import Comparators.*;
+import Comparators.ProfitAndLossInDKKComparator;
+import Comparators.ProfitAndLossInPercentageComparator;
 import Models.Interfaces.*;
 import Models.Model.*;
-import Models.Model.PortfolioDKK;
 import Services.Interfaces.*;
 import Services.ServicesCSV.DataServices;
 
@@ -345,7 +345,7 @@ public class Controller {
             input = getNonEmptyString();
 
 //TODO Burde vi overhoved bruge matches metoden
-        } while (!input.matches("[a-zA-Z ]+$"));
+        } while (!input.matches("[a-zA-ZæøåÆØÅ ]+$"));
         return input;
     }
 

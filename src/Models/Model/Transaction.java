@@ -42,11 +42,6 @@ public class Transaction implements Comparable<Transaction> {
         return price * quantity;
     }
 
-//TODO : unused method
-    public LocalDate getDateOfTransaction() {
-        return dateOfTransaction;
-    }
-
     public int getTransactionID() {
         return transactionID;
     }
