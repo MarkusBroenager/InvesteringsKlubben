@@ -280,7 +280,7 @@ public class Controller {
 
     private int getUserChoice(int choiceUpperBoundary) {
         int userInput;
-
+        boolean isInvalidChoice;
         do {
             //While loop skips every token (non-number input) until there is a number,
             //then the loop ends and that number is saved in userInput
@@ -291,6 +291,11 @@ public class Controller {
             }
             userInput = this.SCANNER.nextInt();
             this.SCANNER.nextLine();
+            isInvalidChoice = userInput > choiceUpperBoundary || userInput < 0;
+            if(isInvalidChoice){
+                System.out.println("You can choose between 0 and " + choiceUpperBoundary + ". Your choice of " +
+                        userInput + " is therefore not valid");
+            }
         } while (userInput > choiceUpperBoundary || userInput < 0);
 
         return userInput;
