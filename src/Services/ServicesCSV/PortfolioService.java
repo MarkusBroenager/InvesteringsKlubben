@@ -20,10 +20,6 @@ public class PortfolioService implements PortfolioServices {
     private UserRepository userRepository;
     private HoldingSortBySector holdingSortBySector = new HoldingSortBySector();
     private sortSectorByTotalValueOfPortfolio sortSectorByTotalValueOfPortfolio = new sortSectorByTotalValueOfPortfolio();
-    //TODO : Unused variables
-    private final static String blue = "\u001B[34m";
-    private final static String standard = "\u001B[0m";
-    //TODO: Skal portfolioServicen intereager med repositories eller service klaserne
 
     public PortfolioService(CurrencyRepository currencyRepository, StockMarketRepository stockMarketRepository,
                             BondRepository bondRepository, TransactionRepository transactionRepository,
@@ -48,7 +44,7 @@ public class PortfolioService implements PortfolioServices {
         for (User u : userRepository.getUsers()) {
             combinedCash += u.getInitialCash();
         }
-        String fullName = " ";
+        String fullName = "Combined portfolio ";
         return createPortfolio(combinedCash, transactionRepository.getAllTransactions(), fullName);
     }
 

@@ -15,9 +15,7 @@ import java.util.Scanner;
 
 public class Controller {
     //TODO :
-    // - rotate menus to make more sense
     // - Use ColorService everywhere
-    // - Comments
     // - Check all comments
     private StockMarketServices stockMarketService;
     private TransactionServices transactionService;
@@ -29,10 +27,10 @@ public class Controller {
 //TODO improve string names
 // - Show profit and losses in red if negativ and green otherwise
 
-    private final String blue = ColorService.getBlueColor();
-    private final String standard = ColorService.getStandardColor();
-    private final String redBackground = ColorService.getRedBackgroundColor();
-    private final String tableSeperator = blue + "|" + standard;
+    private final String BLUE;
+    private final String STANDARD;
+    private final String RED_BACKGROUND;
+    private final String TABLE_SEPERATOR;
 
     public Controller(StockMarketServices stockMarketService, TransactionServices transactionService,
                       UserServices userService, PortfolioServices portfolioService) {
@@ -40,6 +38,11 @@ public class Controller {
         this.transactionService = transactionService;
         this.userService = userService;
         this.portfolioService = portfolioService;
+        //setting colors
+        this.BLUE = ColorService.getBlueColor();
+        this.STANDARD = ColorService.getStandardColor();
+        this.RED_BACKGROUND = ColorService.getRedBackgroundColor();
+        this.TABLE_SEPERATOR = BLUE + "|" + STANDARD;
     }
 
     public void start() {
@@ -81,13 +84,13 @@ public class Controller {
         System.out.print('\n');
         //print entries
         for (int index = 0; index < menuPoints.length - 1; index++) {
-            System.out.printf(tableSeperator + " %-" + lengthOfMenu + "s " + tableSeperator + '\n',menuPoints[index]);
+            System.out.printf(TABLE_SEPERATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPERATOR + '\n',menuPoints[index]);
         }
         //print exit/back option
-        System.out.print(tableSeperator + ' ');
+        System.out.print(TABLE_SEPERATOR + ' ');
         printLine(lengthOfMenu, '-');
-        System.out.print(' ' + tableSeperator + '\n');
-        System.out.printf(tableSeperator + " %-" + lengthOfMenu + "s " + tableSeperator + '\n',menuPoints[menuPoints.length - 1]);
+        System.out.print(' ' + TABLE_SEPERATOR + '\n');
+        System.out.printf(TABLE_SEPERATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPERATOR + '\n',menuPoints[menuPoints.length - 1]);
         printLine(lengthOfMenu + 4);
         System.out.print('\n');
     }
@@ -178,7 +181,7 @@ public class Controller {
         System.out.print("Enter full name: ");
         String fullName = getValidName();
         System.out.print("Enter email: ");
-        String email = getNonEmptyString();
+        String email = getValidEmail();
         System.out.print("Enter birthday(year-month-day): ");
         LocalDate birthday = getValidBirthday();
         System.out.print("Enter initial cash: ");
@@ -266,7 +269,7 @@ public class Controller {
         for (Transaction t : transactions) {
             transactionsList.add(t.toString());
         }
-        printTable(transactionsList, "Ordertype, quantity, ticker, currency, dateOfTransactions");
+        printTable(transactionsList, "Order type, quantity, ticker, currency, dateOfTransactions");
     }
 
     private void viewPersonalInformation(int memberID) {
@@ -346,10 +349,10 @@ public class Controller {
             if(!isValidChoice){
                 String message;
                 if(hidden){
-                    message = ColorService.colorText("---Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID---", redBackground);
+                    message = ColorService.colorText("---Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID---", RED_BACKGROUND);
                 }else {
                     message = ColorService.colorText("---You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
-                            userInput + ") is therefore not valid---", redBackground) + "\nPlease type a number between 0 and " +
+                            userInput + ") is therefore not valid---", RED_BACKGROUND) + "\nPlease type a number between 0 and " +
                             choiceUpperBoundary + ":";
                 }
                 System.out.println(message);
@@ -400,7 +403,7 @@ public class Controller {
                 return DataServices.getLocalDate(input);
             }else{
                 System.out.print(ColorService.colorText("--This birthdate (" + input + ") is to old, in the future, or otherwise not" +
-                        " valid---", redBackground) +"\nPlease type a different birthDate:");
+                        " valid---", RED_BACKGROUND) +"\nPlease type a different birthDate:");
             }
         }
     }
@@ -413,9 +416,24 @@ public class Controller {
             isValidName = input.matches("[a-zA-ZæøåÆØÅ ]+$");
             if(!isValidName){
                 System.out.print(ColorService.colorText("---You may only use characters from the danish alphabet, therefore ("  + input +
-                        ") is not accepted---", redBackground) + "\nPlease type a different name:");
+                        ") is not accepted---", RED_BACKGROUND) + "\nPlease type a different name:");
             }
         } while (!isValidName);
+        return input;
+    }
+
+    private String getValidEmail() {
+        String input;
+        String acceptedCharacters = "[a-zA-ZæøåÆØÅ._%+-]";
+        boolean isValidEmail;
+        do {
+            input = getNonEmptyString();
+            isValidEmail = input.matches(acceptedCharacters + "+@" + acceptedCharacters + "+\\." + acceptedCharacters + "+$");
+            if(!isValidEmail){
+                System.out.print(ColorService.colorText("---You may only use characters from the danish alphabet in the form (example@domain.host), therefore ("  + input +
+                        ") is not accepted---", RED_BACKGROUND) + "\nPlease type a different email address:");
+            }
+        } while (!isValidEmail);
         return input;
     }
 
@@ -426,7 +444,8 @@ public class Controller {
             input = getLocalDate();
             isValid = input.isBefore(LocalDate.now().minusYears(18));
             if(!isValid){
-                System.out.print(ColorService.colorText("---This Person is not over 18---", redBackground) + "\nPlease type a different birthdate:");
+                System.out.print(ColorService.colorText("---This Person is not over 18---", RED_BACKGROUND) +
+                        "\nPlease type a different birthdate:");
             }
         } while (!isValid);
         return input;
@@ -447,16 +466,16 @@ public class Controller {
         Holding holding = portfolio.getHoldingFromTicker(ticker);
         if (orderType.equalsIgnoreCase("buy") && (price * quantity > portfolio.getLiquidCash())) {
             System.out.println(ColorService.colorText("---You cannot afford " + quantity + " stocks for " + price + " each for a total of " +
-                    price * quantity + ", when your stated liquid cash is " + portfolio.getLiquidCash() + "---", redBackground));
+                    price * quantity + ", when your stated liquid cash is " + portfolio.getLiquidCash() + "---", RED_BACKGROUND));
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
                 (holding == null)) {
-            System.out.println(ColorService.colorText("---you don't hold any " + ticker + "---", redBackground));
+            System.out.println(ColorService.colorText("---you don't hold any " + ticker + "---", RED_BACKGROUND));
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
                 (quantity > holding.getQuantity())) {
             System.out.println(ColorService.colorText("---You cannot sell " + quantity + " stocks from " + ticker +
-                    ", when your stated holding is " + holding.getQuantity() + "---", redBackground));
+                    ", when your stated holding is " + holding.getQuantity() + "---", RED_BACKGROUND));
             return false;
         }
         return transactionService.addNewTransaction(memberID, LocalDate.now(), ticker, price, asset.getCurrency(),
@@ -470,7 +489,7 @@ public class Controller {
             input = getNonEmptyString();
             isValid = input.equalsIgnoreCase("buy") || input.equalsIgnoreCase("sell");
             if(!isValid){
-                System.out.println(ColorService.colorText("---The given input (" + input + ") does not equal \"buy\" or \"sell\"---", redBackground));
+                System.out.println(ColorService.colorText("---The given input (" + input + ") does not equal \"buy\" or \"sell\"---", RED_BACKGROUND));
             }
         } while (!isValid);
         return input;
@@ -483,7 +502,7 @@ public class Controller {
             input = getNonEmptyString().toUpperCase();
             isValid = stockMarketService.getAsset(input) != null;
             if(!isValid){
-                System.out.println(ColorService.colorText("---The given ticker (" + input + ") could not be found---", redBackground)
+                System.out.println(ColorService.colorText("---The given ticker (" + input + ") could not be found---", RED_BACKGROUND)
                         + "\nPlease try again:");
             }
         } while (!isValid);
@@ -525,9 +544,9 @@ public class Controller {
         System.out.print('\n');
         //Print titles
         for (int i = 0; i < splitTitles.length; i++) {
-            System.out.printf(tableSeperator + " %-" + columLengths[i] + "s ", splitTitles[i]);
+            System.out.printf(TABLE_SEPERATOR + " %-" + columLengths[i] + "s ", splitTitles[i]);
         }
-        System.out.print(tableSeperator + '\n');
+        System.out.print(TABLE_SEPERATOR + '\n');
         //midle line of table
         printLine(totalLength);
         System.out.print('\n');
@@ -539,10 +558,10 @@ public class Controller {
             for (int k = 0; k < columLengths.length; k++) {
 
                 String[] entry = entries.get(i).split(";");
-                System.out.printf(tableSeperator + " %-" + columLengths[k] + "s ", entry[k]);
+                System.out.printf(TABLE_SEPERATOR + " %-" + columLengths[k] + "s ", entry[k]);
 
             }
-            System.out.print(tableSeperator + '\n');
+            System.out.print(TABLE_SEPERATOR + '\n');
 
         }
 
@@ -555,10 +574,10 @@ public class Controller {
         printLine(length, '_');
     }
     private void printLine(int length,char block) {
-        System.out.print(blue);
+        System.out.print(BLUE);
         for(int i = 0; i < length; i++) {
             System.out.print(block);
         }
-        System.out.print(standard);
+        System.out.print(STANDARD);
     }
 }

@@ -1,19 +1,23 @@
 package Models.Model;
 
 import Models.Interfaces.Asset;
+import Services.ServicesCSV.ColorService;
 
 public class Holding implements Comparable<Holding> {
 
     private Asset asset;
     private Currency currency;
     private int quantity;
-    private final static String blue = "\u001B[34m";
-    private final static String standard = "\u001B[0m";
+    private final String BLUE;
+    private final String STANDARD;
 
     public Holding(Asset asset, Currency currency, int quantity) {
         this.asset = asset;
         this.currency = currency;
         this.quantity = quantity;
+        //setting color
+        this.BLUE = ColorService.getBlueColor();
+        this.STANDARD = ColorService.getStandardColor();
     }
 
     public double getValueOfHoldingInDKK() {
@@ -43,7 +47,7 @@ public class Holding implements Comparable<Holding> {
 
     public String toString() {
         return asset.getTicker() + " " + asset.getName() + " " + String.format("%.2f", this.getPriceInQuoteCurrency()) +
-                " DKK " + blue + "Amount: " + standard + quantity + blue + " Total value: " + standard +
+                " DKK " + BLUE + "Amount: " + STANDARD + quantity + BLUE + " Total value: " + STANDARD +
                 String.format("%.2f", getValueOfHoldingInDKK()) + " DKK";
     }
     //TODO : unused method
