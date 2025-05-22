@@ -6,6 +6,7 @@ import Models.Interfaces.*;
 import Models.Model.*;
 import Services.Interfaces.*;
 import Services.ServicesCSV.DataServices;
+import Services.ServicesCSV.ColorService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,9 +25,9 @@ public class Controller {
 //TODO improve string names
 // - Show profit and losses in red if negativ and green otherwise
 
-    private final static String blue = "\u001B[34m";
-    private final static String standard = "\u001B[0m";
-    private final static String redBackground = "\u001B[41m";
+    private final String blue = ColorService.getBlueColor();
+    private final String standard = ColorService.getStandardColor();
+    private final String redBackground = ColorService.getRedBackgroundColor();
     private final String tableSeperator = blue + "|" + standard;
 
     public Controller(StockMarketServices stockMarketService, TransactionServices transactionService,
@@ -338,9 +339,9 @@ public class Controller {
             if(!isValidChoice){
                 String message;
                 if(hidden){
-                    message = colorText("---Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID---", redBackground);
+                    message = ColorService.colorText("---Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID---", redBackground);
                 }else {
-                    message = colorText("---You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
+                    message = ColorService.colorText("---You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
                             userInput + ") is therefore not valid---", redBackground) + "\nPlease type a number between 0 and " +
                             choiceUpperBoundary + ":";
                 }
@@ -391,7 +392,7 @@ public class Controller {
             if (!date.isAfter(LocalDate.now()) && date.isAfter(LocalDate.now().minusYears(120))) {
                 return DataServices.getLocalDate(input);
             }else{
-                System.out.print(colorText("--This birthdate (" + input + ") is to old, in the future, or otherwise not" +
+                System.out.print(ColorService.colorText("--This birthdate (" + input + ") is to old, in the future, or otherwise not" +
                         " valid---", redBackground) +"\nPlease type a different birthDate");
             }
         }
@@ -404,7 +405,7 @@ public class Controller {
             input = getNonEmptyString();
             isValidName = input.matches("[a-zA-ZæøåÆØÅ ]+$");
             if(!isValidName){
-                System.out.print(colorText("---You may only use characters from the danish alphabet, therefore ("  + input +
+                System.out.print(ColorService.colorText("---You may only use characters from the danish alphabet, therefore ("  + input +
                         ") is not accepted---", redBackground) + "\nPlease type a different name:");
             }
         } while (!isValidName);
@@ -418,7 +419,7 @@ public class Controller {
             input = getLocalDate();
             isValid = input.isBefore(LocalDate.now().minusYears(18));
             if(!isValid){
-                System.out.print(colorText("---This Person is not over 18---", redBackground) + "\nPlease type a different birthdate:");
+                System.out.print(ColorService.colorText("---This Person is not over 18---", redBackground) + "\nPlease type a different birthdate:");
             }
         } while (!isValid);
         return input;
@@ -438,16 +439,16 @@ public class Controller {
         PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
         Holding holding = portfolio.getHoldingFromTicker(ticker);
         if (orderType.equalsIgnoreCase("buy") && (price * quantity > portfolio.getLiquidCash())) {
-            System.out.println(colorText("---You cannot afford " + quantity + " stocks for " + price + " each for a total of " +
+            System.out.println(ColorService.colorText("---You cannot afford " + quantity + " stocks for " + price + " each for a total of " +
                     price * quantity + ", when your stated liquid cash is " + portfolio.getLiquidCash() + "---", redBackground));
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
                 (holding == null)) {
-            System.out.println(colorText("---you don't hold any " + ticker + "---", redBackground));
+            System.out.println(ColorService.colorText("---you don't hold any " + ticker + "---", redBackground));
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
                 (quantity > holding.getQuantity())) {
-            System.out.println(colorText("---You cannot sell " + quantity + " stocks from " + ticker +
+            System.out.println(ColorService.colorText("---You cannot sell " + quantity + " stocks from " + ticker +
                     ", when your stated holding is " + holding.getQuantity() + "---", redBackground));
             return false;
         }
@@ -462,14 +463,10 @@ public class Controller {
             input = getNonEmptyString();
             isValid = input.equalsIgnoreCase("buy") || input.equalsIgnoreCase("sell");
             if(!isValid){
-                System.out.println(colorText("---The given input (" + input + ") does not equal \"buy\" or \"sell\"---", redBackground));
+                System.out.println(ColorService.colorText("---The given input (" + input + ") does not equal \"buy\" or \"sell\"---", redBackground));
             }
         } while (!isValid);
         return input;
-    }
-
-    private String colorText(String text, String color){
-        return color + text + standard;
     }
 
     private String getValidTicker() {
@@ -479,7 +476,7 @@ public class Controller {
             input = getNonEmptyString().toUpperCase();
             isValid = stockMarketService.getAsset(input) != null;
             if(!isValid){
-                System.out.println(colorText("---The given ticker (" + input + ") could not be found---", redBackground)
+                System.out.println(ColorService.colorText("---The given ticker (" + input + ") could not be found---", redBackground)
                         + "\nPlease try again:");
             }
         } while (!isValid);
