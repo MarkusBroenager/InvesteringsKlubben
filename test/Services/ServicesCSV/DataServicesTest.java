@@ -25,6 +25,7 @@ class DataServicesTest {
         DataServices services = new DataServices();
         assertEquals(LocalDate.of(0, 1, 1), services.getLocalDate("2025-05"));
     }
+
     @Test
     void returnsAnotherWrongInputDate() {
         DataServices services = new DataServices();
