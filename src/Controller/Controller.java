@@ -235,7 +235,7 @@ public class Controller {
         for (Transaction t : transactions) {
             transactionsList.add(t.toString());
         }
-        printTable(transactionsList, "Ordertype, quantity, ticker, currency, dateOfTransactions"  );
+        printTable(transactionsList, "Ordertype, quantity, ticker, currency, dateOfTransactions");
     }
 
     private void viewPersonalInformation(int memberID) {
@@ -265,13 +265,14 @@ public class Controller {
         System.out.println(combinedPortfolio);
         List<String> distributionList = new ArrayList<>();
         distributionList.addAll(portfolioService.getCombinedInvestmentPerSector());
-        printTable(distributionList, "Total invested in, percentage of total investment");
+        printTable(distributionList, "Total sector investment, percentage of total investment");
     }
 
     private void viewAllUsers() {
         List<String> userLines = new ArrayList<>();
         for (User u : userService.getUsers()) {
-            userLines.add(u.otherToString() + ";" + portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK());
+            userLines.add(u.otherToString() + ";" +
+                    String.format("%.2f", portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK()) + " DKK");
         }
         printTable(userLines, "Full name,User ID, Birthday, Email, Started investing in,Initial investment,Last update,Current portfolio value");
     }
@@ -291,7 +292,7 @@ public class Controller {
 
                 invalidInput = this.SCANNER.nextLine();
                 //Printing error message
-                if(!invalidInput.matches("[0-" + choiceUpperBoundary + "]+$")){
+                if (!invalidInput.matches("[0-" + choiceUpperBoundary + "]+$")) {
                     System.out.println("You can choose between 0 and " + choiceUpperBoundary + " Your choice of (" +
                             invalidInput + ") is therefore not valid\nPlease type a number between 0 and " +
                             choiceUpperBoundary + ":");
@@ -301,7 +302,7 @@ public class Controller {
             userInput = this.SCANNER.nextInt();
             this.SCANNER.nextLine();
             isInvalidChoice = userInput > choiceUpperBoundary || userInput < 0;
-            if(isInvalidChoice){
+            if (isInvalidChoice) {
                 System.out.println("You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
                         userInput + ") is therefore not valid\nPlease type a number between 0 and " +
                         choiceUpperBoundary + ":");
@@ -350,12 +351,13 @@ public class Controller {
             //TODO: is this an interresting check
             if (!date.isAfter(LocalDate.now()) && date.isAfter(LocalDate.now().minusYears(120))) {
                 return DataServices.getLocalDate(input);
-            }else{
+            } else {
                 System.out.println("This birthdate (" + input + ") is to old, in the future, or otherwise not valid\n" +
                         "Please type a different birthDate");
             }
         }
     }
+
     //TODO Burde vi overhoved bruge matches metoden
     private String getValidName() {
         String input;
@@ -363,8 +365,8 @@ public class Controller {
         do {
             input = getNonEmptyString();
             isInvalidName = !input.matches("[a-zA-ZæøåÆØÅ ]+$");
-            if(isInvalidName){
-                System.out.println("You may only use characters from the danish alphabet, therefore ("  + input +
+            if (isInvalidName) {
+                System.out.println("You may only use characters from the danish alphabet, therefore (" + input +
                         ") is not accepted\nPlease type a different name:");
             }
         } while (isInvalidName);
@@ -377,7 +379,7 @@ public class Controller {
         do {
             input = getLocalDate();
             isInvalid = input.isAfter(LocalDate.now().minusYears(18));
-            if(isInvalid){
+            if (isInvalid) {
                 System.out.println("This Person is not over 18\nPlease type a different birthdate");
             }
         } while (isInvalid);
@@ -421,7 +423,7 @@ public class Controller {
         do {
             input = getNonEmptyString();
             isInvalid = !input.equalsIgnoreCase("buy") && !input.equalsIgnoreCase("sell");
-            if(isInvalid){
+            if (isInvalid) {
                 System.out.println("The given input (" + input + ") does not equal \"buy\" or \"sell\"");
             }
         } while (isInvalid);
@@ -434,18 +436,18 @@ public class Controller {
         do {
             input = getNonEmptyString().toUpperCase();
             isInvalid = stockMarketService.getAsset(input) == null;
-            if(isInvalid){
+            if (isInvalid) {
                 System.out.println("The given ticker (" + input + ") could not be found\nPlease try again:");
             }
         } while (isInvalid);
         return input;
     }
 
-    private void printTable(List<String> entries, String titles){
+    private void printTable(List<String> entries, String titles) {
         String[] splitTitles = titles.split(",");
         int[] columLengths = new int[splitTitles.length];
 
-        for(int k = 0; k < columLengths.length; k++) {
+        for (int k = 0; k < columLengths.length; k++) {
             //System.out.println("coulum " + k);
             for (int i = 0; i < entries.size(); i++) {
 
@@ -465,7 +467,7 @@ public class Controller {
 
         }
         int totalLength = 0;
-        for(int i = 0; i < columLengths.length; i++){
+        for (int i = 0; i < columLengths.length; i++) {
             totalLength += columLengths[i] + 3;
         }
         totalLength += 1;
@@ -480,7 +482,7 @@ public class Controller {
         }
         System.out.print(blue + "|\n" + standard);
         //midle line of table
-       printLine(totalLength);
+        printLine(totalLength);
 
         //print entries
 
@@ -501,9 +503,10 @@ public class Controller {
         System.out.println();
 
     }
+
     private void printLine(int length) {
         System.out.print(blue);
-        for(int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {
             System.out.print('_');
         }
         System.out.print(standard + "\n");

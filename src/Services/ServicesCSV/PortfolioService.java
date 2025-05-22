@@ -150,7 +150,7 @@ public class PortfolioService implements PortfolioServices {
     }
 
     private void addToSectorList(List<String> sectorList, String sector, double sectorInvestment, PortfolioDKK portfolio) {
-        sectorList.add(sector + " is: " + String.format("%.2f", sectorInvestment) + ";" +
+        sectorList.add(sector + ": " + String.format("%.2f", sectorInvestment) + " DKK" + ";" +
                 String.format("%.2f", portfolio.getPercentageOfPortfolio(sectorInvestment)) + "%");
     }
 
