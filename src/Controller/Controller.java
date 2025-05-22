@@ -40,7 +40,7 @@ public class Controller {
         System.out.println();
         while (isRunning) {
             //Clear messaging
-            printMenu(new String[]{"_________", "1 - Member", "2 - Leader", "0 - Exit", "_________"});
+            printMenu(new String[]{"1 - Member", "2 - Leader", "0 - Exit"});
 
 
             int userChoice = getUserChoice(2);
@@ -59,9 +59,26 @@ public class Controller {
     }
 
     private void printMenu(String[] menuPoints) {
+        //calculate length
+        int lengthOfMenu = 0;
         for (int index = 0; index < menuPoints.length; index++) {
-            System.out.println(menuPoints[index]);
+            if(menuPoints[index].length() > lengthOfMenu){
+                lengthOfMenu = menuPoints[index].length();
+            }
         }
+        printLine(lengthOfMenu + 4);
+        System.out.print('\n');
+        //print entries
+        for (int index = 0; index < menuPoints.length - 1; index++) {
+            System.out.printf(blue + "|" + standard + " %-" + lengthOfMenu + "s " + blue +"|\n" + standard,menuPoints[index]);
+        }
+        //print exit/back option
+        System.out.print(blue + "| ");
+        printLine(lengthOfMenu);
+        System.out.print(blue + " |\n" + standard);
+        System.out.printf(blue + "|" + standard + " %-" + lengthOfMenu + "s " + blue +"|\n" + standard,menuPoints[menuPoints.length - 1]);
+        printLine(lengthOfMenu + 4);
+        System.out.print('\n');
     }
 
     private void memberUI() { //
@@ -489,15 +506,15 @@ public class Controller {
         //Top line of table
 
         printLine(totalLength);
-
+        System.out.print('\n');
         //Print titles
         for (int i = 0; i < splitTitles.length; i++) {
             System.out.printf(blue + "|" + standard + " %-" + columLengths[i] + "s ", splitTitles[i]);
         }
         System.out.print(blue + "|\n" + standard);
         //midle line of table
-       printLine(totalLength);
-
+        printLine(totalLength);
+        System.out.print('\n');
         //print entries
 
 
@@ -522,6 +539,6 @@ public class Controller {
         for(int i = 0; i < length; i++) {
             System.out.print('_');
         }
-        System.out.print(standard + "\n");
+        System.out.print(standard);
     }
 }
