@@ -20,6 +20,7 @@ public class PortfolioService implements PortfolioServices {
     private UserRepository userRepository;
     private HoldingSortBySector holdingSortBySector = new HoldingSortBySector();
     private sortSectorByTotalValueOfPortfolio sortSectorByTotalValueOfPortfolio = new sortSectorByTotalValueOfPortfolio();
+    //TODO : Unused variables
     private final static String blue = "\u001B[34m";
     private final static String standard = "\u001B[0m";
     //TODO: Skal portfolioServicen intereager med repositories eller service klaserne
@@ -61,8 +62,6 @@ public class PortfolioService implements PortfolioServices {
         double liquidCash = portfolio.getLiquidCash();
         String sector = holdingsSortedBySector.get(0).getSector();
         double sectorInvestment = 0;
-        sectorList.add("Cash: " + String.format("%.2f", liquidCash)
-                + ";" + String.format("%.2f", portfolio.getPercentageOfPortfolio(liquidCash)) + "%");
         for (Holding holding : holdingsSortedBySector) {
             if (sector.equalsIgnoreCase(holding.getSector())) {
                 sectorInvestment += holding.getValueOfHoldingInDKK();
@@ -79,11 +78,6 @@ public class PortfolioService implements PortfolioServices {
         }
         sectorList.sort(sortSectorByTotalValueOfPortfolio);
         return sectorList;
-    }
-
-    @Override
-    public List<String> getCombinedInvestmentPerStock() {
-        return List.of();
     }
 
     @Override
@@ -123,9 +117,6 @@ public class PortfolioService implements PortfolioServices {
                     // - add holding for asset removed from stockmarket
                 }
             }
-            /*else{
-                tickerAndQuantity.remove(k);
-            }*/
         });
 
         Collections.reverse(holdings);
@@ -161,7 +152,7 @@ public class PortfolioService implements PortfolioServices {
     }
 
     private void addToSectorList(List<String> sectorList, String sector, double sectorInvestment, PortfolioDKK portfolio) {
-        sectorList.add(sector + " is: " + String.format("%.2f", sectorInvestment) + ";" +
+        sectorList.add(sector + ": " + String.format("%.2f", sectorInvestment) + " DKK" + ";" +
                 String.format("%.2f", portfolio.getPercentageOfPortfolio(sectorInvestment)) + "%");
     }
 

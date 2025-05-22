@@ -1,16 +1,9 @@
 package Repository.RepositoriesCSV;
 
-import Models.Model.User;
 import Repository.Interfaces.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 

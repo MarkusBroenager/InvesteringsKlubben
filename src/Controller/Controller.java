@@ -1,15 +1,14 @@
 package Controller;
 
-import Comparators.*;
+import Comparators.ProfitAndLossInDKKComparator;
+import Comparators.ProfitAndLossInPercentageComparator;
 import Models.Interfaces.*;
 import Models.Model.*;
-import Models.Model.PortfolioDKK;
 import Services.Interfaces.*;
 import Services.ServicesCSV.DataServices;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,6 +26,8 @@ public class Controller {
 
     private final static String blue = "\u001B[34m";
     private final static String standard = "\u001B[0m";
+    private final static String redBackground = "\u001B[41m";
+    private final String tableSeperator = blue + "|" + standard;
 
     public Controller(StockMarketServices stockMarketService, TransactionServices transactionService,
                       UserServices userService, PortfolioServices portfolioService) {
@@ -40,8 +41,8 @@ public class Controller {
         boolean isRunning = true;
         System.out.println();
         while (isRunning) {
-
-            printMenu(new String[]{"_________", "1 - Member", "2 - Leader", "0 - Exit", "_________"});
+            //Clear messaging
+            printMenu(new String[]{"1 - Member", "2 - Leader", "0 - Exit"});
 
 
             int userChoice = getUserChoice(2);
@@ -59,22 +60,43 @@ public class Controller {
         }
     }
 
-    private void printMenu(String[] menuPoints) {
-        for (int index = 0; index < menuPoints.length; index++) {
-            System.out.println(menuPoints[index]);
+    private int calculateLongestString(String[] strings){
+        int lengthOfString = 0;
+        for (int index = 0; index < strings.length; index++) {
+            if(strings[index].length() > lengthOfString){
+                lengthOfString = strings[index].length();
+            }
         }
+        return lengthOfString;
+    }
+    private void printMenu(String[] menuPoints) {
+        //calculate length
+        int lengthOfMenu = calculateLongestString(menuPoints);
+        printLine(lengthOfMenu + 4);
+        System.out.print('\n');
+        //print entries
+        for (int index = 0; index < menuPoints.length - 1; index++) {
+            System.out.printf(tableSeperator + " %-" + lengthOfMenu + "s " + tableSeperator + '\n',menuPoints[index]);
+        }
+        //print exit/back option
+        System.out.print(tableSeperator + ' ');
+        printLine(lengthOfMenu, '-');
+        System.out.print(' ' + tableSeperator + '\n');
+        System.out.printf(tableSeperator + " %-" + lengthOfMenu + "s " + tableSeperator + '\n',menuPoints[menuPoints.length - 1]);
+        printLine(lengthOfMenu + 4);
+        System.out.print('\n');
     }
 
     private void memberUI() { //
         boolean isRunning = true;
         System.out.println("Enter you memberID");
-        int memberID = getUserChoice(userService.getHighestUserId());
+        int memberID = getUserChoice(userService.getHighestUserId(),true);
         if (memberID == 0) {
             return;
         }
+        System.out.println("Hey " + userService.getUser(memberID).getFullName() + "! Welcome back");
         while (isRunning) {
 
-            System.out.println("Hej " + userService.getUser(memberID).getFullName() + "! Velkommen tilbage");
             printMenu(new String[]{"1 - View stock market", "2 - View forex market", "3 - Enter new transaction",
                     "4 - View your portfolio", "5 - View transaction history", "6 - View bond market",
                     "7 - View personal information", "0 - Exit"});
@@ -115,15 +137,15 @@ public class Controller {
     private void leaderUI() {
         boolean isRunning = true;
         while (isRunning) {
-            System.out.println("0 - Exit, 1 - View combined portfolio, 2 - View P&L for all portfolios," +
-                    " 3 - View sector distribution, 4 - Add new member, 5 - View all members");
+            printMenu(new String[]{"1 - View combined portfolio", "2 - View P&L for all portfolios",
+                    "3 - View sector distribution", "4 - Add new member", "5 - View all members", "0 - Exit"});
             int userChoice = getUserChoice(5);
             switch (userChoice) {
                 case 1:
                     viewCombinedPortfolio();
                     break;
                 case 2:
-                    System.out.println("0 - Exit, 1 - Sort by percentage, 2 - Sort by DKK");
+                    printMenu(new String[]{"1 - Sort by percentage", "2 - Sort by DKK", "0 - Exit"});
                     int sortChoice = getUserChoice(2);
                     if (sortChoice == 1) {
                         printSortedPortfolios(portfolioService.viewProfitAndLossSortedPortfolios(percentageComparator));
@@ -135,13 +157,14 @@ public class Controller {
                     viewSectorDistribution();
                     break;
                 case 4:
-                    System.out.println("Enter full name: ");
+                    //Sin egen metode
+                    System.out.print("Enter full name: ");
                     String fullName = getValidName();
-                    System.out.println("Enter email: ");
+                    System.out.print("Enter email: ");
                     String email = getNonEmptyString();
-                    System.out.println("Enter birthday(year-month-day): ");
+                    System.out.print("Enter birthday(year-month-day): ");
                     LocalDate birthday = getValidBirthday();
-                    System.out.println("Enter initial cash: ");
+                    System.out.print("Enter initial cash: ");
                     double initialCash = getUserInputAsDouble();
                     if (addNewUser(fullName, email, birthday, initialCash)) {
                         System.out.println("Member added");
@@ -173,7 +196,7 @@ public class Controller {
     private void viewStockMarket() {
         boolean isRunning = true;
         while (isRunning) {
-            System.out.println("0 - Exit, 1 - View all prices in DKK, 2 - View in native currency");
+            printMenu(new String[] {"1 - View all prices in DKK", "2 - View in native currency", "0 - Exit"});
             int userChoice = getUserChoice(2);
             switch (userChoice) {
                 case 1:
@@ -224,6 +247,7 @@ public class Controller {
 
 
     private void viewPortfolio(int memberID) {
+        //Bedre UI?
         PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
         printPortfolio(portfolio);
     }
@@ -234,7 +258,7 @@ public class Controller {
         for (Transaction t : transactions) {
             transactionsList.add(t.toString());
         }
-        printTable(transactionsList, "Ordertype, quantity, ticker, currency, dateOfTransactions"  );
+        printTable(transactionsList, "Ordertype, quantity, ticker, currency, dateOfTransactions");
     }
 
     private void viewPersonalInformation(int memberID) {
@@ -259,15 +283,19 @@ public class Controller {
     }
 
     private void viewSectorDistribution() {
+        //Bør vi visse liquid cash
+        PortfolioDKK combinedPortfolio = portfolioService.getCombinedUserPortfolio();
+        System.out.println(combinedPortfolio);
         List<String> distributionList = new ArrayList<>();
         distributionList.addAll(portfolioService.getCombinedInvestmentPerSector());
-        printTable(distributionList, "Total invested in, percentage of total investment");
+        printTable(distributionList, "Total sector investment, percentage of total investment");
     }
 
     private void viewAllUsers() {
         List<String> userLines = new ArrayList<>();
         for (User u : userService.getUsers()) {
-            userLines.add(u.otherToString() + ";" + portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK());
+            userLines.add(u.otherToString() + ";" +
+                    String.format("%.2f", portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK()) + " DKK");
         }
         printTable(userLines, "Full name,User ID, Birthday, Email, Started investing in,Initial investment,Last update,Current portfolio value");
     }
@@ -277,18 +305,47 @@ public class Controller {
     }
 
     private int getUserChoice(int choiceUpperBoundary) {
-        int userInput;
+        return getUserChoice(choiceUpperBoundary,false);
+    }
 
+    private int getUserChoice(int choiceUpperBoundary, boolean hidden) {
+        int userInput;
+        boolean isValidChoice;
+        String input;
         do {
             //While loop skips every token (non-number input) until there is a number,
             //then the loop ends and that number is saved in userInput
             while (!this.SCANNER.hasNextInt()) {
 
-                this.SCANNER.next();
+                input = this.SCANNER.nextLine();
+                //Printing error message
+                if(!input.matches("[0-" + choiceUpperBoundary + "]+$")){
+                    String message;
+                    if(hidden){
+                        message = "Your input of (" + input + ") cannot be accepted\nPlease type your user ID";
+                    }else {
+                        message = "You can choose between 0 and " + choiceUpperBoundary + " Your choice of (" +
+                                input + ") is therefore not valid\nPlease type a number between 0 and " +
+                                choiceUpperBoundary + ":";
+                    }
+                    System.out.println(message);
+                }
 
             }
             userInput = this.SCANNER.nextInt();
             this.SCANNER.nextLine();
+            isValidChoice = userInput <= choiceUpperBoundary && userInput >= 0;
+            if(!isValidChoice){
+                String message;
+                if(hidden){
+                    message = colorText("---Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID---", redBackground);
+                }else {
+                    message = colorText("---You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
+                            userInput + ") is therefore not valid---", redBackground) + "\nPlease type a number between 0 and " +
+                            choiceUpperBoundary + ":";
+                }
+                System.out.println(message);
+            }
         } while (userInput > choiceUpperBoundary || userInput < 0);
 
         return userInput;
@@ -333,37 +390,47 @@ public class Controller {
             //TODO: is this an interresting check
             if (!date.isAfter(LocalDate.now()) && date.isAfter(LocalDate.now().minusYears(120))) {
                 return DataServices.getLocalDate(input);
+            }else{
+                System.out.print(colorText("--This birthdate (" + input + ") is to old, in the future, or otherwise not" +
+                        " valid---", redBackground) +"\nPlease type a different birthDate");
             }
         }
     }
-
+    //TODO Burde vi overhoved bruge matches metoden
     private String getValidName() {
         String input;
+        boolean isValidName;
         do {
             input = getNonEmptyString();
-
-//TODO ???????????????????????????
-        } while (!input.matches("[a-zA-Z ]+$"));
+            isValidName = input.matches("[a-zA-ZæøåÆØÅ ]+$");
+            if(!isValidName){
+                System.out.print(colorText("---You may only use characters from the danish alphabet, therefore ("  + input +
+                        ") is not accepted---", redBackground) + "\nPlease type a different name:");
+            }
+        } while (!isValidName);
         return input;
     }
 
     private LocalDate getValidBirthday() {
         LocalDate input;
+        boolean isValid;
         do {
             input = getLocalDate();
-        } while (input.isAfter(LocalDate.now().minusYears(18)));
+            isValid = input.isBefore(LocalDate.now().minusYears(18));
+            if(!isValid){
+                System.out.print(colorText("---This Person is not over 18---", redBackground) + "\nPlease type a different birthdate:");
+            }
+        } while (!isValid);
         return input;
     }
 
     private boolean addNewTransaction(int memberID) {
         //TODO methods for only getting acceptable inputs (Enums?)
-        System.out.println("Enter order type (buy/sell)");
+        System.out.print("Enter order type (buy/sell):");
         String orderType = getTransactionType();
-        System.out.println("Enter ticker");
+        System.out.print("Enter ticker:");
         String ticker = getValidTicker();
-        /*System.out.println("Enter currency");
-        String currency = getNonEmptyString();*/
-        System.out.println("Enter quantity");
+        System.out.print("Enter quantity:");
         int quantity = getUserChoice(1000000000);
         double price;
         Asset asset = stockMarketService.getAsset(ticker);
@@ -371,17 +438,17 @@ public class Controller {
         PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
         Holding holding = portfolio.getHoldingFromTicker(ticker);
         if (orderType.equalsIgnoreCase("buy") && (price * quantity > portfolio.getLiquidCash())) {
-            System.out.println("You cannot afford " + quantity + " stocks for " + price + " each for a total of " +
-                    price * quantity + "\nWhen your stated liquid cash is " + portfolio.getLiquidCash());
+            System.out.println(colorText("---You cannot afford " + quantity + " stocks for " + price + " each for a total of " +
+                    price * quantity + ", when your stated liquid cash is " + portfolio.getLiquidCash() + "---", redBackground));
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
                 (holding == null)) {
-            System.out.println("you don't hold any " + ticker);
+            System.out.println(colorText("---you don't hold any " + ticker + "---", redBackground));
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
                 (quantity > holding.getQuantity())) {
-            System.out.println("You cannot sell " + quantity + " stocks from " + ticker +
-                    "\nWhen your stated holding is " + holding.getQuantity());
+            System.out.println(colorText("---You cannot sell " + quantity + " stocks from " + ticker +
+                    ", when your stated holding is " + holding.getQuantity() + "---", redBackground));
             return false;
         }
         return transactionService.addNewTransaction(memberID, LocalDate.now(), ticker, price, asset.getCurrency(),
@@ -390,23 +457,40 @@ public class Controller {
 
     private String getTransactionType() {
         String input;
+        boolean isValid;
         do {
             input = getNonEmptyString();
-        } while (!input.equalsIgnoreCase("buy") && !input.equalsIgnoreCase("sell"));
+            isValid = input.equalsIgnoreCase("buy") || input.equalsIgnoreCase("sell");
+            if(!isValid){
+                System.out.println(colorText("---The given input (" + input + ") does not equal \"buy\" or \"sell\"---", redBackground));
+            }
+        } while (!isValid);
         return input;
+    }
+
+    private String colorText(String text, String color){
+        return color + text + standard;
     }
 
     private String getValidTicker() {
         String input;
+        boolean isValid;
         do {
             input = getNonEmptyString().toUpperCase();
-        } while (stockMarketService.getAsset(input) == null);
+            isValid = stockMarketService.getAsset(input) != null;
+            if(!isValid){
+                System.out.println(colorText("---The given ticker (" + input + ") could not be found---", redBackground)
+                        + "\nPlease try again:");
+            }
+        } while (!isValid);
         return input;
     }
 
     private void printTable(List<String> entries, String titles){
         String[] splitTitles = titles.split(",");
         int[] columLengths = new int[splitTitles.length];
+
+
 
         for(int k = 0; k < columLengths.length; k++) {
             //System.out.println("coulum " + k);
@@ -416,19 +500,17 @@ public class Controller {
                 //checking title length
                 if (splitTitles[k].length() > columLengths[k]) {
                     columLengths[k] = splitTitles[k].length();
-                    //System.out.println("largest length " + columLengths[k] + " item " + entry[k]);
                 }
 
                 if (entry[k].length() > columLengths[k]) {
                     columLengths[k] = entry[k].length();
-                    //System.out.println("largest length " + columLengths[k] + " item " + entry[k]);
                 }
 
             }
 
         }
         int totalLength = 0;
-        for(int i = 0; i < columLengths.length; i++){
+        for (int i = 0; i < columLengths.length; i++) {
             totalLength += columLengths[i] + 3;
         }
         totalLength += 1;
@@ -436,15 +518,15 @@ public class Controller {
         //Top line of table
 
         printLine(totalLength);
-
+        System.out.print('\n');
         //Print titles
         for (int i = 0; i < splitTitles.length; i++) {
-            System.out.printf(blue + "|" + standard + " %-" + columLengths[i] + "s ", splitTitles[i]);
+            System.out.printf(tableSeperator + " %-" + columLengths[i] + "s ", splitTitles[i]);
         }
-        System.out.print(blue + "|\n" + standard);
+        System.out.print(tableSeperator + '\n');
         //midle line of table
-       printLine(totalLength);
-
+        printLine(totalLength);
+        System.out.print('\n');
         //print entries
 
 
@@ -453,10 +535,10 @@ public class Controller {
             for (int k = 0; k < columLengths.length; k++) {
 
                 String[] entry = entries.get(i).split(";");
-                System.out.printf(blue + "|" + standard + " %-" + columLengths[k] + "s ", entry[k]);
+                System.out.printf(tableSeperator + " %-" + columLengths[k] + "s ", entry[k]);
 
             }
-            System.out.print(blue + "|\n" + standard);
+            System.out.print(tableSeperator + '\n');
 
         }
 
@@ -464,15 +546,15 @@ public class Controller {
         System.out.println();
 
     }
+
     private void printLine(int length) {
+        printLine(length, '_');
+    }
+    private void printLine(int length,char block) {
         System.out.print(blue);
         for(int i = 0; i < length; i++) {
-            System.out.print('_');
+            System.out.print(block);
         }
-        System.out.print(standard + "\n");
-
-
-
+        System.out.print(standard);
     }
-
 }

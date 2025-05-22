@@ -29,7 +29,7 @@ public class User implements Comparable<User> {
         return userID;
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return this.fullName;
     }
 
@@ -57,7 +57,7 @@ public class User implements Comparable<User> {
 
     public String otherToString() {
         return fullName + ";" + userID + ";" + birthday + ";" + email + ";" + createdAt + ";" +
-                String.format("%.2f", initialCash) + ";" + lastUpdated;
+                String.format("%.2f", initialCash) + " DKK" + ";" + lastUpdated;
     }
 
     public int compareTo(User o) {

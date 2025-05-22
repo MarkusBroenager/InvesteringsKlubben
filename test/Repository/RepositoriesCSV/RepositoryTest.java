@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -16,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RepositoryTest {
 
     private Repository repository;
+    //TODO : Change paths
     @BeforeEach
     void setup(){
         repository = new Repository("C:\\Users\\Freja\\IdeaProjects\\InvesteringsKlubben\\test\\TestResources\\testUsers.csv");

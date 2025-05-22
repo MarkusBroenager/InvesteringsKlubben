@@ -53,11 +53,6 @@ public class Bond implements Asset, Comparable<Asset> {
     }
 
     @Override
-    public LocalDate getLastUpdated(){
-        return this.lastUpdated;
-    }
-
-    @Override
     public String toString() {
         return name + " (" + ticker + ')' + "; " + String.format("%.2f", price) + " " +
                 currency + "; " + String.format("%.2f", couponRate) + "% maturity date is the ;" + maturityDate +  "; " + market +

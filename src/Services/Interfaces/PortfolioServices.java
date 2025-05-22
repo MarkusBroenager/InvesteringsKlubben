@@ -13,8 +13,6 @@ public interface PortfolioServices {
 
     List<String> getCombinedInvestmentPerSector();
 
-    List<String> getCombinedInvestmentPerStock();
-
     List<PortfolioDKK> getAllPortfolios();
 
     List<PortfolioDKK> viewProfitAndLossSortedPortfolios(Comparator<PortfolioDKK> comparator);
