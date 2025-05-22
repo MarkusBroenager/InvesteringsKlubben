@@ -309,7 +309,7 @@ public class Controller {
 
     private int getUserChoice(int choiceUpperBoundary, boolean hidden) {
         int userInput;
-        boolean isInvalidChoice;
+        boolean isValidChoice;
         String input;
         do {
             //While loop skips every token (non-number input) until there is a number,
@@ -333,14 +333,14 @@ public class Controller {
             }
             userInput = this.SCANNER.nextInt();
             this.SCANNER.nextLine();
-            isInvalidChoice = userInput > choiceUpperBoundary || userInput < 0;
-            if(isInvalidChoice){
+            isValidChoice = userInput <= choiceUpperBoundary && userInput >= 0;
+            if(!isValidChoice){
                 String message;
                 if(hidden){
-                    message = "Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID";
+                    message = colorText("---Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID---", redBackground);
                 }else {
-                    message = "You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
-                            userInput + ") is therefore not valid\nPlease type a number between 0 and " +
+                    message = colorText("---You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
+                            userInput + ") is therefore not valid---", redBackground) + "\nPlease type a number between 0 and " +
                             choiceUpperBoundary + ":";
                 }
                 System.out.println(message);
@@ -398,28 +398,28 @@ public class Controller {
     //TODO Burde vi overhoved bruge matches metoden
     private String getValidName() {
         String input;
-        boolean isInvalidName;
+        boolean isValidName;
         do {
             input = getNonEmptyString();
-            isInvalidName = !input.matches("[a-zA-ZæøåÆØÅ ]+$");
-            if(isInvalidName){
+            isValidName = input.matches("[a-zA-ZæøåÆØÅ ]+$");
+            if(!isValidName){
                 System.out.print(colorText("---You may only use characters from the danish alphabet, therefore ("  + input +
                         ") is not accepted---", redBackground) + "\nPlease type a different name:");
             }
-        } while (isInvalidName);
+        } while (!isValidName);
         return input;
     }
 
     private LocalDate getValidBirthday() {
         LocalDate input;
-        boolean isInvalid;
+        boolean isValid;
         do {
             input = getLocalDate();
-            isInvalid = input.isAfter(LocalDate.now().minusYears(18));
-            if(isInvalid){
+            isValid = input.isBefore(LocalDate.now().minusYears(18));
+            if(!isValid){
                 System.out.print(colorText("---This Person is not over 18---", redBackground) + "\nPlease type a different birthdate:");
             }
-        } while (isInvalid);
+        } while (!isValid);
         return input;
     }
 
@@ -442,7 +442,7 @@ public class Controller {
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
                 (holding == null)) {
-            System.out.println("you don't hold any " + ticker);
+            System.out.println(colorText("---you don't hold any " + ticker + "---", redBackground));
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
                 (quantity > holding.getQuantity())) {
@@ -456,14 +456,14 @@ public class Controller {
 
     private String getTransactionType() {
         String input;
-        boolean isInvalid;
+        boolean isValid;
         do {
             input = getNonEmptyString();
-            isInvalid = !input.equalsIgnoreCase("buy") && !input.equalsIgnoreCase("sell");
-            if(isInvalid){
+            isValid = input.equalsIgnoreCase("buy") || input.equalsIgnoreCase("sell");
+            if(!isValid){
                 System.out.println(colorText("---The given input (" + input + ") does not equal \"buy\" or \"sell\"---", redBackground));
             }
-        } while (isInvalid);
+        } while (!isValid);
         return input;
     }
 
@@ -473,15 +473,15 @@ public class Controller {
 
     private String getValidTicker() {
         String input;
-        boolean isInvalid;
+        boolean isValid;
         do {
             input = getNonEmptyString().toUpperCase();
-            isInvalid = stockMarketService.getAsset(input) == null;
-            if(isInvalid){
+            isValid = stockMarketService.getAsset(input) != null;
+            if(!isValid){
                 System.out.println(colorText("---The given ticker (" + input + ") could not be found---", redBackground)
                         + "\nPlease try again:");
             }
-        } while (isInvalid);
+        } while (!isValid);
         return input;
     }
 
