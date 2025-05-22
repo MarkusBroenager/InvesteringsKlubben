@@ -258,7 +258,7 @@ public class Controller {
         for (Transaction t : transactions) {
             transactionsList.add(t.toString());
         }
-        printTable(transactionsList, "Ordertype, quantity, ticker, currency, dateOfTransactions"  );
+        printTable(transactionsList, "Ordertype, quantity, ticker, currency, dateOfTransactions");
     }
 
     private void viewPersonalInformation(int memberID) {
@@ -288,13 +288,14 @@ public class Controller {
         System.out.println(combinedPortfolio);
         List<String> distributionList = new ArrayList<>();
         distributionList.addAll(portfolioService.getCombinedInvestmentPerSector());
-        printTable(distributionList, "Total invested in, percentage of total investment");
+        printTable(distributionList, "Total sector investment, percentage of total investment");
     }
 
     private void viewAllUsers() {
         List<String> userLines = new ArrayList<>();
         for (User u : userService.getUsers()) {
-            userLines.add(u.otherToString() + ";" + portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK());
+            userLines.add(u.otherToString() + ";" +
+                    String.format("%.2f", portfolioService.getPortfolio(u.getUserID()).getPortfolioValueInDKK()) + " DKK");
         }
         printTable(userLines, "Full name,User ID, Birthday, Email, Started investing in,Initial investment,Last update,Current portfolio value");
     }
@@ -509,7 +510,7 @@ public class Controller {
 
         }
         int totalLength = 0;
-        for(int i = 0; i < columLengths.length; i++){
+        for (int i = 0; i < columLengths.length; i++) {
             totalLength += columLengths[i] + 3;
         }
         totalLength += 1;
@@ -545,6 +546,7 @@ public class Controller {
         System.out.println();
 
     }
+
     private void printLine(int length) {
         printLine(length, '_');
     }
