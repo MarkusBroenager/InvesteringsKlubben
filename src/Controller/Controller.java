@@ -14,7 +14,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Controller {
-
+    //TODO :
+    // - rotate menus to make more sense
+    // - Use ColorService everywhere
+    // - Comments
+    // - Check all comments
     private StockMarketServices stockMarketService;
     private TransactionServices transactionService;
     private UserServices userService;
@@ -43,7 +47,7 @@ public class Controller {
         System.out.println();
         while (isRunning) {
             //Clear messaging
-            printMenu(new String[]{"1 - Member", "2 - Leader", "0 - Exit"});
+            printMenu(new String[]{"1 - Login as Member", "2 - Login as Leader", "0 - Exit program"});
 
 
             int userChoice = getUserChoice(2);
@@ -90,7 +94,7 @@ public class Controller {
 
     private void memberUI() { //
         boolean isRunning = true;
-        System.out.println("Enter you memberID");
+        System.out.print("Enter you member ID to login:");
         int memberID = getUserChoice(userService.getHighestUserId(),true);
         if (memberID == 0) {
             return;
@@ -98,8 +102,8 @@ public class Controller {
         System.out.println("Hey " + userService.getUser(memberID).getFullName() + "! Welcome back");
         while (isRunning) {
 
-            printMenu(new String[]{"1 - View stock market", "2 - View forex market", "3 - Enter new transaction",
-                    "4 - View your portfolio", "5 - View transaction history", "6 - View bond market",
+            printMenu(new String[]{"1 - View stock market", "2 - View bond market", "3 - View forex market",
+                    "4 - View your portfolio", "5 - Enter new transaction", "6 - View transaction history",
                     "7 - View personal information", "0 - Exit"});
             int userChoice = getUserChoice(7);
             switch (userChoice) {
@@ -107,23 +111,23 @@ public class Controller {
                     viewStockMarket();
                     break;
                 case 2:
-                    viewForexMarket();
+                    viewBondMarket();
                     break;
                 case 3:
+                    viewForexMarket();
+                    break;
+                case 4:
+                    viewPortfolio(memberID);
+                    break;
+                case 5:
                     if (addNewTransaction(memberID)) {
                         System.out.println("Transaction added");
                     } else {
                         System.out.println("Transaction could not be added");
                     }
                     break;
-                case 4:
-                    viewPortfolio(memberID);
-                    break;
-                case 5:
-                    viewTransactions(memberID);
-                    break;
                 case 6:
-                    viewBondMarket();
+                    viewTransactions(memberID);
                     break;
                 case 7:
                     viewPersonalInformation(memberID);
@@ -138,14 +142,11 @@ public class Controller {
     private void leaderUI() {
         boolean isRunning = true;
         while (isRunning) {
-            printMenu(new String[]{"1 - View combined portfolio", "2 - View P&L for all portfolios",
+            printMenu(new String[]{"1 - View P&L for all members", "2 - View stock distribution",
                     "3 - View sector distribution", "4 - Add new member", "5 - View all members", "0 - Exit"});
             int userChoice = getUserChoice(5);
             switch (userChoice) {
                 case 1:
-                    viewCombinedPortfolio();
-                    break;
-                case 2:
                     printMenu(new String[]{"1 - Sort by percentage", "2 - Sort by DKK", "0 - Exit"});
                     int sortChoice = getUserChoice(2);
                     if (sortChoice == 1) {
@@ -154,25 +155,14 @@ public class Controller {
                         printSortedPortfolios(portfolioService.viewProfitAndLossSortedPortfolios(dkkComparator));
                     }
                     break;
+                case 2:
+                    viewCombinedPortfolio();
+                    break;
                 case 3:
                     viewSectorDistribution();
                     break;
                 case 4:
-                    //Sin egen metode
-                    System.out.print("Enter full name: ");
-                    String fullName = getValidName();
-                    System.out.print("Enter email: ");
-                    String email = getNonEmptyString();
-                    System.out.print("Enter birthday(year-month-day): ");
-                    LocalDate birthday = getValidBirthday();
-                    System.out.print("Enter initial cash: ");
-                    double initialCash = getUserInputAsDouble();
-                    if (addNewUser(fullName, email, birthday, initialCash)) {
-                        System.out.println("Member added");
-
-                    } else {
-                        System.out.println("Could not add member");
-                    }
+                    addNewUser();
                     break;
                 case 5:
                     viewAllUsers();
@@ -181,6 +171,23 @@ public class Controller {
                     isRunning = false;
                     break;
             }
+        }
+    }
+
+    private void addNewUser(){
+        System.out.print("Enter full name: ");
+        String fullName = getValidName();
+        System.out.print("Enter email: ");
+        String email = getNonEmptyString();
+        System.out.print("Enter birthday(year-month-day): ");
+        LocalDate birthday = getValidBirthday();
+        System.out.print("Enter initial cash: ");
+        double initialCash = getUserInputAsDouble();
+        if (addNewUser(fullName, email, birthday, initialCash)) {
+            System.out.println("Member added");
+
+        } else {
+            System.out.println("Could not add member");
         }
     }
 
@@ -393,7 +400,7 @@ public class Controller {
                 return DataServices.getLocalDate(input);
             }else{
                 System.out.print(ColorService.colorText("--This birthdate (" + input + ") is to old, in the future, or otherwise not" +
-                        " valid---", redBackground) +"\nPlease type a different birthDate");
+                        " valid---", redBackground) +"\nPlease type a different birthDate:");
             }
         }
     }
