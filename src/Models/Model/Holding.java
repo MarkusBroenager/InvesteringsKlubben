@@ -57,7 +57,7 @@ public class Holding implements Comparable<Holding> {
 
     @Override
     public int compareTo(Holding o) {
-        if(((this.getValueOfHoldingInDKK() * 100) == (o.getValueOfHoldingInDKK() * 100))){
+        if (((this.getValueOfHoldingInDKK() * 100) == (o.getValueOfHoldingInDKK() * 100))) {
             return o.getTicker().compareTo(this.getTicker());
         }
         return (int) ((this.getValueOfHoldingInDKK() * 100) - (o.getValueOfHoldingInDKK() * 100));

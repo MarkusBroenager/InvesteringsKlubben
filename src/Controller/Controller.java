@@ -60,15 +60,16 @@ public class Controller {
         }
     }
 
-    private int calculateLongestString(String[] strings){
+    private int calculateLongestString(String[] strings) {
         int lengthOfString = 0;
         for (int index = 0; index < strings.length; index++) {
-            if(strings[index].length() > lengthOfString){
+            if (strings[index].length() > lengthOfString) {
                 lengthOfString = strings[index].length();
             }
         }
         return lengthOfString;
     }
+
     private void printMenu(String[] menuPoints) {
         //calculate length
         int lengthOfMenu = calculateLongestString(menuPoints);
@@ -76,13 +77,13 @@ public class Controller {
         System.out.print('\n');
         //print entries
         for (int index = 0; index < menuPoints.length - 1; index++) {
-            System.out.printf(TABLE_SEPARATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPARATOR + '\n',menuPoints[index]);
+            System.out.printf(TABLE_SEPARATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPARATOR + '\n', menuPoints[index]);
         }
         //print exit/back option
         System.out.print(TABLE_SEPARATOR + ' ');
         printLine(lengthOfMenu, '-');
         System.out.print(' ' + TABLE_SEPARATOR + '\n');
-        System.out.printf(TABLE_SEPARATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPARATOR + '\n',menuPoints[menuPoints.length - 1]);
+        System.out.printf(TABLE_SEPARATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPARATOR + '\n', menuPoints[menuPoints.length - 1]);
         printLine(lengthOfMenu + 4);
         System.out.print('\n');
     }
@@ -90,7 +91,7 @@ public class Controller {
     private void memberUI() {
         boolean isRunning = true;
         System.out.print("Enter you member ID to login:");
-        int memberID = getUserChoice(userService.getHighestUserId(),true);
+        int memberID = getUserChoice(userService.getHighestUserId(), true);
         if (memberID == 0) {
             return;
         }
@@ -169,7 +170,7 @@ public class Controller {
         }
     }
 
-    private void addNewUser(){
+    private void addNewUser() {
         double initialCash;
         System.out.print("Enter full name: ");
         String fullName = getValidName();
@@ -180,10 +181,10 @@ public class Controller {
         System.out.print("Enter initial cash: ");
         do {
             initialCash = getUserInputAsDouble();
-            if(initialCash < 10000) {
+            if (initialCash < 10000) {
                 System.out.print(ColorService.colorText("---Your input of (" + initialCash + ") is to low---", RED_BACKGROUND) + "\nPlease type a different starting balance above 10,000 DKK:");
             }
-        }while(initialCash < 10000);
+        } while (initialCash < 10000);
         if (userService.addNewUser(fullName, email, birthday, initialCash)) {
             System.out.println("Member added");
 
@@ -201,7 +202,7 @@ public class Controller {
     private void viewStockMarket() {
         boolean isRunning = true;
         while (isRunning) {
-            printMenu(new String[] {"1 - View all prices in DKK", "2 - View in native currency", "0 - Exit"});
+            printMenu(new String[]{"1 - View all prices in DKK", "2 - View in native currency", "0 - Exit"});
             int userChoice = getUserChoice(2);
             switch (userChoice) {
                 case 1:
@@ -277,7 +278,7 @@ public class Controller {
 
     private void printPortfolio(PortfolioDKK portfolio) {
         System.out.println(portfolio);
-        if(!portfolio.getPortfolioInformation().isEmpty()) {
+        if (!portfolio.getPortfolioInformation().isEmpty()) {
             printTable(portfolio.getPortfolioInformation(), "Holding,Price,quantity,value,Percent of total value");
         }
         System.out.print("\n\n");
@@ -299,8 +300,9 @@ public class Controller {
         }
         printTable(userLines, "Full name,User ID, Birthday, Email, Started investing in,Initial investment,Last update,Current portfolio value");
     }
+
     private int getUserChoice(int choiceUpperBoundary) {
-        return getUserChoice(choiceUpperBoundary,false);
+        return getUserChoice(choiceUpperBoundary, false);
     }
 
     private int getUserChoice(int choiceUpperBoundary, boolean hidden) {
@@ -314,11 +316,11 @@ public class Controller {
 
                 input = this.SCANNER.nextLine();
                 //Printing error message
-                if(!input.matches("[0-" + choiceUpperBoundary + "]+$")){
+                if (!input.matches("[0-" + choiceUpperBoundary + "]+$")) {
                     String message;
-                    if(hidden){
+                    if (hidden) {
                         message = ColorService.colorText("---Your input of (" + input + ") cannot be accepted---", RED_BACKGROUND) + "\nPlease type your user ID:";
-                    }else {
+                    } else {
                         message = ColorService.colorText("---You can choose between 0 and " + choiceUpperBoundary + " Your choice of (" +
                                 input + ") is therefore not valid---", RED_BACKGROUND) + "\nPlease type a number between 0 and " +
                                 choiceUpperBoundary + ":";
@@ -330,11 +332,11 @@ public class Controller {
             userInput = this.SCANNER.nextInt();
             this.SCANNER.nextLine();
             isValidChoice = userInput <= choiceUpperBoundary && userInput >= 0;
-            if(!isValidChoice){
+            if (!isValidChoice) {
                 String message;
-                if(hidden){
+                if (hidden) {
                     message = ColorService.colorText("---Your input of (" + userInput + ") cannot be accepted", RED_BACKGROUND) + "\nPlease type your user ID---";
-                }else {
+                } else {
                     message = ColorService.colorText("---You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
                             userInput + ") is therefore not valid---", RED_BACKGROUND) + "\nPlease type a number between 0 and " +
                             choiceUpperBoundary + ":";
@@ -387,20 +389,21 @@ public class Controller {
             LocalDate date = DataServices.getLocalDate(input);
             if (!date.isAfter(LocalDate.now()) && date.isAfter(LocalDate.now().minusYears(120))) {
                 return DataServices.getLocalDate(input);
-            }else{
+            } else {
                 System.out.print(ColorService.colorText("--This birthdate (" + input + ") is to old, in the future, or otherwise not" +
-                        " valid---", RED_BACKGROUND) +"\nPlease type a different birthDate:");
+                        " valid---", RED_BACKGROUND) + "\nPlease type a different birthDate:");
             }
         }
     }
+
     private String getValidName() {
         String input;
         boolean isValidName;
         do {
             input = getNonEmptyString();
             isValidName = input.matches("[a-zA-ZæøåÆØÅ ]+$");
-            if(!isValidName){
-                System.out.print(ColorService.colorText("---You may only use characters from the danish alphabet, therefore ("  + input +
+            if (!isValidName) {
+                System.out.print(ColorService.colorText("---You may only use characters from the danish alphabet, therefore (" + input +
                         ") is not accepted---", RED_BACKGROUND) + "\nPlease type a different name:");
             }
         } while (!isValidName);
@@ -414,8 +417,8 @@ public class Controller {
         do {
             input = getNonEmptyString();
             isValidEmail = input.matches(acceptedCharacters + "+@" + acceptedCharacters + "+\\." + acceptedCharacters + "+$");
-            if(!isValidEmail){
-                System.out.print(ColorService.colorText("---You may only use characters from the danish alphabet in the form (example@domain.host), therefore ("  + input +
+            if (!isValidEmail) {
+                System.out.print(ColorService.colorText("---You may only use characters from the danish alphabet in the form (example@domain.host), therefore (" + input +
                         ") is not accepted---", RED_BACKGROUND) + "\nPlease type a different email address:");
             }
         } while (!isValidEmail);
@@ -428,7 +431,7 @@ public class Controller {
         do {
             input = getLocalDate();
             isValid = input.isBefore(LocalDate.now().minusYears(18));
-            if(!isValid){
+            if (!isValid) {
                 System.out.print(ColorService.colorText("---This Person is not over 18---", RED_BACKGROUND) +
                         "\nPlease type a different birthdate:");
             }

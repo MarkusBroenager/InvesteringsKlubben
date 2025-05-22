@@ -11,14 +11,14 @@ public class ReadOnlyRepository {
 
     private final Path path;
 
-    public ReadOnlyRepository(String file){
+    public ReadOnlyRepository(String file) {
         this.path = Paths.get(file);
     }
 
     public List<String> readFile() {
         List<String> getFileAsListOfStrings = new ArrayList<>();
-        try(Scanner reader = new Scanner(path)){
-            while(reader.hasNextLine()){
+        try (Scanner reader = new Scanner(path)) {
+            while (reader.hasNextLine()) {
                 String line = reader.nextLine();
                 getFileAsListOfStrings.add(line);
             }

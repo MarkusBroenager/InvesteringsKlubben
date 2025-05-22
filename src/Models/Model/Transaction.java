@@ -50,7 +50,7 @@ public class Transaction implements Comparable<Transaction> {
         return quantity;
     }
 
-    public String getCurrency(){
+    public String getCurrency() {
         return currency;
     }
 
@@ -60,12 +60,12 @@ public class Transaction implements Comparable<Transaction> {
     }
 
     public String toString() {
-        return orderType + "; " + quantity + "; " + ticker + "; For " + String.format("%.2f",getTotalTransactionPrice()) +
+        return orderType + "; " + quantity + "; " + ticker + "; For " + String.format("%.2f", getTotalTransactionPrice()) +
                 " " + currency + "; date: " + dateOfTransaction;
     }
 
     @Override
     public int compareTo(Transaction o) {
-        return this.transactionID-o.getTransactionID();
+        return this.transactionID - o.getTransactionID();
     }
 }

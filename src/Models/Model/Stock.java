@@ -4,7 +4,7 @@ import Models.Interfaces.Asset;
 
 import java.time.LocalDate;
 
-public class Stock implements  Asset, Comparable<Asset> {
+public class Stock implements Asset, Comparable<Asset> {
 
     private String ticker;
     private String name;

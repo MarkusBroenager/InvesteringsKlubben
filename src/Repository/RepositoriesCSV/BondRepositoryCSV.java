@@ -10,12 +10,12 @@ import java.util.List;
 public class BondRepositoryCSV extends ReadOnlyRepository implements BondRepository {
 
 
-    public BondRepositoryCSV(String fileName){
+    public BondRepositoryCSV(String fileName) {
         super(fileName);
     }
 
     @Override
-    public List<Bond> getBondList(){
+    public List<Bond> getBondList() {
         List<Bond> bonds = new ArrayList<>();
         List<String> list = super.readFile();
         list.remove(0);
@@ -34,8 +34,9 @@ public class BondRepositoryCSV extends ReadOnlyRepository implements BondReposit
         }
         return bonds;
     }
+
     @Override
-    public Bond getBondFromTicker(String ticker){
+    public Bond getBondFromTicker(String ticker) {
         List<Bond> bonds = getBondList();
         for (Bond bond : bonds) {
             if (bond.getTicker().equalsIgnoreCase(ticker)) {

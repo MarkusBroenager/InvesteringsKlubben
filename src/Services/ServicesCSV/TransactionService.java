@@ -51,6 +51,6 @@ public class TransactionService implements TransactionServices {
     private int getUniqueID() {
         List<Transaction> transactions = transactionRepository.getAllTransactions();
         Collections.sort(transactions);
-        return transactions.get(transactions.size()-1).getTransactionID() + 1;
+        return transactions.get(transactions.size() - 1).getTransactionID() + 1;
     }
 }
