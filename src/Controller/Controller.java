@@ -15,14 +15,13 @@ import java.util.Scanner;
 
 public class Controller {
     //TODO :
-    // - Use ColorService everywhere
     // - Check all comments
-    private StockMarketServices stockMarketService;
-    private TransactionServices transactionService;
-    private UserServices userService;
-    private PortfolioServices portfolioService;
-    private ProfitAndLossInPercentageComparator percentageComparator = new ProfitAndLossInPercentageComparator();
-    private ProfitAndLossInDKKComparator dkkComparator = new ProfitAndLossInDKKComparator();
+    private final StockMarketServices stockMarketService;
+    private final TransactionServices transactionService;
+    private final UserServices userService;
+    private final PortfolioServices portfolioService;
+    private final ProfitAndLossInPercentageComparator percentageComparator = new ProfitAndLossInPercentageComparator();
+    private final ProfitAndLossInDKKComparator dkkComparator = new ProfitAndLossInDKKComparator();
     private final Scanner SCANNER = new Scanner(System.in);
 //TODO improve string names
 // - Show profit and losses in red if negativ and green otherwise
@@ -178,6 +177,7 @@ public class Controller {
     }
 
     private void addNewUser(){
+        double initialCash;
         System.out.print("Enter full name: ");
         String fullName = getValidName();
         System.out.print("Enter email: ");
@@ -185,8 +185,13 @@ public class Controller {
         System.out.print("Enter birthday(year-month-day): ");
         LocalDate birthday = getValidBirthday();
         System.out.print("Enter initial cash: ");
-        double initialCash = getUserInputAsDouble();
-        if (addNewUser(fullName, email, birthday, initialCash)) {
+        do {
+            initialCash = getUserInputAsDouble();
+            if(initialCash < 10000) {
+                System.out.print(ColorService.colorText("---Your input of (" + initialCash + ") is to low---", RED_BACKGROUND) + "\nPlease type a different starting balance above 10,000 DKK:");
+            }
+        }while(initialCash < 10000);
+        if (userService.addNewUser(fullName, email, birthday, initialCash)) {
             System.out.println("Member added");
 
         } else {
@@ -304,11 +309,6 @@ public class Controller {
         }
         printTable(userLines, "Full name,User ID, Birthday, Email, Started investing in,Initial investment,Last update,Current portfolio value");
     }
-
-    private boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash) {
-        return (userService.addNewUser(fullName, email, birthday, initialCash));
-    }
-
     private int getUserChoice(int choiceUpperBoundary) {
         return getUserChoice(choiceUpperBoundary,false);
     }
@@ -327,10 +327,10 @@ public class Controller {
                 if(!input.matches("[0-" + choiceUpperBoundary + "]+$")){
                     String message;
                     if(hidden){
-                        message = "Your input of (" + input + ") cannot be accepted\nPlease type your user ID";
+                        message = ColorService.colorText("---Your input of (" + input + ") cannot be accepted---", RED_BACKGROUND) + "\nPlease type your user ID:";
                     }else {
-                        message = "You can choose between 0 and " + choiceUpperBoundary + " Your choice of (" +
-                                input + ") is therefore not valid\nPlease type a number between 0 and " +
+                        message = ColorService.colorText("---You can choose between 0 and " + choiceUpperBoundary + " Your choice of (" +
+                                input + ") is therefore not valid---", RED_BACKGROUND) + "\nPlease type a number between 0 and " +
                                 choiceUpperBoundary + ":";
                     }
                     System.out.println(message);
@@ -343,7 +343,7 @@ public class Controller {
             if(!isValidChoice){
                 String message;
                 if(hidden){
-                    message = ColorService.colorText("---Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID---", RED_BACKGROUND);
+                    message = ColorService.colorText("---Your input of (" + userInput + ") cannot be accepted", RED_BACKGROUND) + "\nPlease type your user ID---";
                 }else {
                     message = ColorService.colorText("---You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
                             userInput + ") is therefore not valid---", RED_BACKGROUND) + "\nPlease type a number between 0 and " +
@@ -358,13 +358,16 @@ public class Controller {
 
     private double getUserInputAsDouble() {
         double userInput;
-
+        String input;
         do {
             //While loop skips every token (non-number input) until there is a number,
             //then the loop ends and that number is saved in userInput
             while (!this.SCANNER.hasNextDouble()) {
 
-                this.SCANNER.next();
+                input = this.SCANNER.next();
+                //Printing error message
+                System.out.print(ColorService.colorText("---Your input of (" + input + ") cannot be accepted---", RED_BACKGROUND) + "\nPlease type a different decimal number:");
+
 
             }
             userInput = this.SCANNER.nextDouble();
@@ -418,7 +421,7 @@ public class Controller {
 
     private String getValidEmail() {
         String input;
-        String acceptedCharacters = "[a-zA-ZæøåÆØÅ._%+-]";
+        String acceptedCharacters = "[0-9a-zA-ZæøåÆØÅ._%+-]";
         boolean isValidEmail;
         do {
             input = getNonEmptyString();
