@@ -1,5 +1,6 @@
 package Models.Model;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 public class Currency {
@@ -29,11 +30,27 @@ public class Currency {
     }
 
     public String toString() {
-        if(String.valueOf(rate).contains("0.0")){
-            return "1 " + baseCurrency + " is currently worth " + rate +
+        DecimalFormat decimalFormat = new DecimalFormat("#.##################");
+        String checkRate = decimalFormat.format(rate);
+        checkRate = checkRate.replace(',','.');
+        if (checkRate.contains("0.0")) {
+            int zeroCount = 0;
+            for (char ch : checkRate.toCharArray()) {
+                if (ch == '0') {
+                    zeroCount++;
+                } else if (ch=='.') {
+                    continue;
+                } else {
+                    break;
+                }
+            }
+            String decimals = String.valueOf(zeroCount + 1);
+            System.out.println(decimals);
+            return "1 " + baseCurrency + " is currently worth " +
+                    String.format("%." + decimals + "f", Double.parseDouble(checkRate)) +
                     " " + quoteCurrency + ";" + lastUpdated;
         }
-        return "1 " + baseCurrency + " is currently worth " + String.format("%.2f",rate) +
+        return "1 " + baseCurrency + " is currently worth " + String.format("%.2f", rate) +
                 " " + quoteCurrency + ";" + lastUpdated;
     }
 
