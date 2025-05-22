@@ -1,5 +1,7 @@
 package Models.Model;
 
+import Services.ServicesCSV.ColorService;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,8 +12,8 @@ public class PortfolioDKK {
     private List<Holding> holdings;
     private double initialValue;
     private double liquidCash;
-    private final static String blue = "\u001B[34m";
-    private final static String standard = "\u001B[0m";
+    private final String BLUE;
+    private final String STANDARD;
     private String fullName;
 
     public PortfolioDKK(List<Holding> holdings, double initialValue, double liquidCash, String fullName) {
@@ -19,6 +21,9 @@ public class PortfolioDKK {
         this.initialValue = initialValue;
         this.liquidCash = liquidCash;
         this.fullName = fullName;
+        //setting color
+        this.BLUE = ColorService.getBlueColor();
+        this.STANDARD = ColorService.getStandardColor();
     }
 
     public double getLiquidCash() {
@@ -47,11 +52,11 @@ public class PortfolioDKK {
 
 
     public String toString() {
-        return fullName + ": " + blue + "Started with: " + standard + String.format("%.2f", initialValue) + " DKK" +
-                blue + "\nCurrent liquid cash: " + standard + String.format("%.2f", liquidCash) + " DKK" +
-                blue + "\nCurrent portfolio value: " + standard + String.format("%.2f", getPortfolioValueInDKK()) + " DKK" +
-                blue + "\nP&L in DKK: " + standard + String.format("%.2f", getProfitOrLossInDKK()) + blue + " P&L in percentage: " +
-                standard + String.format("%.2f", getProfitOrLossInPercentage()) + "%";
+        return fullName + ": " + BLUE + "Initial investment: " + STANDARD + String.format("%.2f", initialValue) + " DKK" +
+                BLUE + "\nCurrent liquid cash: " + STANDARD + String.format("%.2f", liquidCash) + " DKK" +
+                BLUE + "\nCurrent portfolio value: " + STANDARD + String.format("%.2f", getPortfolioValueInDKK()) + " DKK" +
+                BLUE + "\nP&L in DKK: " + STANDARD + String.format("%.2f", getProfitOrLossInDKK()) + BLUE + " P&L in percentage: " +
+                STANDARD + String.format("%.2f", getProfitOrLossInPercentage()) + "%";
     }
 
     public List<String> getPortfolioInformation() {

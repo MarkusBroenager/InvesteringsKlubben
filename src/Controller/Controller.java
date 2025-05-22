@@ -6,6 +6,7 @@ import Models.Interfaces.*;
 import Models.Model.*;
 import Services.Interfaces.*;
 import Services.ServicesCSV.DataServices;
+import Services.ServicesCSV.ColorService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +14,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Controller {
-
+    //TODO :
+    // - Use ColorService everywhere
+    // - Check all comments
     private StockMarketServices stockMarketService;
     private TransactionServices transactionService;
     private UserServices userService;
@@ -24,10 +27,10 @@ public class Controller {
 //TODO improve string names
 // - Show profit and losses in red if negativ and green otherwise
 
-    private final static String blue = "\u001B[34m";
-    private final static String standard = "\u001B[0m";
-    private final static String redBackground = "\u001B[41m";
-    private final String tableSeperator = blue + "|" + standard;
+    private final String BLUE;
+    private final String STANDARD;
+    private final String RED_BACKGROUND;
+    private final String TABLE_SEPERATOR;
 
     public Controller(StockMarketServices stockMarketService, TransactionServices transactionService,
                       UserServices userService, PortfolioServices portfolioService) {
@@ -35,6 +38,11 @@ public class Controller {
         this.transactionService = transactionService;
         this.userService = userService;
         this.portfolioService = portfolioService;
+        //setting colors
+        this.BLUE = ColorService.getBlueColor();
+        this.STANDARD = ColorService.getStandardColor();
+        this.RED_BACKGROUND = ColorService.getRedBackgroundColor();
+        this.TABLE_SEPERATOR = BLUE + "|" + STANDARD;
     }
 
     public void start() {
@@ -42,7 +50,7 @@ public class Controller {
         System.out.println();
         while (isRunning) {
             //Clear messaging
-            printMenu(new String[]{"1 - Member", "2 - Leader", "0 - Exit"});
+            printMenu(new String[]{"1 - Login as Member", "2 - Login as Leader", "0 - Exit program"});
 
 
             int userChoice = getUserChoice(2);
@@ -76,20 +84,20 @@ public class Controller {
         System.out.print('\n');
         //print entries
         for (int index = 0; index < menuPoints.length - 1; index++) {
-            System.out.printf(tableSeperator + " %-" + lengthOfMenu + "s " + tableSeperator + '\n',menuPoints[index]);
+            System.out.printf(TABLE_SEPERATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPERATOR + '\n',menuPoints[index]);
         }
         //print exit/back option
-        System.out.print(tableSeperator + ' ');
+        System.out.print(TABLE_SEPERATOR + ' ');
         printLine(lengthOfMenu, '-');
-        System.out.print(' ' + tableSeperator + '\n');
-        System.out.printf(tableSeperator + " %-" + lengthOfMenu + "s " + tableSeperator + '\n',menuPoints[menuPoints.length - 1]);
+        System.out.print(' ' + TABLE_SEPERATOR + '\n');
+        System.out.printf(TABLE_SEPERATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPERATOR + '\n',menuPoints[menuPoints.length - 1]);
         printLine(lengthOfMenu + 4);
         System.out.print('\n');
     }
 
     private void memberUI() { //
         boolean isRunning = true;
-        System.out.println("Enter you memberID");
+        System.out.print("Enter you member ID to login:");
         int memberID = getUserChoice(userService.getHighestUserId(),true);
         if (memberID == 0) {
             return;
@@ -97,8 +105,8 @@ public class Controller {
         System.out.println("Hey " + userService.getUser(memberID).getFullName() + "! Welcome back");
         while (isRunning) {
 
-            printMenu(new String[]{"1 - View stock market", "2 - View forex market", "3 - Enter new transaction",
-                    "4 - View your portfolio", "5 - View transaction history", "6 - View bond market",
+            printMenu(new String[]{"1 - View stock market", "2 - View bond market", "3 - View forex market",
+                    "4 - View your portfolio", "5 - Enter new transaction", "6 - View transaction history",
                     "7 - View personal information", "0 - Exit"});
             int userChoice = getUserChoice(7);
             switch (userChoice) {
@@ -106,23 +114,23 @@ public class Controller {
                     viewStockMarket();
                     break;
                 case 2:
-                    viewForexMarket();
+                    viewBondMarket();
                     break;
                 case 3:
+                    viewForexMarket();
+                    break;
+                case 4:
+                    viewPortfolio(memberID);
+                    break;
+                case 5:
                     if (addNewTransaction(memberID)) {
                         System.out.println("Transaction added");
                     } else {
                         System.out.println("Transaction could not be added");
                     }
                     break;
-                case 4:
-                    viewPortfolio(memberID);
-                    break;
-                case 5:
-                    viewTransactions(memberID);
-                    break;
                 case 6:
-                    viewBondMarket();
+                    viewTransactions(memberID);
                     break;
                 case 7:
                     viewPersonalInformation(memberID);
@@ -137,14 +145,11 @@ public class Controller {
     private void leaderUI() {
         boolean isRunning = true;
         while (isRunning) {
-            printMenu(new String[]{"1 - View combined portfolio", "2 - View P&L for all portfolios",
+            printMenu(new String[]{"1 - View P&L for all members", "2 - View stock distribution",
                     "3 - View sector distribution", "4 - Add new member", "5 - View all members", "0 - Exit"});
             int userChoice = getUserChoice(5);
             switch (userChoice) {
                 case 1:
-                    viewCombinedPortfolio();
-                    break;
-                case 2:
                     printMenu(new String[]{"1 - Sort by percentage", "2 - Sort by DKK", "0 - Exit"});
                     int sortChoice = getUserChoice(2);
                     if (sortChoice == 1) {
@@ -153,25 +158,14 @@ public class Controller {
                         printSortedPortfolios(portfolioService.viewProfitAndLossSortedPortfolios(dkkComparator));
                     }
                     break;
+                case 2:
+                    viewCombinedPortfolio();
+                    break;
                 case 3:
                     viewSectorDistribution();
                     break;
                 case 4:
-                    //Sin egen metode
-                    System.out.print("Enter full name: ");
-                    String fullName = getValidName();
-                    System.out.print("Enter email: ");
-                    String email = getNonEmptyString();
-                    System.out.print("Enter birthday(year-month-day): ");
-                    LocalDate birthday = getValidBirthday();
-                    System.out.print("Enter initial cash: ");
-                    double initialCash = getUserInputAsDouble();
-                    if (addNewUser(fullName, email, birthday, initialCash)) {
-                        System.out.println("Member added");
-
-                    } else {
-                        System.out.println("Could not add member");
-                    }
+                    addNewUser();
                     break;
                 case 5:
                     viewAllUsers();
@@ -180,6 +174,23 @@ public class Controller {
                     isRunning = false;
                     break;
             }
+        }
+    }
+
+    private void addNewUser(){
+        System.out.print("Enter full name: ");
+        String fullName = getValidName();
+        System.out.print("Enter email: ");
+        String email = getValidEmail();
+        System.out.print("Enter birthday(year-month-day): ");
+        LocalDate birthday = getValidBirthday();
+        System.out.print("Enter initial cash: ");
+        double initialCash = getUserInputAsDouble();
+        if (addNewUser(fullName, email, birthday, initialCash)) {
+            System.out.println("Member added");
+
+        } else {
+            System.out.println("Could not add member");
         }
     }
 
@@ -258,7 +269,7 @@ public class Controller {
         for (Transaction t : transactions) {
             transactionsList.add(t.toString());
         }
-        printTable(transactionsList, "Ordertype, quantity, ticker, currency, dateOfTransactions");
+        printTable(transactionsList, "Order type, quantity, ticker, currency, dateOfTransactions");
     }
 
     private void viewPersonalInformation(int memberID) {
@@ -338,10 +349,10 @@ public class Controller {
             if(!isValidChoice){
                 String message;
                 if(hidden){
-                    message = colorText("---Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID---", redBackground);
+                    message = ColorService.colorText("---Your input of (" + userInput + ") cannot be accepted\nPlease type your user ID---", RED_BACKGROUND);
                 }else {
-                    message = colorText("---You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
-                            userInput + ") is therefore not valid---", redBackground) + "\nPlease type a number between 0 and " +
+                    message = ColorService.colorText("---You can choose between 0 and " + choiceUpperBoundary + ". Your choice of (" +
+                            userInput + ") is therefore not valid---", RED_BACKGROUND) + "\nPlease type a number between 0 and " +
                             choiceUpperBoundary + ":";
                 }
                 System.out.println(message);
@@ -391,8 +402,8 @@ public class Controller {
             if (!date.isAfter(LocalDate.now()) && date.isAfter(LocalDate.now().minusYears(120))) {
                 return DataServices.getLocalDate(input);
             }else{
-                System.out.print(colorText("--This birthdate (" + input + ") is to old, in the future, or otherwise not" +
-                        " valid---", redBackground) +"\nPlease type a different birthDate");
+                System.out.print(ColorService.colorText("--This birthdate (" + input + ") is to old, in the future, or otherwise not" +
+                        " valid---", RED_BACKGROUND) +"\nPlease type a different birthDate:");
             }
         }
     }
@@ -404,10 +415,25 @@ public class Controller {
             input = getNonEmptyString();
             isValidName = input.matches("[a-zA-ZæøåÆØÅ ]+$");
             if(!isValidName){
-                System.out.print(colorText("---You may only use characters from the danish alphabet, therefore ("  + input +
-                        ") is not accepted---", redBackground) + "\nPlease type a different name:");
+                System.out.print(ColorService.colorText("---You may only use characters from the danish alphabet, therefore ("  + input +
+                        ") is not accepted---", RED_BACKGROUND) + "\nPlease type a different name:");
             }
         } while (!isValidName);
+        return input;
+    }
+
+    private String getValidEmail() {
+        String input;
+        String acceptedCharacters = "[a-zA-ZæøåÆØÅ._%+-]";
+        boolean isValidEmail;
+        do {
+            input = getNonEmptyString();
+            isValidEmail = input.matches(acceptedCharacters + "+@" + acceptedCharacters + "+\\." + acceptedCharacters + "+$");
+            if(!isValidEmail){
+                System.out.print(ColorService.colorText("---You may only use characters from the danish alphabet in the form (example@domain.host), therefore ("  + input +
+                        ") is not accepted---", RED_BACKGROUND) + "\nPlease type a different email address:");
+            }
+        } while (!isValidEmail);
         return input;
     }
 
@@ -418,7 +444,8 @@ public class Controller {
             input = getLocalDate();
             isValid = input.isBefore(LocalDate.now().minusYears(18));
             if(!isValid){
-                System.out.print(colorText("---This Person is not over 18---", redBackground) + "\nPlease type a different birthdate:");
+                System.out.print(ColorService.colorText("---This Person is not over 18---", RED_BACKGROUND) +
+                        "\nPlease type a different birthdate:");
             }
         } while (!isValid);
         return input;
@@ -438,17 +465,17 @@ public class Controller {
         PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
         Holding holding = portfolio.getHoldingFromTicker(ticker);
         if (orderType.equalsIgnoreCase("buy") && (price * quantity > portfolio.getLiquidCash())) {
-            System.out.println(colorText("---You cannot afford " + quantity + " stocks for " + price + " each for a total of " +
-                    price * quantity + ", when your stated liquid cash is " + portfolio.getLiquidCash() + "---", redBackground));
+            System.out.println(ColorService.colorText("---You cannot afford " + quantity + " stocks for " + price + " each for a total of " +
+                    price * quantity + ", when your stated liquid cash is " + portfolio.getLiquidCash() + "---", RED_BACKGROUND));
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
                 (holding == null)) {
-            System.out.println(colorText("---you don't hold any " + ticker + "---", redBackground));
+            System.out.println(ColorService.colorText("---you don't hold any " + ticker + "---", RED_BACKGROUND));
             return false;
         } else if (orderType.equalsIgnoreCase("sell") &&
                 (quantity > holding.getQuantity())) {
-            System.out.println(colorText("---You cannot sell " + quantity + " stocks from " + ticker +
-                    ", when your stated holding is " + holding.getQuantity() + "---", redBackground));
+            System.out.println(ColorService.colorText("---You cannot sell " + quantity + " stocks from " + ticker +
+                    ", when your stated holding is " + holding.getQuantity() + "---", RED_BACKGROUND));
             return false;
         }
         return transactionService.addNewTransaction(memberID, LocalDate.now(), ticker, price, asset.getCurrency(),
@@ -462,14 +489,10 @@ public class Controller {
             input = getNonEmptyString();
             isValid = input.equalsIgnoreCase("buy") || input.equalsIgnoreCase("sell");
             if(!isValid){
-                System.out.println(colorText("---The given input (" + input + ") does not equal \"buy\" or \"sell\"---", redBackground));
+                System.out.println(ColorService.colorText("---The given input (" + input + ") does not equal \"buy\" or \"sell\"---", RED_BACKGROUND));
             }
         } while (!isValid);
         return input;
-    }
-
-    private String colorText(String text, String color){
-        return color + text + standard;
     }
 
     private String getValidTicker() {
@@ -479,7 +502,7 @@ public class Controller {
             input = getNonEmptyString().toUpperCase();
             isValid = stockMarketService.getAsset(input) != null;
             if(!isValid){
-                System.out.println(colorText("---The given ticker (" + input + ") could not be found---", redBackground)
+                System.out.println(ColorService.colorText("---The given ticker (" + input + ") could not be found---", RED_BACKGROUND)
                         + "\nPlease try again:");
             }
         } while (!isValid);
@@ -521,9 +544,9 @@ public class Controller {
         System.out.print('\n');
         //Print titles
         for (int i = 0; i < splitTitles.length; i++) {
-            System.out.printf(tableSeperator + " %-" + columLengths[i] + "s ", splitTitles[i]);
+            System.out.printf(TABLE_SEPERATOR + " %-" + columLengths[i] + "s ", splitTitles[i]);
         }
-        System.out.print(tableSeperator + '\n');
+        System.out.print(TABLE_SEPERATOR + '\n');
         //midle line of table
         printLine(totalLength);
         System.out.print('\n');
@@ -535,10 +558,10 @@ public class Controller {
             for (int k = 0; k < columLengths.length; k++) {
 
                 String[] entry = entries.get(i).split(";");
-                System.out.printf(tableSeperator + " %-" + columLengths[k] + "s ", entry[k]);
+                System.out.printf(TABLE_SEPERATOR + " %-" + columLengths[k] + "s ", entry[k]);
 
             }
-            System.out.print(tableSeperator + '\n');
+            System.out.print(TABLE_SEPERATOR + '\n');
 
         }
 
@@ -551,10 +574,10 @@ public class Controller {
         printLine(length, '_');
     }
     private void printLine(int length,char block) {
-        System.out.print(blue);
+        System.out.print(BLUE);
         for(int i = 0; i < length; i++) {
             System.out.print(block);
         }
-        System.out.print(standard);
+        System.out.print(STANDARD);
     }
 }

@@ -1,5 +1,7 @@
 package Models.Model;
 
+import Services.ServicesCSV.ColorService;
+
 import java.time.LocalDate;
 
 public class User implements Comparable<User> {
@@ -11,8 +13,8 @@ public class User implements Comparable<User> {
     private LocalDate birthday;
     private LocalDate createdAt;
     private LocalDate lastUpdated;
-    private final static String blue = "\u001B[34m";
-    private final static String standard = "\u001B[0m";
+    private final String BLUE;
+    private final String STANDARD;
 
     public User(int userID, String fullName, String email, LocalDate birthday, double initialCash,
                 LocalDate createdAt, LocalDate lastUpdated) {
@@ -23,6 +25,9 @@ public class User implements Comparable<User> {
         this.birthday = birthday;
         this.createdAt = createdAt;
         this.lastUpdated = lastUpdated;
+        //setting color
+        this.BLUE = ColorService.getBlueColor();
+        this.STANDARD = ColorService.getStandardColor();
     }
 
     public int getUserID() {
@@ -47,12 +52,12 @@ public class User implements Comparable<User> {
     }
 
     public String toString() {
-        return blue + "Full name: " + standard + fullName + ";  " +
-                blue + "User ID: " + standard + userID + ";  " + blue + "Birthday: " + standard + birthday + ";  " +
-                blue + "email: " + standard + email + ";  " + blue + "\nCreated at: " + standard + createdAt +
+        return BLUE + "Full name: " + STANDARD + fullName + ";  " +
+                BLUE + "User ID: " + STANDARD + userID + ";  " + BLUE + "Birthday: " + STANDARD + birthday + ";  " +
+                BLUE + "email: " + STANDARD + email + ";  " + BLUE + "\nCreated at: " + STANDARD + createdAt +
                 ";  " +
-                blue + "Initial cash: " + standard + String.format("%.2f", initialCash) + " DKK;  " +
-                blue + "Last updated: " + standard + lastUpdated;
+                BLUE + "Initial cash: " + STANDARD + String.format("%.2f", initialCash) + " DKK;  " +
+                BLUE + "Last updated: " + STANDARD + lastUpdated;
     }
 
     public String otherToString() {
