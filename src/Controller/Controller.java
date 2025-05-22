@@ -58,14 +58,18 @@ public class Controller {
         }
     }
 
-    private void printMenu(String[] menuPoints) {
-        //calculate length
-        int lengthOfMenu = 0;
-        for (int index = 0; index < menuPoints.length; index++) {
-            if(menuPoints[index].length() > lengthOfMenu){
-                lengthOfMenu = menuPoints[index].length();
+    private int calculateLongestString(String[] strings){
+        int lengthOfString = 0;
+        for (int index = 0; index < strings.length; index++) {
+            if(strings[index].length() > lengthOfString){
+                lengthOfString = strings[index].length();
             }
         }
+        return lengthOfString;
+    }
+    private void printMenu(String[] menuPoints) {
+        //calculate length
+        int lengthOfMenu = calculateLongestString(menuPoints);
         printLine(lengthOfMenu + 4);
         System.out.print('\n');
         //print entries
@@ -74,7 +78,7 @@ public class Controller {
         }
         //print exit/back option
         System.out.print(blue + "| ");
-        printLine(lengthOfMenu);
+        printLine(lengthOfMenu, '-');
         System.out.print(blue + " |\n" + standard);
         System.out.printf(blue + "|" + standard + " %-" + lengthOfMenu + "s " + blue +"|\n" + standard,menuPoints[menuPoints.length - 1]);
         printLine(lengthOfMenu + 4);
@@ -478,6 +482,8 @@ public class Controller {
         String[] splitTitles = titles.split(",");
         int[] columLengths = new int[splitTitles.length];
 
+
+
         for(int k = 0; k < columLengths.length; k++) {
             //System.out.println("coulum " + k);
             for (int i = 0; i < entries.size(); i++) {
@@ -486,12 +492,10 @@ public class Controller {
                 //checking title length
                 if (splitTitles[k].length() > columLengths[k]) {
                     columLengths[k] = splitTitles[k].length();
-                    //System.out.println("largest length " + columLengths[k] + " item " + entry[k]);
                 }
 
                 if (entry[k].length() > columLengths[k]) {
                     columLengths[k] = entry[k].length();
-                    //System.out.println("largest length " + columLengths[k] + " item " + entry[k]);
                 }
 
             }
@@ -535,9 +539,12 @@ public class Controller {
 
     }
     private void printLine(int length) {
+        printLine(length, '_');
+    }
+    private void printLine(int length,char block) {
         System.out.print(blue);
         for(int i = 0; i < length; i++) {
-            System.out.print('_');
+            System.out.print(block);
         }
         System.out.print(standard);
     }
