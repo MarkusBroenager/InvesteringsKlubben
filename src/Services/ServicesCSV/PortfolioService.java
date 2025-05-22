@@ -37,7 +37,8 @@ public class PortfolioService implements PortfolioServices {
     @Override
     public PortfolioDKK getPortfolio(int userID) {
         double initialCash = userRepository.getUserFromUserID(userID).getInitialCash();
-        return createPortfolio(initialCash, transactionRepository.getAllTransactionsFromUserID(userID));
+        String fullName = userRepository.getUserFromUserID(userID).getFullName();
+        return createPortfolio(initialCash, transactionRepository.getAllTransactionsFromUserID(userID), fullName);
     }
 
     @Override
@@ -46,7 +47,8 @@ public class PortfolioService implements PortfolioServices {
         for (User u : userRepository.getUsers()) {
             combinedCash += u.getInitialCash();
         }
-        return createPortfolio(combinedCash, transactionRepository.getAllTransactions());
+        String fullName = " ";
+        return createPortfolio(combinedCash, transactionRepository.getAllTransactions(), fullName);
     }
 
     //TODO How can we sort by sector if we use bonds and stocks as the interface asset, but bonds lack a sector
@@ -104,7 +106,7 @@ public class PortfolioService implements PortfolioServices {
     // - move creation on holding objects from createPortfolio() and into the PortfolioDKK model.
     // - test TO DO function
     // - remove empty entries in hashmap? (is currently never used)
-    private PortfolioDKK createPortfolio(double initialCash, List<Transaction> transactions) {
+    private PortfolioDKK createPortfolio(double initialCash, List<Transaction> transactions, String fullName) {
         HashMap<String, Integer> tickerAndQuantity = getTickerAndQuantity(transactions);
         List<Holding> holdings = new ArrayList<>();
         tickerAndQuantity.forEach((k, v) -> {
@@ -127,7 +129,7 @@ public class PortfolioService implements PortfolioServices {
         });
 
         Collections.reverse(holdings);
-        return new PortfolioDKK(holdings, initialCash, getLiquidCash(transactions, initialCash));
+        return new PortfolioDKK(holdings, initialCash, getLiquidCash(transactions, initialCash), fullName);
     }
 
     private HashMap<String, Integer> getTickerAndQuantity(List<Transaction> transactions) {

@@ -12,11 +12,13 @@ public class PortfolioDKK {
     private double liquidCash;
     private final static String blue = "\u001B[34m";
     private final static String standard = "\u001B[0m";
+    private String fullName;
 
-    public PortfolioDKK(List<Holding> holdings, double initialValue, double liquidCash) {
+    public PortfolioDKK(List<Holding> holdings, double initialValue, double liquidCash, String fullName) {
         this.holdings = holdings;
         this.initialValue = initialValue;
         this.liquidCash = liquidCash;
+        this.fullName = fullName;
     }
 
     public double getLiquidCash() {
@@ -45,7 +47,7 @@ public class PortfolioDKK {
 
 
     public String toString() {
-        return blue + "Started with: " + standard + String.format("%.2f", initialValue) + " DKK" +
+        return fullName + ": " + blue + "Started with: " + standard + String.format("%.2f", initialValue) + " DKK" +
                 blue + "\nCurrent liquid cash: " + standard + String.format("%.2f", liquidCash) + " DKK" +
                 blue + "\nCurrent portfolio value: " + standard + String.format("%.2f", getPortfolioValueInDKK()) + " DKK" +
                 blue + "\nP&L in DKK: " + standard + String.format("%.2f", getProfitOrLossInDKK()) + blue + " P&L in percentage: " +
