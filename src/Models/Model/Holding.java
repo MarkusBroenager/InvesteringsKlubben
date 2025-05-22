@@ -44,13 +44,12 @@ public class Holding implements Comparable<Holding> {
         return currency;
     }
 
-
     public String toString() {
         return asset.getTicker() + " " + asset.getName() + " " + String.format("%.2f", this.getPriceInQuoteCurrency()) +
                 " DKK " + BLUE + "Amount: " + STANDARD + quantity + BLUE + " Total value: " + STANDARD +
                 String.format("%.2f", getValueOfHoldingInDKK()) + " DKK";
     }
-    //TODO : unused method
+
     public String tableToString() {
         return asset.getTicker() + " " + asset.getName() + ";" + String.format("%.2f", this.getPriceInQuoteCurrency()) +
                 " DKK " + ";" + getQuantity() + ";" + String.format("%.2f", getValueOfHoldingInDKK()) + " DKK";

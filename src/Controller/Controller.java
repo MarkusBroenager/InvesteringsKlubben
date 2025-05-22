@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Controller {
-    //TODO :
-    // - Check all comments
     private final StockMarketServices stockMarketService;
     private final TransactionServices transactionService;
     private final UserServices userService;
@@ -46,10 +44,7 @@ public class Controller {
         boolean isRunning = true;
         System.out.println();
         while (isRunning) {
-            //Clear messaging
             printMenu(new String[]{"1 - Login as Member", "2 - Login as Leader", "0 - Exit program"});
-
-
             int userChoice = getUserChoice(2);
             switch (userChoice) {
                 case 1:
@@ -92,7 +87,7 @@ public class Controller {
         System.out.print('\n');
     }
 
-    private void memberUI() { //
+    private void memberUI() {
         boolean isRunning = true;
         System.out.print("Enter you member ID to login:");
         int memberID = getUserChoice(userService.getHighestUserId(),true);
@@ -222,7 +217,6 @@ public class Controller {
         }
     }
 
-    //Hvad gør metoden anderledes end viewStocks?
     private void viewStocksInDKK() {
         List<String> stockLines = new ArrayList<>();
         for (Stock stock : stockMarketService.getStocksInDKK()) {
@@ -257,7 +251,6 @@ public class Controller {
 
 
     private void viewPortfolio(int memberID) {
-        //Bedre UI?
         PortfolioDKK portfolio = portfolioService.getPortfolio(memberID);
         printPortfolio(portfolio);
     }
@@ -291,7 +284,6 @@ public class Controller {
     }
 
     private void viewSectorDistribution() {
-        //Bør vi visse liquid cash
         PortfolioDKK combinedPortfolio = portfolioService.getCombinedUserPortfolio();
         System.out.println(combinedPortfolio);
         List<String> distributionList = new ArrayList<>();
@@ -445,7 +437,6 @@ public class Controller {
     }
 
     private boolean addNewTransaction(int memberID) {
-        //TODO methods for only getting acceptable inputs (Enums?)
         System.out.print("Enter order type (buy/sell):");
         String orderType = getTransactionType();
         System.out.print("Enter ticker:");
@@ -481,7 +472,7 @@ public class Controller {
         do {
             input = getNonEmptyString();
             isValid = input.equalsIgnoreCase("buy") || input.equalsIgnoreCase("sell");
-            if(!isValid){
+            if (!isValid) {
                 System.out.println(ColorService.colorText("---The given input (" + input + ") does not equal \"buy\" or \"sell\"---", RED_BACKGROUND));
             }
         } while (!isValid);
@@ -494,7 +485,7 @@ public class Controller {
         do {
             input = getNonEmptyString().toUpperCase();
             isValid = stockMarketService.getAsset(input) != null;
-            if(!isValid){
+            if (!isValid) {
                 System.out.println(ColorService.colorText("---The given ticker (" + input + ") could not be found---", RED_BACKGROUND)
                         + "\nPlease try again:");
             }
@@ -502,14 +493,12 @@ public class Controller {
         return input;
     }
 
-    private void printTable(List<String> entries, String titles){
+    private void printTable(List<String> entries, String titles) {
         String[] splitTitles = titles.split(",");
         int[] columLengths = new int[splitTitles.length];
 
 
-
-        for(int k = 0; k < columLengths.length; k++) {
-            //System.out.println("colum " + k);
+        for (int k = 0; k < columLengths.length; k++) {
             for (int i = 0; i < entries.size(); i++) {
 
                 String[] entry = entries.get(i).split(";");
@@ -521,9 +510,7 @@ public class Controller {
                 if (entry[k].length() > columLengths[k]) {
                     columLengths[k] = entry[k].length();
                 }
-
             }
-
         }
         int totalLength = 0;
         for (int i = 0; i < columLengths.length; i++) {
@@ -566,9 +553,10 @@ public class Controller {
     private void printLine(int length) {
         printLine(length, '_');
     }
-    private void printLine(int length,char block) {
+
+    private void printLine(int length, char block) {
         System.out.print(BLUE);
-        for(int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {
             System.out.print(block);
         }
         System.out.print(STANDARD);

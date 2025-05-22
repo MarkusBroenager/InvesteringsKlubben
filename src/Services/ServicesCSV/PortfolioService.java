@@ -48,7 +48,6 @@ public class PortfolioService implements PortfolioServices {
         return createPortfolio(combinedCash, transactionRepository.getAllTransactions(), fullName);
     }
 
-    //TODO How can we sort by sector if we use bonds and stocks as the interface asset, but bonds lack a sector
     @Override
     public List<String> getCombinedInvestmentPerSector() {
         List<String> sectorList = new ArrayList<>();
@@ -91,11 +90,6 @@ public class PortfolioService implements PortfolioServices {
         return portfolios;
     }
 
-
-    //TODO
-    // - move creation on holding objects from createPortfolio() and into the PortfolioDKK model.
-    // - test TO DO function
-    // - remove empty entries in hashmap? (is currently never used)
     private PortfolioDKK createPortfolio(double initialCash, List<Transaction> transactions, String fullName) {
         HashMap<String, Integer> tickerAndQuantity = getTickerAndQuantity(transactions);
         List<Holding> holdings = new ArrayList<>();
@@ -131,7 +125,6 @@ public class PortfolioService implements PortfolioServices {
         return tickerAndQuantity;
     }
 
-    //TODO Kan den rykkes i PortfolioDKK klassen?
     private double getLiquidCash(List<Transaction> transactions, double initialCash) {
         double liquidCash = initialCash;
         for (Transaction t : transactions) {
