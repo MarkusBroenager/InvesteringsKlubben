@@ -66,9 +66,9 @@ public class PortfolioDKK {
         Collections.reverse(allHoldings);
         for (Holding holding : allHoldings) {
             if (holding.getQuantity() != 0) {
-                portfolioInformation.add(holding + " " +
+                portfolioInformation.add(holding.tableToString() + ";" +
                         String.format("%.2f", getPercentageOfPortfolio(holding.getValueOfHoldingInDKK())) +
-                        "% of total portfolio value");
+                        "%");
             }
         }
         return portfolioInformation;

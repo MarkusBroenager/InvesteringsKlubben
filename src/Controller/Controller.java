@@ -196,11 +196,7 @@ public class Controller {
 
     private void printSortedPortfolios(List<PortfolioDKK> portfolios) {
         for (PortfolioDKK p : portfolios) {
-            System.out.println(p);
-            for (String s : p.getPortfolioInformation()) {
-                System.out.println(s);
-            }
-            System.out.println();
+            printPortfolio(p);
         }
     }
 
@@ -284,13 +280,11 @@ public class Controller {
     }
 
     private void printPortfolio(PortfolioDKK portfolio) {
-        System.out.println();
         System.out.println(portfolio);
-        System.out.println();
-        for (String s : portfolio.getPortfolioInformation()) {
-            System.out.println(s);
+        if(!portfolio.getPortfolioInformation().isEmpty()) {
+            printTable(portfolio.getPortfolioInformation(), "Holding,Price,quantity,value,Percent of total value");
         }
-        System.out.println();
+        System.out.print("\n\n");
     }
 
     private void viewSectorDistribution() {
