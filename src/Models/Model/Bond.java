@@ -33,6 +33,7 @@ public class Bond implements Asset, Comparable<Asset> {
     public String getTicker() {
         return ticker;
     }
+
     @Override
     public double getPrice() {
         return this.price;
@@ -44,18 +45,19 @@ public class Bond implements Asset, Comparable<Asset> {
     }
 
     @Override
-    public String getSector(){
+    public String getSector() {
         return "Government Bonds";
     }
+
     @Override
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
     @Override
     public String toString() {
         return name + " (" + ticker + ')' + "; " + String.format("%.2f", price) + " " +
-                currency + "; " + String.format("%.2f", couponRate) + "% maturity date is the ;" + maturityDate +  "; " + market +
+                currency + "; " + String.format("%.2f", couponRate) + "% maturity date is the ;" + maturityDate + "; " + market +
                 "; " + rating + "; " + lastUpdated;
     }
 

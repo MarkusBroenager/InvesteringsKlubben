@@ -32,13 +32,13 @@ public class Currency {
     public String toString() {
         DecimalFormat decimalFormat = new DecimalFormat("#.##################");
         String checkRate = decimalFormat.format(rate);
-        checkRate = checkRate.replace(',','.');
+        checkRate = checkRate.replace(',', '.');
         if (checkRate.contains("0.0")) {
             int zeroCount = 0;
             for (char ch : checkRate.toCharArray()) {
                 if (ch == '0') {
                     zeroCount++;
-                } else if (ch=='.') {
+                } else if (ch == '.') {
                     continue;
                 } else {
                     break;

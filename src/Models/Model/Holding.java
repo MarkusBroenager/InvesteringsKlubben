@@ -44,13 +44,12 @@ public class Holding implements Comparable<Holding> {
         return currency;
     }
 
-
     public String toString() {
         return asset.getTicker() + " " + asset.getName() + " " + String.format("%.2f", this.getPriceInQuoteCurrency()) +
                 " DKK " + BLUE + "Amount: " + STANDARD + quantity + BLUE + " Total value: " + STANDARD +
                 String.format("%.2f", getValueOfHoldingInDKK()) + " DKK";
     }
-    //TODO : unused method
+
     public String tableToString() {
         return asset.getTicker() + " " + asset.getName() + ";" + String.format("%.2f", this.getPriceInQuoteCurrency()) +
                 " DKK " + ";" + getQuantity() + ";" + String.format("%.2f", getValueOfHoldingInDKK()) + " DKK";
@@ -58,7 +57,7 @@ public class Holding implements Comparable<Holding> {
 
     @Override
     public int compareTo(Holding o) {
-        if(((this.getValueOfHoldingInDKK() * 100) == (o.getValueOfHoldingInDKK() * 100))){
+        if (((this.getValueOfHoldingInDKK() * 100) == (o.getValueOfHoldingInDKK() * 100))) {
             return o.getTicker().compareTo(this.getTicker());
         }
         return (int) ((this.getValueOfHoldingInDKK() * 100) - (o.getValueOfHoldingInDKK() * 100));

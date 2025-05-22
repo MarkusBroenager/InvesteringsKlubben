@@ -12,8 +12,8 @@ import java.util.List;
 
 public class TransactionService implements TransactionServices {
 
-    private TransactionRepository transactionRepository;
-    private CurrencyRepository currencyRepository;
+    private final TransactionRepository transactionRepository;
+    private final CurrencyRepository currencyRepository;
 
     public TransactionService(TransactionRepository transactionRepository, CurrencyRepository currencyRepository) {
         this.transactionRepository = transactionRepository;
@@ -26,8 +26,6 @@ public class TransactionService implements TransactionServices {
         Transaction newTransaction = createNewTransaction(userID, dateOfTransaction, ticker,
                 getPriceInQuoteCurrency(price, currency),
                 currencyRepository.getCurrencyFromBaseCurrency(currency).getQuoteCurrency(), orderType, quantity);
-
-        //TO_DO check if price varies too much from price on the stock market
         if (newTransaction.getQuantity() > 0) {
             transactionRepository.addTransaction(newTransaction);
             return true;
@@ -51,9 +49,8 @@ public class TransactionService implements TransactionServices {
     }
 
     private int getUniqueID() {
-        //bedre navngivning
         List<Transaction> transactions = transactionRepository.getAllTransactions();
         Collections.sort(transactions);
-        return transactions.get(transactions.size()-1).getTransactionID() + 1;
+        return transactions.get(transactions.size() - 1).getTransactionID() + 1;
     }
 }

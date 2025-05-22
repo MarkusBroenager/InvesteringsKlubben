@@ -13,11 +13,11 @@ import java.util.*;
 
 public class PortfolioService implements PortfolioServices {
 
-    private CurrencyRepository currencyRepository;
-    private StockMarketRepository stockMarketRepository;
-    private BondRepository bondRepository;
-    private TransactionRepository transactionRepository;
-    private UserRepository userRepository;
+    private final CurrencyRepository currencyRepository;
+    private final StockMarketRepository stockMarketRepository;
+    private final BondRepository bondRepository;
+    private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
     private HoldingSortBySector holdingSortBySector = new HoldingSortBySector();
     private sortSectorByTotalValueOfPortfolio sortSectorByTotalValueOfPortfolio = new sortSectorByTotalValueOfPortfolio();
 
@@ -48,7 +48,6 @@ public class PortfolioService implements PortfolioServices {
         return createPortfolio(combinedCash, transactionRepository.getAllTransactions(), fullName);
     }
 
-    //TODO How can we sort by sector if we use bonds and stocks as the interface asset, but bonds lack a sector
     @Override
     public List<String> getCombinedInvestmentPerSector() {
         List<String> sectorList = new ArrayList<>();
@@ -91,11 +90,6 @@ public class PortfolioService implements PortfolioServices {
         return portfolios;
     }
 
-
-    //TODO
-    // - move creation on holding objects from createPortfolio() and into the PortfolioDKK model.
-    // - test TO DO function
-    // - remove empty entries in hashmap? (is currently never used)
     private PortfolioDKK createPortfolio(double initialCash, List<Transaction> transactions, String fullName) {
         HashMap<String, Integer> tickerAndQuantity = getTickerAndQuantity(transactions);
         List<Holding> holdings = new ArrayList<>();
@@ -108,9 +102,6 @@ public class PortfolioService implements PortfolioServices {
                 if (asset != null) {
                     Currency currency = currencyRepository.getCurrencyFromBaseCurrency(asset.getCurrency());
                     holdings.add(new Holding(asset, currency, v));
-                } else {
-                    //TODO
-                    // - add holding for asset removed from stockmarket
                 }
             }
         });
@@ -134,7 +125,6 @@ public class PortfolioService implements PortfolioServices {
         return tickerAndQuantity;
     }
 
-    //TODO Kan den rykkes i PortfolioDKK klassen?
     private double getLiquidCash(List<Transaction> transactions, double initialCash) {
         double liquidCash = initialCash;
         for (Transaction t : transactions) {

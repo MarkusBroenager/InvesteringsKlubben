@@ -11,7 +11,7 @@ public class User implements Comparable<User> {
     private String email;
     private double initialCash;
     private LocalDate birthday;
-    private LocalDate createdAt;
+    private final LocalDate createdAt;
     private LocalDate lastUpdated;
     private final String BLUE;
     private final String STANDARD;

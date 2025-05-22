@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserService implements UserServices {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -28,9 +28,6 @@ public class UserService implements UserServices {
 
     @Override
     public boolean addNewUser(String fullName, String email, LocalDate birthday, double initialCash) {
-        if (initialCash < 10000) {
-            return false;
-        }
         for (User u : getUsers()) {
             if (u.getEmail().equalsIgnoreCase(email)) {
                 return false;
