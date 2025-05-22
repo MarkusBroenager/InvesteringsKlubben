@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class ReadOnlyRepository {
 
-    private Path path;
+    private final Path path;
 
     public ReadOnlyRepository(String file){
         this.path = Paths.get(file);

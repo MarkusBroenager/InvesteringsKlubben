@@ -6,7 +6,7 @@ import java.io.PrintStream;
 
 public class Repository extends ReadOnlyRepository {
 
-    private String file;
+    private final String file;
 
     public Repository(String file) {
         super(file);

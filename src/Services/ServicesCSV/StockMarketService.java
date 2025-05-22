@@ -14,9 +14,9 @@ import java.util.List;
 
 public class StockMarketService implements StockMarketServices {
 
-    private StockMarketRepository stockMarketRepository;
-    private BondRepository bondRepository;
-    private CurrencyRepository currencyRepository;
+    private final StockMarketRepository stockMarketRepository;
+    private final BondRepository bondRepository;
+    private final CurrencyRepository currencyRepository;
 
     public StockMarketService(StockMarketRepository stockMarketRepository, BondRepository bondRepository, CurrencyRepository currencyRepository) {
         this.stockMarketRepository = stockMarketRepository;
@@ -58,14 +58,6 @@ public class StockMarketService implements StockMarketServices {
 
     public Stock getStock(String ticker) {
         return stockMarketRepository.getStockFromTicker(ticker);
-    }
-    //TODO : Unused method
-    public Stock getStockInDKK(String ticker) {
-        Stock stock = stockMarketRepository.getStockFromTicker(ticker);
-        if (stock != null) {
-            stock.setCurrency(getCurrency(stock.getCurrency()));
-        }
-        return stock;
     }
 
     public Bond getBond(String ticker) {

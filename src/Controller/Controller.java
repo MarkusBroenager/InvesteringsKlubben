@@ -23,13 +23,11 @@ public class Controller {
     private final ProfitAndLossInPercentageComparator percentageComparator = new ProfitAndLossInPercentageComparator();
     private final ProfitAndLossInDKKComparator dkkComparator = new ProfitAndLossInDKKComparator();
     private final Scanner SCANNER = new Scanner(System.in);
-//TODO improve string names
-// - Show profit and losses in red if negativ and green otherwise
 
     private final String BLUE;
     private final String STANDARD;
     private final String RED_BACKGROUND;
-    private final String TABLE_SEPERATOR;
+    private final String TABLE_SEPARATOR;
 
     public Controller(StockMarketServices stockMarketService, TransactionServices transactionService,
                       UserServices userService, PortfolioServices portfolioService) {
@@ -41,7 +39,7 @@ public class Controller {
         this.BLUE = ColorService.getBlueColor();
         this.STANDARD = ColorService.getStandardColor();
         this.RED_BACKGROUND = ColorService.getRedBackgroundColor();
-        this.TABLE_SEPERATOR = BLUE + "|" + STANDARD;
+        this.TABLE_SEPARATOR = BLUE + "|" + STANDARD;
     }
 
     public void start() {
@@ -83,13 +81,13 @@ public class Controller {
         System.out.print('\n');
         //print entries
         for (int index = 0; index < menuPoints.length - 1; index++) {
-            System.out.printf(TABLE_SEPERATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPERATOR + '\n',menuPoints[index]);
+            System.out.printf(TABLE_SEPARATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPARATOR + '\n',menuPoints[index]);
         }
         //print exit/back option
-        System.out.print(TABLE_SEPERATOR + ' ');
+        System.out.print(TABLE_SEPARATOR + ' ');
         printLine(lengthOfMenu, '-');
-        System.out.print(' ' + TABLE_SEPERATOR + '\n');
-        System.out.printf(TABLE_SEPERATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPERATOR + '\n',menuPoints[menuPoints.length - 1]);
+        System.out.print(' ' + TABLE_SEPARATOR + '\n');
+        System.out.printf(TABLE_SEPARATOR + " %-" + lengthOfMenu + "s " + TABLE_SEPARATOR + '\n',menuPoints[menuPoints.length - 1]);
         printLine(lengthOfMenu + 4);
         System.out.print('\n');
     }
@@ -395,7 +393,6 @@ public class Controller {
         while (true) {
             input = SCANNER.nextLine();
             LocalDate date = DataServices.getLocalDate(input);
-            //TODO: is this an interresting check
             if (!date.isAfter(LocalDate.now()) && date.isAfter(LocalDate.now().minusYears(120))) {
                 return DataServices.getLocalDate(input);
             }else{
@@ -404,7 +401,6 @@ public class Controller {
             }
         }
     }
-    //TODO Burde vi overhoved bruge matches metoden
     private String getValidName() {
         String input;
         boolean isValidName;
@@ -513,7 +509,7 @@ public class Controller {
 
 
         for(int k = 0; k < columLengths.length; k++) {
-            //System.out.println("coulum " + k);
+            //System.out.println("colum " + k);
             for (int i = 0; i < entries.size(); i++) {
 
                 String[] entry = entries.get(i).split(";");
@@ -541,9 +537,9 @@ public class Controller {
         System.out.print('\n');
         //Print titles
         for (int i = 0; i < splitTitles.length; i++) {
-            System.out.printf(TABLE_SEPERATOR + " %-" + columLengths[i] + "s ", splitTitles[i]);
+            System.out.printf(TABLE_SEPARATOR + " %-" + columLengths[i] + "s ", splitTitles[i]);
         }
-        System.out.print(TABLE_SEPERATOR + '\n');
+        System.out.print(TABLE_SEPARATOR + '\n');
         //midle line of table
         printLine(totalLength);
         System.out.print('\n');
@@ -555,10 +551,10 @@ public class Controller {
             for (int k = 0; k < columLengths.length; k++) {
 
                 String[] entry = entries.get(i).split(";");
-                System.out.printf(TABLE_SEPERATOR + " %-" + columLengths[k] + "s ", entry[k]);
+                System.out.printf(TABLE_SEPARATOR + " %-" + columLengths[k] + "s ", entry[k]);
 
             }
-            System.out.print(TABLE_SEPERATOR + '\n');
+            System.out.print(TABLE_SEPARATOR + '\n');
 
         }
 

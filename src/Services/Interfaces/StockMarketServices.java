@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface StockMarketServices {
 
-    public Asset getAsset(String ticker);
+    Asset getAsset(String ticker);
 
     List<Stock> getStocks();
 
@@ -18,8 +18,6 @@ public interface StockMarketServices {
     List<Stock> getStocksInDKK();
 
     Stock getStock(String ticker);
-
-    Stock getStockInDKK(String ticker);
 
     Bond getBond(String ticker);
 

@@ -13,11 +13,11 @@ import java.util.*;
 
 public class PortfolioService implements PortfolioServices {
 
-    private CurrencyRepository currencyRepository;
-    private StockMarketRepository stockMarketRepository;
-    private BondRepository bondRepository;
-    private TransactionRepository transactionRepository;
-    private UserRepository userRepository;
+    private final CurrencyRepository currencyRepository;
+    private final StockMarketRepository stockMarketRepository;
+    private final BondRepository bondRepository;
+    private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
     private HoldingSortBySector holdingSortBySector = new HoldingSortBySector();
     private sortSectorByTotalValueOfPortfolio sortSectorByTotalValueOfPortfolio = new sortSectorByTotalValueOfPortfolio();
 
@@ -108,9 +108,6 @@ public class PortfolioService implements PortfolioServices {
                 if (asset != null) {
                     Currency currency = currencyRepository.getCurrencyFromBaseCurrency(asset.getCurrency());
                     holdings.add(new Holding(asset, currency, v));
-                } else {
-                    //TODO
-                    // - add holding for asset removed from stockmarket
                 }
             }
         });

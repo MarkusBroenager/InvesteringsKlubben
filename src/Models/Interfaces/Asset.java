@@ -1,7 +1,5 @@
 package Models.Interfaces;
 
-import java.time.LocalDate;
-
 public interface Asset {
 
     String getTicker();

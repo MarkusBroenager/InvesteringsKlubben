@@ -12,8 +12,8 @@ import java.util.List;
 
 public class TransactionService implements TransactionServices {
 
-    private TransactionRepository transactionRepository;
-    private CurrencyRepository currencyRepository;
+    private final TransactionRepository transactionRepository;
+    private final CurrencyRepository currencyRepository;
 
     public TransactionService(TransactionRepository transactionRepository, CurrencyRepository currencyRepository) {
         this.transactionRepository = transactionRepository;

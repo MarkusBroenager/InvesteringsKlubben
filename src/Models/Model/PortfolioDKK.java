@@ -10,7 +10,7 @@ public class PortfolioDKK {
 
 
     private List<Holding> holdings;
-    private double initialValue;
+    private final double initialValue;
     private double liquidCash;
     private final String BLUE;
     private final String STANDARD;
