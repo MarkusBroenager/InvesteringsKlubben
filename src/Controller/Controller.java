@@ -265,7 +265,7 @@ public class Controller {
         System.out.println(combinedPortfolio);
         List<String> distributionList = new ArrayList<>();
         distributionList.addAll(portfolioService.getCombinedInvestmentPerSector());
-        printTable(distributionList, "Total invested in, percentage of total investment");
+        printTable(distributionList, "Total sector investment, percentage of total investment");
     }
 
     private void viewAllUsers() {
