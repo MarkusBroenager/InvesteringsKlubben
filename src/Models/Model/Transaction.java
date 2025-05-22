@@ -60,7 +60,7 @@ public class Transaction implements Comparable<Transaction> {
     }
 
     public String toString() {
-        return orderType + "; " + quantity + "; " + ticker + "; For " + getTotalTransactionPrice() +
+        return orderType + "; " + quantity + "; " + ticker + "; For " + String.format("%.2f",getTotalTransactionPrice()) +
                 " " + currency + "; date: " + dateOfTransaction;
     }
 
